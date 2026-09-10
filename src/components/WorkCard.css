@@ -1,0 +1,54 @@
+.work-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  height: 100%;
+}
+
+.work-card--large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.work-card--small {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.work-card__frame {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 220px;
+}
+
+.work-card__index {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 0.15rem 0.55rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.work-card__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.work-card__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.work-card__summary {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
