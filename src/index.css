@@ -1,11 +1,12 @@
 :root {
-  --color-bg: #ffffff;
-  --color-text: #1a1a1a;
-  --color-text-soft: #6b6b6b;
-  --color-line: #e6e6e6;
-  --color-key: #0057d4;
+  --color-bg: #f6f1e9;
+  --color-bg-soft: #efe6d8;
+  --color-text: #2b2420;
+  --color-text-soft: #8c7d6c;
+  --color-line: #e2d5c1;
+  --color-key: #a2481f;
 
-  --font-display: 'Playfair Display', 'Noto Serif KR', serif;
+  --font-display: 'Cormorant Garamond', 'Noto Serif KR', serif;
   --font-body: 'Inter', 'Noto Sans KR', sans-serif;
 
   --container-width: 1280px;
@@ -38,8 +39,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.15;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 

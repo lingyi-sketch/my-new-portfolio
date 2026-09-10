@@ -28,8 +28,7 @@ function WorksPage({ category, showHero = false }) {
     <div className="page-enter works-page">
       {showHero && (
         <section className="hero container">
-          <span className="eyebrow">Portfolio</span>
-          <h1 className="hero__name">{profile.name}</h1>
+          <h1 className="hero__title">{profile.tagline}</h1>
           <p className="quote hero__quote">&ldquo;{profile.intro}&rdquo;</p>
         </section>
       )}

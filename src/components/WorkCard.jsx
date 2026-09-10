@@ -4,7 +4,7 @@ import './WorkCard.css'
 
 function WorkCard({ work }) {
   return (
-    <Link to={`/work/${work.id}`} className={`work-card work-card--${work.size}`}>
+    <Link to={`/work/${work.id}`} className="work-card">
       <div className="work-card__frame">
         <SmartImage src={work.image} alt={work.title} label={work.title} />
         <span className="work-card__index">{work.index}</span>
