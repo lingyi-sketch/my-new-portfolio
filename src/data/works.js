@@ -15,44 +15,6 @@ export const categories = [
 ]
 
 export const works = [
-  // Images — 실제 예시 이미지 3건 적용
-  {
-    id: 'images-01',
-    category: 'images',
-    index: '01',
-    title: '잔상',
-    englishTitle: 'Afterimage',
-    year: '2024',
-    image: '/images/work-01-dog.jpg',
-    summary: '생성형 모델이 반복 학습한 시선의 잔상을 기록한 스틸 시리즈.',
-    description:
-      '같은 프롬프트를 수십 번 반복 생성했을 때 남는 미세한 차이들을 모아 하나의 시선으로 엮었다. 모델이 "본다"고 믿는 것과 실제로 렌더링하는 것 사이의 간극이 이 작업의 출발점이다.',
-  },
-  {
-    id: 'images-02',
-    category: 'images',
-    index: '02',
-    title: '경계',
-    englishTitle: 'Threshold',
-    year: '2024',
-    image: '/images/work-02-cat.jpg',
-    summary: '실사와 합성 이미지의 경계가 흐려지는 지점을 포착한 연작.',
-    description:
-      '카메라로 찍은 이미지와 생성형 AI로 만든 이미지를 번갈아 배치해, 관객이 어느 지점에서 "이것은 진짜가 아니다"라고 느끼는지를 실험했다.',
-  },
-  {
-    id: 'images-03',
-    category: 'images',
-    index: '03',
-    title: '일상의 균열',
-    englishTitle: 'Fracture in the Ordinary',
-    year: '2023',
-    image: '/images/work-03-daily.jpg',
-    summary: '평범한 하루의 장면에 생성형 AI로 미세한 이상을 심은 작업.',
-    description:
-      '지극히 평범한 일상 사진 위에 생성형 AI가 만든 미세한 왜곡을 겹쳐, 익숙한 풍경이 낯설어지는 순간을 만든다.',
-  },
-
   // Videos — 예시 데이터 (실제 파일은 아직 없음 → 카드에 자리표시)
   {
     id: 'videos-01',

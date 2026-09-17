@@ -45,3 +45,13 @@
 .works-page__body {
   padding-bottom: clamp(4rem, 8vw, 6rem);
 }
+
+.status-message {
+  padding: clamp(3rem, 8vw, 5rem) 0;
+  color: var(--color-text-soft);
+  font-size: 1rem;
+}
+
+.status-message--error {
+  color: var(--color-key);
+}

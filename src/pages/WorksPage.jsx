@@ -1,13 +1,8 @@
-import { getWorksByCategory, profile } from '../data/works'
+import { getWorksByCategory } from '../data/works'
 import WorksGrid from '../components/WorksGrid'
 import './WorksPage.css'
 
 const COPY = {
-  images: {
-    eyebrow: 'Works · Images',
-    title: 'Images',
-    description: '정지된 프레임으로 남긴 생성형 이미지 작업.',
-  },
   videos: {
     eyebrow: 'Works · Videos',
     title: 'Videos',
@@ -20,19 +15,12 @@ const COPY = {
   },
 }
 
-function WorksPage({ category, showHero = false }) {
+function WorksPage({ category }) {
   const works = getWorksByCategory(category)
   const copy = COPY[category]
 
   return (
     <div className="page-enter works-page">
-      {showHero && (
-        <section className="hero container">
-          <h1 className="hero__title">{profile.tagline}</h1>
-          <p className="quote hero__quote">&ldquo;{profile.intro}&rdquo;</p>
-        </section>
-      )}
-
       <section className="works-page__header container">
         <span className="eyebrow">{copy.eyebrow}</span>
         <h2 className="works-page__title">{copy.title}</h2>
