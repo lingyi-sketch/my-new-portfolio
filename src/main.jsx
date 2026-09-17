@@ -8,6 +8,7 @@ import Videos from './pages/Videos.jsx'
 import Pages from './pages/Pages.jsx'
 import Profile from './pages/Profile.jsx'
 import WorkDetail from './pages/WorkDetail.jsx'
+import Admin from './pages/Admin.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="pages" element={<Pages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="work/:id" element={<WorkDetail />} />
+          <Route path="admin" element={<Admin />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>
