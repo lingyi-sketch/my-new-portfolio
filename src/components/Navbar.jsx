@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { categories, profile } from '../data/works'
+import { categories } from '../data/works'
 import './Navbar.css'
 
 function Navbar() {
@@ -7,7 +7,7 @@ function Navbar() {
     <header className="navbar">
       <div className="container navbar__inner">
         <NavLink to="/" className="navbar__brand">
-          {profile.name}
+          링이
         </NavLink>
         <nav className="navbar__nav">
           <ul>

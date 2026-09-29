@@ -14,7 +14,6 @@ function App() {
         <div className="container app-footer__inner">
           <span>© {new Date().getFullYear()} {profile.name}</span>
           <div className="app-footer__right">
-            <span>Generative Cinema Studies</span>
             <Link to="/admin" className="app-footer__admin">
               Admin
             </Link>
