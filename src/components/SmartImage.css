@@ -49,7 +49,7 @@
 }
 
 .smart-image__label {
-  font-family: var(--font-label);
+  font-family: var(--font-body);
   font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }

@@ -1,19 +1,19 @@
 :root {
-  --color-bg: #f1dcae;
-  --color-bg-soft: #e7c88a;
-  --color-text: #2e2318;
-  --color-text-soft: #6b5535;
-  --color-line: #2e2318;
-  --color-key: #b1402a;
-  --color-key-2: #3f6d62;
+  --color-bg: #ede4de;
+  --color-bg-soft: #ddceca;
+  --color-text: #4a413c;
+  --color-text-soft: #998d85;
+  --color-line: #c9bcb3;
+  --color-key: #b98a91;
+  --color-key-2: #8ba3ac;
+  --color-key-3: #aca497;
 
-  --font-display: 'Poppins', 'Black Han Sans', sans-serif;
-  --font-label: 'Special Elite', 'Noto Sans KR', monospace;
+  --font-display: 'Nanum Myeongjo', 'Noto Serif KR', serif;
   --font-body: 'Inter', 'Noto Sans KR', sans-serif;
 
   --container-width: 1280px;
   --gap: clamp(1.25rem, 3vw, 2.5rem);
-  --border: 2px solid var(--color-line);
+  --border: 1px solid var(--color-line);
 
   color-scheme: light;
 }
@@ -33,7 +33,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -42,9 +42,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
@@ -87,18 +87,18 @@ ul {
 
 .eyebrow {
   display: inline-block;
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.14em;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-key);
 }
 
 .quote {
   font-family: var(--font-display);
-  font-style: normal;
-  font-weight: 500;
+  font-style: italic;
+  font-weight: 400;
   color: var(--color-text);
 }
 

@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
-import Home from './pages/Home.jsx'
-import Videos from './pages/Videos.jsx'
-import Pages from './pages/Pages.jsx'
+import VideoPage from './pages/VideoPage.jsx'
+import ScriptPage from './pages/ScriptPage.jsx'
+import GamePage from './pages/GamePage.jsx'
 import Profile from './pages/Profile.jsx'
-import WorkDetail from './pages/WorkDetail.jsx'
+import Home from './pages/Home.jsx'
 import Admin from './pages/Admin.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -15,13 +15,13 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
-          <Route path="videos" element={<Videos />} />
-          <Route path="pages" element={<Pages />} />
+          <Route index element={<VideoPage />} />
+          <Route path="script" element={<ScriptPage />} />
+          <Route path="game" element={<GamePage />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="work/:id" element={<WorkDetail />} />
+          <Route path="gallery" element={<Home />} />
           <Route path="admin" element={<Admin />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<VideoPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -6,22 +6,19 @@
   border-top: var(--border);
   padding: 1.25rem 0;
   margin-top: auto;
-  background: var(--color-bg-soft);
 }
 
 .app-footer__inner {
   display: flex;
   justify-content: space-between;
-  font-family: var(--font-label);
-  font-size: 0.72rem;
-  color: var(--color-text);
-  letter-spacing: 0.02em;
+  font-size: 0.75rem;
+  color: var(--color-text-soft);
+  letter-spacing: 0.03em;
 }
 
 @media (max-width: 480px) {
   .app-footer__inner {
     flex-direction: column;
     gap: 0.3rem;
-    text-align: center;
   }
 }

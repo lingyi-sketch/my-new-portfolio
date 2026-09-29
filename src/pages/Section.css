@@ -1,0 +1,55 @@
+.section-page {
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  padding-bottom: clamp(4rem, 8vw, 6rem);
+}
+
+.hero {
+  padding-bottom: clamp(2.5rem, 6vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.1rem;
+  max-width: 40rem;
+}
+
+.hero__title {
+  font-size: clamp(2.1rem, 5.5vw, 3.5rem);
+  letter-spacing: 0;
+}
+
+.hero__quote {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  color: var(--color-text-soft);
+}
+
+.section-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
+  max-width: 36rem;
+}
+
+.section-page__title {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+}
+
+.section-page__description {
+  color: var(--color-text-soft);
+}
+
+.section-page__games {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.status-message {
+  padding: clamp(3rem, 8vw, 5rem) 0;
+  color: var(--color-text-soft);
+  font-size: 1rem;
+}
+
+.status-message--error {
+  color: var(--color-key);
+}
