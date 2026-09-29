@@ -27,3 +27,18 @@ export async function uploadMediaFile(folder, file) {
   const { data } = supabase.storage.from(storageBucket).getPublicUrl(path)
   return data.publicUrl
 }
+
+export async function deleteMediaFile(url) {
+  if (!supabase || !storageBucket || !url) return
+
+  const marker = `/object/public/${storageBucket}/`
+  const markerIndex = url.indexOf(marker)
+  if (markerIndex === -1) return
+
+  const path = decodeURIComponent(url.slice(markerIndex + marker.length))
+
+  const { error } = await supabase.storage.from(storageBucket).remove([path])
+  if (error) {
+    console.error('Failed to delete storage file:', path, error)
+  }
+}

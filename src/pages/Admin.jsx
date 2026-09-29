@@ -6,6 +6,7 @@ import { fetchGames, deleteGame } from '../lib/games'
 import LoginForm from '../components/LoginForm'
 import AdminProjectForm from '../components/AdminProjectForm'
 import AdminGameForm from '../components/AdminGameForm'
+import SmartImage from '../components/SmartImage'
 import './Admin.css'
 
 const TABS = [
@@ -35,10 +36,10 @@ function AdminCategorySection({ category, label }) {
     setEditingItem(null)
   }, [category])
 
-  async function handleDelete(id) {
-    if (!window.confirm('삭제할까요?')) return
+  async function handleDelete(item) {
+    if (!window.confirm(`"${item.title}"을(를) 삭제할까요? 업로드된 파일도 함께 삭제돼요.`)) return
     try {
-      await deleteProject(id)
+      await deleteProject(item)
       load()
     } catch {
       window.alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
@@ -74,12 +75,20 @@ function AdminCategorySection({ category, label }) {
           <ul className="admin-list">
             {items.map((item) => (
               <li key={item.id} className="admin-list__item">
-                <span className="admin-list__title">{item.title}</span>
+                <div className="admin-list__thumb">
+                  <SmartImage src={item.image_url} alt={item.title} label="" hoverEffect={false} />
+                </div>
+                <div className="admin-list__info">
+                  <span className="admin-list__title">{item.title}</span>
+                  <p className="admin-list__preview">
+                    {item.description || '설명이 없어요.'}
+                  </p>
+                </div>
                 <div className="admin-list__actions">
                   <button type="button" onClick={() => setEditingItem(item)}>
                     수정
                   </button>
-                  <button type="button" onClick={() => handleDelete(item.id)}>
+                  <button type="button" onClick={() => handleDelete(item)}>
                     삭제
                   </button>
                 </div>
@@ -112,10 +121,10 @@ function AdminGameSection() {
     load()
   }, [])
 
-  async function handleDelete(id) {
-    if (!window.confirm('삭제할까요?')) return
+  async function handleDelete(game) {
+    if (!window.confirm(`"${game.title}"을(를) 삭제할까요? 업로드된 영상도 함께 삭제돼요.`)) return
     try {
-      await deleteGame(id)
+      await deleteGame(game)
       load()
     } catch {
       window.alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
@@ -150,12 +159,15 @@ function AdminGameSection() {
           <ul className="admin-list">
             {games.map((game) => (
               <li key={game.id} className="admin-list__item">
-                <span className="admin-list__title">{game.title}</span>
+                <div className="admin-list__info">
+                  <span className="admin-list__title">{game.title}</span>
+                  <p className="admin-list__preview">{game.synopsis || '개요가 없어요.'}</p>
+                </div>
                 <div className="admin-list__actions">
                   <button type="button" onClick={() => setEditingGame(game)}>
                     수정
                   </button>
-                  <button type="button" onClick={() => handleDelete(game.id)}>
+                  <button type="button" onClick={() => handleDelete(game)}>
                     삭제
                   </button>
                 </div>

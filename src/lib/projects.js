@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient'
+import { deleteMediaFile } from './storage'
 
 const COLUMNS = 'id, category, title, description, image_url, video_url, created_at'
 
@@ -58,12 +59,14 @@ export async function updateProject(id, { category, title, description, image_ur
   return data
 }
 
-export async function deleteProject(id) {
+export async function deleteProject(project) {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
-  const { error } = await supabase.from('projects').delete().eq('id', id)
+  await Promise.all([deleteMediaFile(project.image_url), deleteMediaFile(project.video_url)])
+
+  const { error } = await supabase.from('projects').delete().eq('id', project.id)
 
   if (error) {
     throw error
