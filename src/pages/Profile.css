@@ -1,19 +1,25 @@
 .profile-page {
-  padding-top: clamp(3.5rem, 10vw, 6.5rem);
+  padding-top: clamp(3rem, 8vw, 5rem);
   padding-bottom: clamp(4rem, 10vw, 7rem);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 1rem;
 }
 
 .profile-page__name {
-  font-size: clamp(2.75rem, 8vw, 5rem);
+  font-size: clamp(2.25rem, 6.5vw, 3.75rem);
+  text-transform: uppercase;
 }
 
 .profile-page__quote {
-  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
-  max-width: 40rem;
-  color: var(--color-text-soft);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  max-width: 36rem;
+  color: var(--color-text);
+  border: var(--border);
+  background: var(--color-bg-soft);
+  padding: 1rem 1.5rem;
   margin-bottom: 1rem;
 }
 
@@ -22,7 +28,10 @@
   grid-template-columns: 2fr 1fr;
   gap: clamp(2rem, 6vw, 4rem);
   padding-top: 2rem;
-  border-top: 1px solid var(--color-line);
+  border-top: var(--border);
+  text-align: left;
+  width: 100%;
+  max-width: 46rem;
 }
 
 .profile-page__bio {
@@ -38,17 +47,22 @@
 }
 
 .profile-page__email {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.15rem;
-  color: var(--color-key);
-  border-bottom: 1px solid var(--color-key);
+  font-family: var(--font-label);
+  font-size: 1rem;
+  color: var(--color-bg);
+  background: var(--color-key);
+  border: 1.5px solid var(--color-line);
+  padding: 0.4rem 0.8rem;
   width: fit-content;
-  padding-bottom: 0.15rem;
 }
 
 @media (max-width: 640px) {
   .profile-page__grid {
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-page__contact {
+    align-items: center;
   }
 }

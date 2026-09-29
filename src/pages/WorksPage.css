@@ -1,30 +1,37 @@
 .hero {
-  padding-top: clamp(3.5rem, 10vw, 6.5rem);
+  padding-top: clamp(3rem, 8vw, 5rem);
   padding-bottom: clamp(2.5rem, 6vw, 4rem);
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
 }
 
 .hero__title {
-  font-size: clamp(2.1rem, 5.5vw, 4rem);
-  font-weight: 500;
-  letter-spacing: 0;
-  max-width: 20em;
+  font-size: clamp(1.9rem, 4.8vw, 3.4rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  max-width: 18em;
 }
 
 .hero__quote {
-  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
-  max-width: 42rem;
-  color: var(--color-text-soft);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  max-width: 34rem;
+  color: var(--color-text);
+  border: var(--border);
+  background: var(--color-bg-soft);
+  padding: 1rem 1.5rem;
 }
 
 .works-page__header {
   padding-top: clamp(2.5rem, 6vw, 4rem);
   padding-bottom: clamp(2rem, 4vw, 2.75rem);
-  border-top: 1px solid var(--color-line);
+  border-top: var(--border);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 0.6rem;
 }
 
@@ -34,7 +41,8 @@
 }
 
 .works-page__title {
-  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-size: clamp(1.9rem, 4.5vw, 2.5rem);
+  text-transform: uppercase;
 }
 
 .works-page__description {
@@ -50,6 +58,7 @@
   padding: clamp(3rem, 8vw, 5rem) 0;
   color: var(--color-text-soft);
   font-size: 1rem;
+  text-align: center;
 }
 
 .status-message--error {

@@ -1,28 +1,36 @@
 .work-card {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
   height: 100%;
+  padding: 0.9rem 0.9rem 1.1rem;
+  background: var(--color-bg-soft);
+  border: var(--border);
+}
+
+.work-card--alt {
+  background: color-mix(in srgb, var(--color-key-2) 22%, var(--color-bg));
 }
 
 .work-card__frame {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
+  border: 1.5px solid var(--color-line);
+  background: var(--color-bg);
 }
 
 .work-card__index {
-  position: absolute;
-  top: 0.9rem;
-  left: 0.9rem;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.9rem;
+  font-family: var(--font-label);
+  font-size: 0.85rem;
   color: var(--color-bg);
-  background: rgba(43, 36, 32, 0.65);
-  padding: 0.15rem 0.55rem;
+  background: var(--color-key);
+  border: 1.5px solid var(--color-line);
+  padding: 0.1rem 0.6rem;
   letter-spacing: 0.04em;
-  pointer-events: none;
+  margin-top: -1.5rem;
 }
 
 .work-card__caption {
@@ -32,12 +40,14 @@
 }
 
 .work-card__title {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .work-card__summary {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--color-text-soft);
   line-height: 1.55;
   display: -webkit-box;

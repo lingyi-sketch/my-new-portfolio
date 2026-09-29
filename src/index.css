@@ -1,16 +1,19 @@
 :root {
-  --color-bg: #f6f1e9;
-  --color-bg-soft: #efe6d8;
-  --color-text: #2b2420;
-  --color-text-soft: #8c7d6c;
-  --color-line: #e2d5c1;
-  --color-key: #a2481f;
+  --color-bg: #f1dcae;
+  --color-bg-soft: #e7c88a;
+  --color-text: #2e2318;
+  --color-text-soft: #6b5535;
+  --color-line: #2e2318;
+  --color-key: #b1402a;
+  --color-key-2: #3f6d62;
 
-  --font-display: 'Cormorant Garamond', 'Noto Serif KR', serif;
+  --font-display: 'Poppins', 'Black Han Sans', sans-serif;
+  --font-label: 'Special Elite', 'Noto Sans KR', monospace;
   --font-body: 'Inter', 'Noto Sans KR', sans-serif;
 
   --container-width: 1280px;
   --gap: clamp(1.25rem, 3vw, 2.5rem);
+  --border: 2px solid var(--color-line);
 
   color-scheme: light;
 }
@@ -39,9 +42,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
   margin: 0;
 }
 
@@ -84,18 +87,18 @@ ul {
 
 .eyebrow {
   display: inline-block;
-  font-family: var(--font-body);
+  font-family: var(--font-label);
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-weight: 400;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-key);
 }
 
 .quote {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
+  font-style: normal;
+  font-weight: 500;
   color: var(--color-text);
 }
 
