@@ -11,9 +11,6 @@ function ScriptPage() {
       <header className="section-page__header">
         <span className="eyebrow">Works · Script</span>
         <h2 className="section-page__title">Script</h2>
-        <p className="section-page__description">
-          생성형 AI로 쓴 시나리오와 대본 작업을 모았어요.
-        </p>
       </header>
 
       {status === 'loading' && <p className="status-message">대본을 불러오는 중이에요…</p>}

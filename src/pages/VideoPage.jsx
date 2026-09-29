@@ -1,4 +1,3 @@
-import { profile } from '../data/works'
 import { useProjects } from '../hooks/useProjects'
 import SlotCard from '../components/SlotCard'
 import '../components/SlotGrid.css'
@@ -9,17 +8,9 @@ function VideoPage() {
 
   return (
     <div className="page-enter container section-page">
-      <section className="hero">
-        <h1 className="hero__title">{profile.tagline}</h1>
-        <p className="quote hero__quote">&ldquo;{profile.intro}&rdquo;</p>
-      </section>
-
       <header className="section-page__header">
         <span className="eyebrow">Works · Video</span>
         <h2 className="section-page__title">Video</h2>
-        <p className="section-page__description">
-          생성형 AI로 만든 영상 작업을 모았어요. 하나씩 채워 나갈 예정이에요.
-        </p>
       </header>
 
       {status === 'loading' && <p className="status-message">영상을 불러오는 중이에요…</p>}

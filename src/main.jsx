@@ -14,12 +14,12 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<VideoPage />} />
+          <Route index element={<Profile />} />
+          <Route path="video" element={<VideoPage />} />
           <Route path="script" element={<ScriptPage />} />
           <Route path="game" element={<GamePage />} />
-          <Route path="profile" element={<Profile />} />
           <Route path="admin" element={<Admin />} />
-          <Route path="*" element={<VideoPage />} />
+          <Route path="*" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

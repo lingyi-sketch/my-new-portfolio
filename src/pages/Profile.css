@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 44rem;
 }
 
 .profile-page__name {
@@ -25,18 +24,34 @@
   gap: clamp(2rem, 6vw, 4rem);
   padding-top: 2rem;
   border-top: var(--border);
+  min-height: clamp(14rem, 30vw, 20rem);
+}
+
+.profile-page__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.profile-page__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-page__intro {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  max-width: 34rem;
+  color: var(--color-text);
 }
 
 .profile-page__bio {
   font-size: 1.02rem;
   max-width: 38rem;
   color: var(--color-text);
-}
-
-.profile-page__contact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
 }
 
 .profile-page__email {
@@ -49,8 +64,35 @@
   padding-bottom: 0.15rem;
 }
 
+.profile-page__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.profile-page__aphorism {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+  text-align: right;
+  max-width: 18rem;
+}
+
 @media (max-width: 640px) {
   .profile-page__grid {
     grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .profile-page__right {
+    align-items: flex-start;
+  }
+
+  .profile-page__aphorism {
+    text-align: left;
+    max-width: none;
   }
 }

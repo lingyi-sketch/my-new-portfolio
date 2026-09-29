@@ -10,9 +10,7 @@ function GamePage() {
       <header className="section-page__header">
         <span className="eyebrow">Works · Game</span>
         <h2 className="section-page__title">Game</h2>
-        <p className="section-page__description">
-          생성형 AI를 활용한 게임 작업이에요. 게임마다 개요·영상·링크를 정리했어요.
-        </p>
+        <p className="section-page__description">생성형 AI를 활용한 게임 작업</p>
       </header>
 
       {status === 'loading' && <p className="status-message">게임을 불러오는 중이에요…</p>}
