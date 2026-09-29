@@ -5,7 +5,7 @@ import './AdminProjectForm.css'
 
 const emptyForm = { title: '', description: '' }
 
-function AdminProjectForm({ project, onSaved, onCancel }) {
+function AdminProjectForm({ category, project, onSaved, onCancel }) {
   const isEditing = Boolean(project)
   const [form, setForm] = useState(
     isEditing ? { title: project.title ?? '', description: project.description ?? '' } : emptyForm,
@@ -35,7 +35,13 @@ function AdminProjectForm({ project, onSaved, onCancel }) {
         video_url = await uploadMediaFile('videos', videoFile)
       }
 
-      const payload = { title: form.title, description: form.description, image_url, video_url }
+      const payload = {
+        category: project?.category ?? category,
+        title: form.title,
+        description: form.description,
+        image_url,
+        video_url,
+      }
 
       if (isEditing) {
         await updateProject(project.id, payload)

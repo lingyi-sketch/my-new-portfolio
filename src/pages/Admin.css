@@ -41,6 +41,45 @@
   font-size: 1.3rem;
 }
 
+.admin-page__description {
+  color: var(--color-text-soft);
+  max-width: 34rem;
+}
+
+.status-message {
+  padding: 2rem 0;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
+.status-message--error {
+  color: var(--color-key);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: var(--border);
+  padding-bottom: 0.75rem;
+}
+
+.admin-tabs__item {
+  padding: 0.5rem 1.1rem;
+  background: transparent;
+  border: 1px solid var(--color-line);
+  color: var(--color-text-soft);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.admin-tabs__item--active {
+  background: var(--color-key);
+  border-color: var(--color-key);
+  color: var(--color-bg);
+}
+
 .admin-list {
   display: flex;
   flex-direction: column;

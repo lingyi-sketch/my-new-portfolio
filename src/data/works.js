@@ -13,29 +13,3 @@ export const categories = [
   { key: 'game', label: 'Game', path: '/game' },
   { key: 'profile', label: 'Profile', path: '/profile' },
 ]
-
-export const videoSlots = Array.from({ length: 9 }, (_, i) => ({
-  id: `video-${i + 1}`,
-  index: String(i + 1).padStart(2, '0'),
-  title: `Video ${String(i + 1).padStart(2, '0')}`,
-  description: '',
-  image: null,
-}))
-
-export const scriptSlots = Array.from({ length: 8 }, (_, i) => ({
-  id: `script-${i + 1}`,
-  index: String(i + 1).padStart(2, '0'),
-  title: `Script ${String(i + 1).padStart(2, '0')}`,
-  description: '',
-  image: null,
-}))
-
-export const games = Array.from({ length: 2 }, (_, i) => ({
-  id: `game-${i + 1}`,
-  index: String(i + 1).padStart(2, '0'),
-  title: `Game ${String(i + 1).padStart(2, '0')}`,
-  synopsis: '',
-  videoImage: null,
-  videoDescription: '',
-  link: '',
-}))

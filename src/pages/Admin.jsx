@@ -2,23 +2,28 @@ import { useEffect, useState } from 'react'
 import { useSession } from '../hooks/useSession'
 import { ADMIN_UID, signOutAdmin } from '../lib/auth'
 import { fetchProjects, deleteProject } from '../lib/projects'
+import { fetchGames, deleteGame } from '../lib/games'
 import LoginForm from '../components/LoginForm'
 import AdminProjectForm from '../components/AdminProjectForm'
+import AdminGameForm from '../components/AdminGameForm'
 import './Admin.css'
 
-function Admin() {
-  const { session, loading } = useSession()
-  const [projects, setProjects] = useState([])
+const TABS = [
+  { key: 'video', label: 'Video' },
+  { key: 'script', label: 'Script' },
+  { key: 'game', label: 'Game' },
+]
+
+function AdminCategorySection({ category, label }) {
+  const [items, setItems] = useState([])
   const [listStatus, setListStatus] = useState('loading')
-  const [editingProject, setEditingProject] = useState(null)
+  const [editingItem, setEditingItem] = useState(null)
 
-  const isAdmin = session?.user?.id === ADMIN_UID
-
-  async function loadProjects() {
+  async function load() {
     setListStatus('loading')
     try {
-      const data = await fetchProjects()
-      setProjects(data)
+      const data = await fetchProjects(category)
+      setItems(data)
       setListStatus('ready')
     } catch {
       setListStatus('error')
@@ -26,20 +31,148 @@ function Admin() {
   }
 
   useEffect(() => {
-    if (isAdmin) {
-      loadProjects()
-    }
-  }, [isAdmin])
+    load()
+    setEditingItem(null)
+  }, [category])
 
   async function handleDelete(id) {
-    if (!window.confirm('이 작품을 삭제할까요?')) return
+    if (!window.confirm('삭제할까요?')) return
     try {
       await deleteProject(id)
-      loadProjects()
+      load()
     } catch {
       window.alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
     }
   }
+
+  return (
+    <>
+      <section className="admin-page__section">
+        <h2 className="admin-page__subtitle">{editingItem ? `${label} 수정` : `새 ${label} 등록`}</h2>
+        <AdminProjectForm
+          key={editingItem?.id ?? 'new'}
+          category={category}
+          project={editingItem}
+          onSaved={() => {
+            setEditingItem(null)
+            load()
+          }}
+          onCancel={() => setEditingItem(null)}
+        />
+      </section>
+
+      <section className="admin-page__section">
+        <h2 className="admin-page__subtitle">등록된 {label}</h2>
+        {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
+        {listStatus === 'error' && (
+          <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
+        )}
+        {listStatus === 'ready' && items.length === 0 && (
+          <p className="status-message">등록된 {label}이 없어요.</p>
+        )}
+        {listStatus === 'ready' && items.length > 0 && (
+          <ul className="admin-list">
+            {items.map((item) => (
+              <li key={item.id} className="admin-list__item">
+                <span className="admin-list__title">{item.title}</span>
+                <div className="admin-list__actions">
+                  <button type="button" onClick={() => setEditingItem(item)}>
+                    수정
+                  </button>
+                  <button type="button" onClick={() => handleDelete(item.id)}>
+                    삭제
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </>
+  )
+}
+
+function AdminGameSection() {
+  const [games, setGames] = useState([])
+  const [listStatus, setListStatus] = useState('loading')
+  const [editingGame, setEditingGame] = useState(null)
+
+  async function load() {
+    setListStatus('loading')
+    try {
+      const data = await fetchGames()
+      setGames(data)
+      setListStatus('ready')
+    } catch {
+      setListStatus('error')
+    }
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
+
+  async function handleDelete(id) {
+    if (!window.confirm('삭제할까요?')) return
+    try {
+      await deleteGame(id)
+      load()
+    } catch {
+      window.alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+    }
+  }
+
+  return (
+    <>
+      <section className="admin-page__section">
+        <h2 className="admin-page__subtitle">{editingGame ? '게임 수정' : '새 게임 등록'}</h2>
+        <AdminGameForm
+          key={editingGame?.id ?? 'new'}
+          game={editingGame}
+          onSaved={() => {
+            setEditingGame(null)
+            load()
+          }}
+          onCancel={() => setEditingGame(null)}
+        />
+      </section>
+
+      <section className="admin-page__section">
+        <h2 className="admin-page__subtitle">등록된 게임</h2>
+        {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
+        {listStatus === 'error' && (
+          <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
+        )}
+        {listStatus === 'ready' && games.length === 0 && (
+          <p className="status-message">등록된 게임이 없어요.</p>
+        )}
+        {listStatus === 'ready' && games.length > 0 && (
+          <ul className="admin-list">
+            {games.map((game) => (
+              <li key={game.id} className="admin-list__item">
+                <span className="admin-list__title">{game.title}</span>
+                <div className="admin-list__actions">
+                  <button type="button" onClick={() => setEditingGame(game)}>
+                    수정
+                  </button>
+                  <button type="button" onClick={() => handleDelete(game.id)}>
+                    삭제
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </>
+  )
+}
+
+function Admin() {
+  const { session, loading } = useSession()
+  const [activeTab, setActiveTab] = useState('video')
+
+  const isAdmin = session?.user?.id === ADMIN_UID
 
   if (loading) {
     return (
@@ -64,7 +197,7 @@ function Admin() {
       <div className="page-enter container admin-page">
         <span className="eyebrow">Admin</span>
         <h1 className="admin-page__title">권한이 없습니다</h1>
-        <p className="works-page__description">이 계정은 작품을 관리할 수 있는 관리자 계정이 아니에요.</p>
+        <p className="admin-page__description">이 계정은 작품을 관리할 수 있는 관리자 계정이 아니에요.</p>
         <button type="button" className="admin-page__signout" onClick={signOutAdmin}>
           로그아웃
         </button>
@@ -84,46 +217,22 @@ function Admin() {
         </button>
       </div>
 
-      <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">{editingProject ? '작품 수정' : '새 작품 등록'}</h2>
-        <AdminProjectForm
-          key={editingProject?.id ?? 'new'}
-          project={editingProject}
-          onSaved={() => {
-            setEditingProject(null)
-            loadProjects()
-          }}
-          onCancel={() => setEditingProject(null)}
-        />
-      </section>
+      <div className="admin-tabs">
+        {TABS.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            className={`admin-tabs__item${activeTab === tab.key ? ' admin-tabs__item--active' : ''}`}
+            onClick={() => setActiveTab(tab.key)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-      <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">등록된 작품</h2>
-        {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
-        {listStatus === 'error' && (
-          <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
-        )}
-        {listStatus === 'ready' && projects.length === 0 && (
-          <p className="status-message">등록된 작품이 없어요.</p>
-        )}
-        {listStatus === 'ready' && projects.length > 0 && (
-          <ul className="admin-list">
-            {projects.map((project) => (
-              <li key={project.id} className="admin-list__item">
-                <span className="admin-list__title">{project.title}</span>
-                <div className="admin-list__actions">
-                  <button type="button" onClick={() => setEditingProject(project)}>
-                    수정
-                  </button>
-                  <button type="button" onClick={() => handleDelete(project.id)}>
-                    삭제
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {activeTab === 'video' && <AdminCategorySection category="video" label="Video" />}
+      {activeTab === 'script' && <AdminCategorySection category="script" label="Script" />}
+      {activeTab === 'game' && <AdminGameSection />}
     </div>
   )
 }

@@ -1,31 +1,31 @@
 import { useEffect, useState } from 'react'
-import { fetchProjects } from '../lib/projects'
+import { fetchGames } from '../lib/games'
 
-export function useProjects(category) {
+export function useGames() {
   const [status, setStatus] = useState('loading')
-  const [projects, setProjects] = useState([])
+  const [games, setGames] = useState([])
 
   useEffect(() => {
     let cancelled = false
 
     setStatus('loading')
 
-    fetchProjects(category)
+    fetchGames()
       .then((data) => {
         if (cancelled) return
-        setProjects(data)
+        setGames(data)
         setStatus(data.length === 0 ? 'empty' : 'success')
       })
       .catch((error) => {
         if (cancelled) return
-        console.error('Failed to load projects from Supabase:', error)
+        console.error('Failed to load games from Supabase:', error)
         setStatus('error')
       })
 
     return () => {
       cancelled = true
     }
-  }, [category])
+  }, [])
 
-  return { status, projects }
+  return { status, games }
 }

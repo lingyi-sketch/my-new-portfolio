@@ -1,18 +1,16 @@
 import { supabase } from './supabaseClient'
 
-const COLUMNS = 'id, category, title, description, image_url, video_url, created_at'
+const COLUMNS = 'id, title, synopsis, video_url, video_description, link_url, created_at'
 
-export async function fetchProjects(category) {
+export async function fetchGames() {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
-  let query = supabase.from('projects').select(COLUMNS).order('created_at', { ascending: false })
-  if (category) {
-    query = query.eq('category', category)
-  }
-
-  const { data, error } = await query
+  const { data, error } = await supabase
+    .from('games')
+    .select(COLUMNS)
+    .order('created_at', { ascending: false })
 
   if (error) {
     throw error
@@ -21,14 +19,14 @@ export async function fetchProjects(category) {
   return data ?? []
 }
 
-export async function createProject({ category, title, description, image_url, video_url }) {
+export async function createGame({ title, synopsis, video_url, video_description, link_url }) {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
   const { data, error } = await supabase
-    .from('projects')
-    .insert({ category, title, description, image_url, video_url })
+    .from('games')
+    .insert({ title, synopsis, video_url, video_description, link_url })
     .select(COLUMNS)
     .single()
 
@@ -39,14 +37,14 @@ export async function createProject({ category, title, description, image_url, v
   return data
 }
 
-export async function updateProject(id, { category, title, description, image_url, video_url }) {
+export async function updateGame(id, { title, synopsis, video_url, video_description, link_url }) {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
   const { data, error } = await supabase
-    .from('projects')
-    .update({ category, title, description, image_url, video_url })
+    .from('games')
+    .update({ title, synopsis, video_url, video_description, link_url })
     .eq('id', id)
     .select(COLUMNS)
     .single()
@@ -58,12 +56,12 @@ export async function updateProject(id, { category, title, description, image_ur
   return data
 }
 
-export async function deleteProject(id) {
+export async function deleteGame(id) {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
-  const { error } = await supabase.from('projects').delete().eq('id', id)
+  const { error } = await supabase.from('games').delete().eq('id', id)
 
   if (error) {
     throw error
