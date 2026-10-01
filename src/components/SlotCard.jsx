@@ -13,6 +13,11 @@ function SlotCard({ slot }) {
         <p className="slot-card__description">
           {slot.description || '아직 소개 글이 없어요. 등록되면 이 자리에 표시돼요.'}
         </p>
+        {slot.fileUrl && (
+          <a className="slot-card__file" href={slot.fileUrl} target="_blank" rel="noreferrer">
+            {slot.fileLabel || '파일 보기'} →
+          </a>
+        )}
       </div>
     </div>
   )

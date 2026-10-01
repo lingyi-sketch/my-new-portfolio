@@ -5,8 +5,24 @@ import './AdminProjectForm.css'
 
 const emptyForm = { title: '', description: '' }
 
+const SECOND_FILE_CONFIG = {
+  script: {
+    folder: 'documents',
+    label: '대본 파일 (PDF · Word)',
+    accept:
+      '.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  },
+  video: {
+    folder: 'videos',
+    label: '영상 파일',
+    accept: 'video/*',
+  },
+}
+
 function AdminProjectForm({ category, project, onSaved, onCancel }) {
   const isEditing = Boolean(project)
+  const effectiveCategory = project?.category ?? category
+  const secondFile = SECOND_FILE_CONFIG[effectiveCategory] ?? SECOND_FILE_CONFIG.video
   const [form, setForm] = useState(
     isEditing ? { title: project.title ?? '', description: project.description ?? '' } : emptyForm,
   )
@@ -32,7 +48,7 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
         image_url = await uploadMediaFile('images', imageFile)
       }
       if (videoFile) {
-        video_url = await uploadMediaFile('videos', videoFile)
+        video_url = await uploadMediaFile(secondFile.folder, videoFile)
       }
 
       const payload = {
@@ -94,8 +110,14 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
       </label>
 
       <label className="admin-form__field">
-        <span>영상 파일 {isEditing && '(바꿀 때만 선택)'}</span>
-        <input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files?.[0] ?? null)} />
+        <span>
+          {secondFile.label} {isEditing && '(바꿀 때만 선택)'}
+        </span>
+        <input
+          type="file"
+          accept={secondFile.accept}
+          onChange={(e) => setVideoFile(e.target.files?.[0] ?? null)}
+        />
       </label>
 
       {error && <p className="admin-form__error">{error}</p>}

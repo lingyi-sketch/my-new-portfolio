@@ -44,3 +44,10 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.slot-card__file {
+  font-size: 0.8rem;
+  color: var(--color-key);
+  width: fit-content;
+  margin-top: 0.2rem;
+}
