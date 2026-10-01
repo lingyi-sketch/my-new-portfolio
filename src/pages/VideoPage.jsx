@@ -32,6 +32,8 @@ function VideoPage() {
                 title: project.title,
                 description: project.description,
                 image: project.image_url,
+                fileUrl: project.video_url,
+                fileLabel: '영상 보기',
               }}
             />
           ))}

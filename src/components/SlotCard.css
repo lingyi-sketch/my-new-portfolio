@@ -11,6 +11,35 @@
   aspect-ratio: 4 / 5;
 }
 
+.slot-card__file-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg-soft);
+  border: 1.5px dashed var(--color-line);
+  color: var(--color-text-soft);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.slot-card__file-icon:hover {
+  color: var(--color-key);
+  border-color: var(--color-key);
+}
+
+.slot-card__file-icon svg {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.slot-card__file-type {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
 .slot-card__index {
   position: absolute;
   top: 0.75rem;
@@ -40,7 +69,7 @@
   color: var(--color-text-soft);
   line-height: 1.6;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
