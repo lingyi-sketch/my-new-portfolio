@@ -6,13 +6,17 @@ import { fetchGames, deleteGame } from '../lib/games'
 import LoginForm from '../components/LoginForm'
 import AdminProjectForm from '../components/AdminProjectForm'
 import AdminGameForm from '../components/AdminGameForm'
+import AdminProfileSection from '../components/AdminProfileSection'
+import AdminAssignmentSection from '../components/AdminAssignmentSection'
 import SmartImage from '../components/SmartImage'
 import './Admin.css'
 
 const TABS = [
+  { key: 'profile', label: 'Profile' },
   { key: 'video', label: 'Video' },
   { key: 'script', label: 'Script' },
   { key: 'game', label: 'Game' },
+  { key: 'assignments', label: '과제' },
 ]
 
 function AdminCategorySection({ category, label }) {
@@ -235,7 +239,7 @@ function AdminGameSection() {
 
 function Admin() {
   const { session, loading } = useSession()
-  const [activeTab, setActiveTab] = useState('video')
+  const [activeTab, setActiveTab] = useState('profile')
 
   const isAdmin = session?.user?.id === ADMIN_UID
 
@@ -295,9 +299,11 @@ function Admin() {
         ))}
       </div>
 
+      {activeTab === 'profile' && <AdminProfileSection />}
       {activeTab === 'video' && <AdminCategorySection category="video" label="Video" />}
       {activeTab === 'script' && <AdminCategorySection category="script" label="Script" />}
       {activeTab === 'game' && <AdminGameSection />}
+      {activeTab === 'assignments' && <AdminAssignmentSection />}
     </div>
   )
 }

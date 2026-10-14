@@ -1,0 +1,25 @@
+.weeks {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.week-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: var(--border);
+}
+
+.week-block__title {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-style: italic;
+}
+
+.week-block__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: var(--gap);
+  align-items: start;
+}

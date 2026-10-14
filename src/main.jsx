@@ -6,6 +6,7 @@ import App from './App.jsx'
 import VideoPage from './pages/VideoPage.jsx'
 import ScriptPage from './pages/ScriptPage.jsx'
 import GamePage from './pages/GamePage.jsx'
+import AssignmentsPage from './pages/AssignmentsPage.jsx'
 import Profile from './pages/Profile.jsx'
 import Admin from './pages/Admin.jsx'
 
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="video" element={<VideoPage />} />
           <Route path="script" element={<ScriptPage />} />
           <Route path="game" element={<GamePage />} />
+          <Route path="assignments" element={<AssignmentsPage />} />
           <Route path="admin" element={<Admin />} />
           <Route path="*" element={<Profile />} />
         </Route>

@@ -1,38 +1,10 @@
 import SmartImage from './SmartImage'
+import { FilePreview, fileExtension } from './FilePreview'
 import './SlotCard.css'
 
-const VIDEO_EXTENSIONS = new Set(['mp4', 'mov', 'webm', 'm4v'])
-const DOC_EXTENSIONS = new Set(['doc', 'docx'])
+const PREVIEWABLE_EXTENSIONS = new Set(['pdf', 'doc', 'docx', 'mp4', 'mov', 'webm', 'm4v'])
 
-function fileExtension(url) {
-  return url?.split('.').pop()?.split(/[?#]/)[0]?.toLowerCase()
-}
-
-function FilePreview({ url, title }) {
-  const extension = fileExtension(url)
-
-  if (VIDEO_EXTENSIONS.has(extension)) {
-    return (
-      <video
-        className="slot-card__preview"
-        src={url}
-        controls
-        muted
-        playsInline
-        preload="metadata"
-      />
-    )
-  }
-
-  if (extension === 'pdf') {
-    return <iframe className="slot-card__preview" src={url} title={title} />
-  }
-
-  if (DOC_EXTENSIONS.has(extension)) {
-    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`
-    return <iframe className="slot-card__preview" src={viewerUrl} title={title} />
-  }
-
+function FileIconFallback({ url }) {
   return (
     <a className="slot-card__file-icon" href={url} target="_blank" rel="noreferrer" aria-label="파일 보기">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
@@ -48,12 +20,17 @@ function FilePreview({ url, title }) {
 function SlotCard({ slot }) {
   const hasImage = Boolean(slot.image)
   const hasFile = Boolean(slot.fileUrl)
+  const canPreview = hasFile && PREVIEWABLE_EXTENSIONS.has(fileExtension(slot.fileUrl))
 
   return (
     <div className="slot-card">
       <div className="slot-card__frame">
         {!hasImage && hasFile ? (
-          <FilePreview url={slot.fileUrl} title={slot.title} />
+          canPreview ? (
+            <FilePreview url={slot.fileUrl} title={slot.title} />
+          ) : (
+            <FileIconFallback url={slot.fileUrl} />
+          )
         ) : (
           <SmartImage src={slot.image} alt={slot.title} label={slot.title} />
         )}

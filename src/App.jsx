@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import { profile } from './data/works'
 import './App.css'
@@ -13,11 +13,6 @@ function App() {
       <footer className="app-footer">
         <div className="container app-footer__inner">
           <span>© {new Date().getFullYear()} {profile.name}</span>
-          <div className="app-footer__right">
-            <Link to="/admin" className="app-footer__admin">
-              Admin
-            </Link>
-          </div>
         </div>
       </footer>
     </>

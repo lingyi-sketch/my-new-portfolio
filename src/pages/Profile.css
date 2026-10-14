@@ -64,6 +64,58 @@
   padding-bottom: 0.15rem;
 }
 
+.profile-page__intro,
+.profile-page__bio,
+.profile-page__aphorism {
+  white-space: pre-line;
+}
+
+.profile-page__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-page__contact {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.profile-page__contact-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.profile-page__contact-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.profile-page__status {
+  padding: clamp(3rem, 8vw, 5rem) 0;
+  color: var(--color-text-soft);
+}
+
+.profile-page__status--error {
+  color: var(--color-key);
+}
+
+.profile-page__photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--gap);
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+.profile-page__photo {
+  aspect-ratio: 4 / 5;
+}
+
 .profile-page__right {
   display: flex;
   flex-direction: column;

@@ -17,7 +17,8 @@
 }
 
 .admin-form__field input,
-.admin-form__field textarea {
+.admin-form__field textarea,
+.admin-form__field select {
   font-family: var(--font-body);
   font-size: 0.95rem;
   padding: 0.55rem 0.7rem;
@@ -29,12 +30,24 @@
 }
 
 .admin-form__field input:focus,
-.admin-form__field textarea:focus {
+.admin-form__field textarea:focus,
+.admin-form__field select:focus {
   outline: 1px solid var(--color-key);
+}
+
+.admin-form__row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1rem;
 }
 
 .admin-form__error {
   color: var(--color-key);
+  font-size: 0.85rem;
+}
+
+.admin-form__ok {
+  color: var(--color-key-2);
   font-size: 0.85rem;
 }
 
@@ -60,8 +73,24 @@
   cursor: default;
 }
 
-.admin-form__cancel {
+.admin-form .admin-form__cancel {
   background: transparent;
   color: var(--color-text-soft);
   border: 1px solid var(--color-line);
+}
+
+.admin-form .admin-form__add {
+  align-self: flex-start;
+  padding: 0.4rem 0.9rem;
+}
+
+.admin-contact-row {
+  display: grid;
+  grid-template-columns: 7rem 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.admin-contact-row .admin-form__cancel {
+  padding: 0.45rem 0.8rem;
 }

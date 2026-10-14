@@ -58,6 +58,7 @@
 
 .admin-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   border-bottom: var(--border);
   padding-bottom: 0.75rem;
@@ -129,6 +130,38 @@
 }
 
 .admin-list__actions button {
+  padding: 0.35rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--color-line);
+  color: var(--color-text-soft);
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.admin-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  gap: 1rem;
+  max-width: 40rem;
+}
+
+.admin-photo-grid__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-photo-grid__thumb {
+  aspect-ratio: 4 / 5;
+}
+
+.admin-photo-grid__item .admin-list__confirm {
+  flex-wrap: wrap;
+  white-space: normal;
+}
+
+.admin-photo-grid__delete {
   padding: 0.35rem 0.8rem;
   background: transparent;
   border: 1px solid var(--color-line);

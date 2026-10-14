@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <header className="navbar">
       <div className="container navbar__inner">
-        <NavLink to="/" className="navbar__brand">
+        <NavLink to="/admin" className="navbar__brand">
           링이
         </NavLink>
         <nav className="navbar__nav">
