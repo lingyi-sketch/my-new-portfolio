@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import SmartImage from './SmartImage'
-import { FilePreview, LinkPreview, canEmbed, canPreviewFile } from './FilePreview'
+import { FilePreview, UrlPreview, canEmbed, canPreviewFile } from './FilePreview'
 import { ASSIGNMENT_KINDS } from '../lib/assignments'
 import './AssignmentCard.css'
 
@@ -54,11 +54,14 @@ function Media({ assignment }) {
     )
   }
 
-  if (linkUrl && canEmbed(linkUrl)) {
+  if (linkUrl) {
     return (
-      <div className="assignment-card__media assignment-card__media--wide">
-        <LinkPreview url={linkUrl} title={title} className="assignment-card__preview" />
-      </div>
+      <UrlPreview
+        url={linkUrl}
+        title={title}
+        mediaClassName="assignment-card__media assignment-card__media--wide"
+        previewClassName="assignment-card__preview"
+      />
     )
   }
 
@@ -67,7 +70,13 @@ function Media({ assignment }) {
 
 function AssignmentCard({ assignment }) {
   const kindLabel = ASSIGNMENT_KINDS.find((kind) => kind.key === assignment.kind)?.label ?? assignment.kind
-  const openUrl = assignment.kind === 'game' || assignment.kind === 'video' ? assignment.link_url || assignment.file_url : assignment.file_url
+  const isLinkKind = assignment.kind === 'game' || assignment.kind === 'video'
+  const linkShownAsCard =
+    isLinkKind &&
+    !(assignment.file_url && canPreviewFile(assignment.file_url)) &&
+    Boolean(assignment.link_url) &&
+    !canEmbed(assignment.link_url)
+  const openUrl = isLinkKind && !linkShownAsCard ? assignment.link_url || assignment.file_url : assignment.file_url
 
   return (
     <article className="assignment-card">

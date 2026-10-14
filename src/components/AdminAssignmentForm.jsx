@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createAssignment, updateAssignment, ASSIGNMENT_KINDS } from '../lib/assignments'
 import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
+import { UrlPreview } from './FilePreview'
 import './AdminProjectForm.css'
 
 function newRow(kind = 'prompt', assignment = null) {
@@ -146,15 +147,18 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
       )}
 
       {row.kind === 'game' && (
-        <label className="admin-form__field">
-          <span>영상 URL (YouTube, Vimeo 등)</span>
-          <input
-            type="url"
-            placeholder="https://"
-            value={row.link_url}
-            onChange={(e) => onChange({ link_url: e.target.value })}
-          />
-        </label>
+        <>
+          <label className="admin-form__field">
+            <span>영상 URL (YouTube, Vimeo 등)</span>
+            <input
+              type="url"
+              placeholder="https://"
+              value={row.link_url}
+              onChange={(e) => onChange({ link_url: e.target.value })}
+            />
+          </label>
+          <UrlPreview url={row.link_url} title="URL 미리보기" mediaClassName="url-preview-box" previewClassName="" />
+        </>
       )}
 
       {row.kind === 'image' && (
@@ -189,6 +193,7 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
               onChange={(e) => onChange({ link_url: e.target.value })}
             />
           </label>
+          <UrlPreview url={row.link_url} title="URL 미리보기" mediaClassName="url-preview-box" previewClassName="" />
         </>
       )}
 

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchAssignments, deleteAssignment, ASSIGNMENT_KINDS } from '../lib/assignments'
 import { saveOrder } from '../lib/ordering'
+import { fetchSetting, saveSetting } from '../lib/settings'
+import { WEEK_ORDER_KEY, orderWeeks } from '../lib/weekOrder'
 import AdminAssignmentForm from './AdminAssignmentForm'
 import SortableList from './SortableList'
 
@@ -10,7 +12,7 @@ function groupByWeek(items) {
     if (!weeks.has(item.week)) weeks.set(item.week, [])
     weeks.get(item.week).push(item)
   }
-  return Array.from(weeks.entries())
+  return weeks
 }
 
 function applyGroupOrder(items, week, nextGroup) {
@@ -29,6 +31,7 @@ function applyGroupOrder(items, week, nextGroup) {
 
 function AdminAssignmentSection() {
   const [items, setItems] = useState([])
+  const [weekOrder, setWeekOrder] = useState(null)
   const [listStatus, setListStatus] = useState('loading')
   const [editingItem, setEditingItem] = useState(null)
   const [pendingDeleteId, setPendingDeleteId] = useState(null)
@@ -37,7 +40,12 @@ function AdminAssignmentSection() {
 
   async function load() {
     try {
-      setItems(await fetchAssignments())
+      const [data, order] = await Promise.all([
+        fetchAssignments(),
+        fetchSetting(WEEK_ORDER_KEY).catch(() => null),
+      ])
+      setItems(data)
+      setWeekOrder(order)
       setListStatus('ready')
     } catch {
       setListStatus('error')
@@ -60,6 +68,19 @@ function AdminAssignmentSection() {
     }
   }
 
+  async function reorderWeeks(nextGroups) {
+    const previous = weekOrder
+    const nextOrder = nextGroups.map((group) => group.week)
+    setWeekOrder(nextOrder)
+    setDeleteError('')
+    try {
+      await saveSetting(WEEK_ORDER_KEY, nextOrder)
+    } catch {
+      setWeekOrder(previous)
+      setDeleteError('주차 순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+    }
+  }
+
   async function confirmDelete(item) {
     setDeleting(true)
     setDeleteError('')
@@ -74,7 +95,13 @@ function AdminAssignmentSection() {
     }
   }
 
-  const lastWeek = items.length ? items[items.length - 1].week : 1
+  const groups = groupByWeek(items)
+  const weekGroups = orderWeeks([...groups.keys()], weekOrder).map((week) => ({
+    id: `week-${week}`,
+    week,
+    items: groups.get(week),
+  }))
+  const lastWeek = items.length ? Math.max(...items.map((item) => item.week)) : 1
 
   return (
     <>
@@ -106,56 +133,67 @@ function AdminAssignmentSection() {
         {listStatus === 'ready' && items.length === 0 && <p className="status-message">등록된 과제가 없어요.</p>}
         {listStatus === 'ready' && items.length > 0 && (
           <>
-            <p className="admin-hint">같은 주차 안에서 ⋮⋮ 를 끌어 순서를 바꾸면 바로 저장돼요.</p>
-            {groupByWeek(items).map(([week, group]) => (
-              <div key={week} className="admin-week-group">
-                <h3 className="admin-week-group__title">{week}주차</h3>
-                <SortableList
-                  items={group}
-                  onReorder={(next) => reorder(week, next)}
-                  className="admin-list"
-                  itemClassName="admin-list__item"
-                  renderItem={(item, handle) => (
-                    <>
-                      {handle}
-                      <div className="admin-list__info">
-                        <span className="admin-list__title">{item.title}</span>
-                        <p className="admin-list__preview">
-                          {ASSIGNMENT_KINDS.find((kind) => kind.key === item.kind)?.label ?? item.kind}
-                          {item.description ? ` · ${item.description}` : ''}
-                        </p>
-                      </div>
-                      {pendingDeleteId === item.id ? (
-                        <div className="admin-list__confirm">
-                          <span>삭제할까요?</span>
-                          <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
-                            {deleting ? '삭제 중…' : '삭제'}
-                          </button>
-                          <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                            취소
-                          </button>
+            <p className="admin-hint">
+              항목 왼쪽의 ⋮⋮ 를 끌면 같은 주차 안에서, "N주차" 옆의 ⋮⋮ 를 끌면 주차끼리 순서가 바뀌고 바로 저장돼요.
+            </p>
+            <SortableList
+              items={weekGroups}
+              onReorder={reorderWeeks}
+              className="admin-week-list"
+              itemClassName="admin-week-group"
+              renderItem={(group, weekHandle) => (
+                <>
+                  <div className="admin-week-group__head">
+                    {weekHandle}
+                    <h3 className="admin-week-group__title">{group.week}주차</h3>
+                  </div>
+                  <SortableList
+                    items={group.items}
+                    onReorder={(next) => reorder(group.week, next)}
+                    className="admin-list"
+                    itemClassName="admin-list__item"
+                    renderItem={(item, handle) => (
+                      <>
+                        {handle}
+                        <div className="admin-list__info">
+                          <span className="admin-list__title">{item.title}</span>
+                          <p className="admin-list__preview">
+                            {ASSIGNMENT_KINDS.find((kind) => kind.key === item.kind)?.label ?? item.kind}
+                            {item.description ? ` · ${item.description}` : ''}
+                          </p>
                         </div>
-                      ) : (
-                        <div className="admin-list__actions">
-                          <button type="button" onClick={() => setEditingItem(item)}>
-                            수정
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setDeleteError('')
-                              setPendingDeleteId(item.id)
-                            }}
-                          >
-                            삭제
-                          </button>
-                        </div>
-                      )}
-                    </>
-                  )}
-                />
-              </div>
-            ))}
+                        {pendingDeleteId === item.id ? (
+                          <div className="admin-list__confirm">
+                            <span>삭제할까요?</span>
+                            <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
+                              {deleting ? '삭제 중…' : '삭제'}
+                            </button>
+                            <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
+                              취소
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="admin-list__actions">
+                            <button type="button" onClick={() => setEditingItem(item)}>
+                              수정
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDeleteError('')
+                                setPendingDeleteId(item.id)
+                              }}
+                            >
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  />
+                </>
+              )}
+            />
           </>
         )}
       </section>

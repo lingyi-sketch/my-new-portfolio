@@ -1,4 +1,6 @@
 import { useAssignments } from '../hooks/useAssignments'
+import { useMasonry } from '../hooks/useMasonry'
+import { orderWeeks } from '../lib/weekOrder'
 import AssignmentCard from '../components/AssignmentCard'
 import './Section.css'
 import './AssignmentsPage.css'
@@ -9,11 +11,15 @@ function groupByWeek(assignments) {
     if (!weeks.has(assignment.week)) weeks.set(assignment.week, [])
     weeks.get(assignment.week).push(assignment)
   }
-  return Array.from(weeks.entries())
+  return weeks
 }
 
 function AssignmentsPage() {
-  const { status, assignments } = useAssignments()
+  const { status, assignments, weekOrder } = useAssignments()
+
+  const groups = groupByWeek(assignments)
+  const orderedWeeks = orderWeeks([...groups.keys()], weekOrder)
+  const weeksRef = useMasonry(orderedWeeks.join(','))
 
   return (
     <div className="page-enter container section-page">
@@ -32,12 +38,12 @@ function AssignmentsPage() {
         </p>
       )}
       {status === 'success' && (
-        <div className="weeks">
-          {groupByWeek(assignments).map(([week, items]) => (
+        <div className="weeks" ref={weeksRef}>
+          {orderedWeeks.map((week) => (
             <section key={week} className="week-block">
               <h3 className="week-block__title">{week}주차</h3>
               <div className="week-block__grid">
-                {items.map((assignment) => (
+                {groups.get(week).map((assignment) => (
                   <AssignmentCard key={assignment.id} assignment={assignment} />
                 ))}
               </div>

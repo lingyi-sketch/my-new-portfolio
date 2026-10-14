@@ -1,3 +1,5 @@
+import './LinkCard.css'
+
 const VIDEO_EXTENSIONS = new Set(['mp4', 'mov', 'webm', 'm4v'])
 const DOC_EXTENSIONS = new Set(['doc', 'docx'])
 
@@ -62,6 +64,44 @@ export function FilePreview({ url, title, className = 'slot-card__preview' }) {
   }
 
   return null
+}
+
+export function parseHttpUrl(value) {
+  try {
+    const parsed = new URL(value)
+    return /^https?:$/.test(parsed.protocol) ? parsed : null
+  } catch {
+    return null
+  }
+}
+
+export function LinkCard({ url }) {
+  const parsed = parseHttpUrl(url)
+  if (!parsed) return null
+
+  const path = `${parsed.pathname}${parsed.search}`.replace(/^\/$/, '')
+
+  return (
+    <a className="link-card" href={url} target="_blank" rel="noreferrer">
+      <span className="link-card__host">{parsed.hostname.replace(/^www\./, '')}</span>
+      {path && <span className="link-card__path">{path}</span>}
+      <span className="link-card__open">새 탭에서 열기 ↗</span>
+    </a>
+  )
+}
+
+export function UrlPreview({ url, title, mediaClassName, previewClassName }) {
+  if (!parseHttpUrl(url)) return null
+
+  if (canEmbed(url)) {
+    return (
+      <div className={mediaClassName}>
+        <LinkPreview url={url} title={title} className={previewClassName} />
+      </div>
+    )
+  }
+
+  return <LinkCard url={url} />
 }
 
 export function LinkPreview({ url, title, className = 'slot-card__preview' }) {
