@@ -55,34 +55,33 @@ function Profile() {
       <p className="quote profile-page__quote">{content.subtitle}</p>
 
       <div className="profile-page__grid">
-        <div className="profile-page__left">
-          <div className="profile-page__text">
-            {content.intro && <p className="profile-page__intro">{content.intro}</p>}
-            {content.bio && <p className="profile-page__bio">{content.bio}</p>}
-          </div>
-          {contacts.length > 0 && (
-            <div className="profile-page__contacts">
-              {contacts.map((contact, i) => (
-                <Contact key={`${contact.value}-${i}`} contact={contact} />
-              ))}
-            </div>
-          )}
+        <div className="profile-page__text">
+          {content.intro && <p className="profile-page__intro">{content.intro}</p>}
+          {content.bio && <p className="profile-page__bio">{content.bio}</p>}
         </div>
 
-        <div className="profile-page__right">
-          {content.aphorism && <p className="profile-page__aphorism">{content.aphorism}</p>}
+        {photos.length > 0 && (
+          <div className="profile-page__photos">
+            {photos.map((photo) => (
+              <div key={photo.id} className="profile-page__photo">
+                <SmartImage src={photo.image_url} alt={content.name} label="" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="profile-page__bottom">
+          <div className="profile-page__contacts">
+            {contacts.map((contact, i) => (
+              <Contact key={`${contact.value}-${i}`} contact={contact} />
+            ))}
+          </div>
+
+          <div className="profile-page__right">
+            {content.aphorism && <p className="profile-page__aphorism">{content.aphorism}</p>}
+          </div>
         </div>
       </div>
-
-      {photos.length > 0 && (
-        <div className="profile-page__photos">
-          {photos.map((photo) => (
-            <div key={photo.id} className="profile-page__photo">
-              <SmartImage src={photo.image_url} alt={content.name} label="" />
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
