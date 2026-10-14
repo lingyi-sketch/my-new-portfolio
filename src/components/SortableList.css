@@ -1,0 +1,28 @@
+.drag-handle {
+  flex-shrink: 0;
+  padding: 0.3rem 0.35rem;
+  background: transparent;
+  border: 0;
+  color: var(--color-text-soft);
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: -0.2em;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-handle:focus-visible {
+  outline: 1px solid var(--color-key);
+}
+
+.sortable-item--dragging {
+  position: relative;
+  z-index: 5;
+  opacity: 0.85;
+  box-shadow: 0 6px 18px rgba(74, 65, 60, 0.18);
+}

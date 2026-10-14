@@ -1,14 +1,19 @@
 import { supabase } from './supabaseClient'
 import { deleteMediaFile } from './storage'
+import { edgeSortOrder } from './ordering'
 
-const COLUMNS = 'id, category, title, description, image_url, video_url, created_at'
+const COLUMNS = 'id, category, title, description, image_url, video_url, created_at, sort_order'
 
 export async function fetchProjects(category) {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
-  let query = supabase.from('projects').select(COLUMNS).order('created_at', { ascending: false })
+  let query = supabase
+    .from('projects')
+    .select(COLUMNS)
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: false })
   if (category) {
     query = query.eq('category', category)
   }
@@ -27,9 +32,11 @@ export async function createProject({ category, title, description, image_url, v
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
+  const sort_order = await edgeSortOrder('projects', { lowest: true })
+
   const { data, error } = await supabase
     .from('projects')
-    .insert({ category, title, description, image_url, video_url })
+    .insert({ category, title, description, image_url, video_url, sort_order })
     .select(COLUMNS)
     .single()
 

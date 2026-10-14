@@ -7,8 +7,10 @@ import {
   deleteProfilePhoto,
 } from '../lib/profile'
 import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
+import { saveOrder } from '../lib/ordering'
 import { profile as defaultProfile } from '../data/works'
 import SmartImage from './SmartImage'
+import SortableList from './SortableList'
 import './AdminProjectForm.css'
 
 const TEXT_FIELDS = [
@@ -27,14 +29,18 @@ function ProfileTextForm({ initial, onSaved }) {
     bio: initial.bio ?? '',
     aphorism: initial.aphorism ?? '',
   })
-  const [contacts, setContacts] = useState(
-    (initial.contacts ?? []).map((contact) => ({ label: contact.label ?? '', value: contact.value ?? '' })),
+  const [contacts, setContacts] = useState(() =>
+    (initial.contacts ?? []).map((contact) => ({
+      id: crypto.randomUUID(),
+      label: contact.label ?? '',
+      value: contact.value ?? '',
+    })),
   )
   const [message, setMessage] = useState({ type: '', text: '' })
   const [saving, setSaving] = useState(false)
 
-  function updateContact(index, key, value) {
-    setContacts((prev) => prev.map((contact, i) => (i === index ? { ...contact, [key]: value } : contact)))
+  function updateContact(id, key, value) {
+    setContacts((prev) => prev.map((contact) => (contact.id === id ? { ...contact, [key]: value } : contact)))
   }
 
   async function handleSubmit(e) {
@@ -44,7 +50,9 @@ function ProfileTextForm({ initial, onSaved }) {
     try {
       const saved = await saveProfile({
         ...form,
-        contacts: contacts.filter((contact) => contact.value.trim()),
+        contacts: contacts
+          .filter((contact) => contact.value.trim())
+          .map(({ label, value }) => ({ label, value })),
       })
       setMessage({ type: 'ok', text: '저장했어요. 프로필 페이지에 바로 반영돼요.' })
       onSaved?.(saved)
@@ -72,34 +80,43 @@ function ProfileTextForm({ initial, onSaved }) {
       ))}
 
       <div className="admin-form__field">
-        <span>연락처 (이메일 · 전화 · SNS 주소 등)</span>
-        {contacts.map((contact, index) => (
-          <div key={index} className="admin-contact-row">
-            <input
-              type="text"
-              placeholder="이름 (선택)"
-              value={contact.label}
-              onChange={(e) => updateContact(index, 'label', e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="내용 (이메일, 전화번호, 링크)"
-              value={contact.value}
-              onChange={(e) => updateContact(index, 'value', e.target.value)}
-            />
-            <button
-              type="button"
-              className="admin-form__cancel"
-              onClick={() => setContacts((prev) => prev.filter((_, i) => i !== index))}
-            >
-              삭제
-            </button>
-          </div>
-        ))}
+        <span>연락처 (이메일 · 전화 · SNS 주소 등) — ⋮⋮ 를 끌어 순서를 바꾼 뒤 '프로필 저장'을 눌러요</span>
+        <SortableList
+          items={contacts}
+          onReorder={setContacts}
+          className="admin-contact-list"
+          itemClassName="admin-contact-row"
+          renderItem={(contact, handle) => (
+            <>
+              {handle}
+              <input
+                type="text"
+                placeholder="이름 (선택)"
+                value={contact.label}
+                onChange={(e) => updateContact(contact.id, 'label', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="내용 (이메일, 전화번호, 링크)"
+                value={contact.value}
+                onChange={(e) => updateContact(contact.id, 'value', e.target.value)}
+              />
+              <button
+                type="button"
+                className="admin-form__cancel"
+                onClick={() => setContacts((prev) => prev.filter((item) => item.id !== contact.id))}
+              >
+                삭제
+              </button>
+            </>
+          )}
+        />
         <button
           type="button"
           className="admin-form__cancel admin-form__add"
-          onClick={() => setContacts((prev) => [...prev, { label: '', value: '' }])}
+          onClick={() =>
+            setContacts((prev) => [...prev, { id: crypto.randomUUID(), label: '', value: '' }])
+          }
         >
           + 연락처 추가
         </button>
@@ -167,6 +184,18 @@ function ProfilePhotos() {
     setUploading(false)
   }
 
+  async function reorder(next) {
+    const previous = photos
+    setPhotos(next)
+    setError('')
+    try {
+      await saveOrder('site_profile_photos', next.map((photo) => photo.id))
+    } catch {
+      setPhotos(previous)
+      setError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+    }
+  }
+
   async function confirmDelete(photo) {
     setDeleting(true)
     setError('')
@@ -206,30 +235,43 @@ function ProfilePhotos() {
       {status === 'error' && <p className="status-message status-message--error">사진 목록을 불러오지 못했어요.</p>}
       {status === 'ready' && photos.length === 0 && <p className="status-message">등록된 사진이 없어요.</p>}
       {status === 'ready' && photos.length > 0 && (
-        <ul className="admin-photo-grid">
-          {photos.map((photo) => (
-            <li key={photo.id} className="admin-photo-grid__item">
-              <div className="admin-photo-grid__thumb">
-                <SmartImage src={photo.image_url} alt="프로필 사진" label="" hoverEffect={false} />
-              </div>
-              {pendingDeleteId === photo.id ? (
-                <div className="admin-list__confirm">
-                  <span>삭제할까요?</span>
-                  <button type="button" onClick={() => confirmDelete(photo)} disabled={deleting}>
-                    {deleting ? '삭제 중…' : '삭제'}
-                  </button>
-                  <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                    취소
-                  </button>
+        <>
+          <p className="admin-hint">사진 위의 ⋮⋮ 를 끌어서 순서를 바꾸면 바로 저장돼요.</p>
+          <SortableList
+            items={photos}
+            onReorder={reorder}
+            grid
+            className="admin-photo-grid"
+            itemClassName="admin-photo-grid__item"
+            renderItem={(photo, handle) => (
+              <>
+                <div className="admin-photo-grid__bar">{handle}</div>
+                <div className="admin-photo-grid__thumb">
+                  <SmartImage src={photo.image_url} alt="프로필 사진" label="" hoverEffect={false} color />
                 </div>
-              ) : (
-                <button type="button" className="admin-photo-grid__delete" onClick={() => setPendingDeleteId(photo.id)}>
-                  삭제
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
+                {pendingDeleteId === photo.id ? (
+                  <div className="admin-list__confirm">
+                    <span>삭제할까요?</span>
+                    <button type="button" onClick={() => confirmDelete(photo)} disabled={deleting}>
+                      {deleting ? '삭제 중…' : '삭제'}
+                    </button>
+                    <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="admin-photo-grid__delete"
+                    onClick={() => setPendingDeleteId(photo.id)}
+                  >
+                    삭제
+                  </button>
+                )}
+              </>
+            )}
+          />
+        </>
       )}
     </>
   )

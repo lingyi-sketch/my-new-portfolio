@@ -8,7 +8,10 @@ import AdminProjectForm from '../components/AdminProjectForm'
 import AdminGameForm from '../components/AdminGameForm'
 import AdminProfileSection from '../components/AdminProfileSection'
 import AdminAssignmentSection from '../components/AdminAssignmentSection'
+import AdminMenuSection from '../components/AdminMenuSection'
+import SortableList from '../components/SortableList'
 import SmartImage from '../components/SmartImage'
+import { saveOrder } from '../lib/ordering'
 import './Admin.css'
 
 const TABS = [
@@ -17,6 +20,7 @@ const TABS = [
   { key: 'script', label: 'Script' },
   { key: 'game', label: 'Game' },
   { key: 'assignments', label: '과제' },
+  { key: 'menu', label: '메뉴 순서' },
 ]
 
 function AdminCategorySection({ category, label }) {
@@ -43,6 +47,18 @@ function AdminCategorySection({ category, label }) {
     setEditingItem(null)
     setPendingDeleteId(null)
   }, [category])
+
+  async function reorder(next) {
+    const previous = items
+    setItems(next)
+    setDeleteError('')
+    try {
+      await saveOrder('projects', next.map((item) => item.id))
+    } catch {
+      setItems(previous)
+      setDeleteError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+    }
+  }
 
   async function confirmDelete(item) {
     setDeleting(true)
@@ -85,47 +101,53 @@ function AdminCategorySection({ category, label }) {
           <p className="status-message">등록된 {label}이 없어요.</p>
         )}
         {listStatus === 'ready' && items.length > 0 && (
-          <ul className="admin-list">
-            {items.map((item) => (
-              <li key={item.id} className="admin-list__item">
-                <div className="admin-list__thumb">
-                  <SmartImage src={item.image_url} alt={item.title} label="" hoverEffect={false} />
-                </div>
-                <div className="admin-list__info">
-                  <span className="admin-list__title">{item.title}</span>
-                  <p className="admin-list__preview">
-                    {item.description || '설명이 없어요.'}
-                  </p>
-                </div>
-                {pendingDeleteId === item.id ? (
-                  <div className="admin-list__confirm">
-                    <span>삭제할까요?</span>
-                    <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
-                      {deleting ? '삭제 중…' : '삭제'}
-                    </button>
-                    <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                      취소
-                    </button>
+          <>
+            <p className="admin-hint">왼쪽 ⋮⋮ 를 끌어서 순서를 바꾸면 바로 저장돼요.</p>
+            <SortableList
+              items={items}
+              onReorder={reorder}
+              className="admin-list"
+              itemClassName="admin-list__item"
+              renderItem={(item, handle) => (
+                <>
+                  {handle}
+                  <div className="admin-list__thumb">
+                    <SmartImage src={item.image_url} alt={item.title} label="" hoverEffect={false} />
                   </div>
-                ) : (
-                  <div className="admin-list__actions">
-                    <button type="button" onClick={() => setEditingItem(item)}>
-                      수정
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDeleteError('')
-                        setPendingDeleteId(item.id)
-                      }}
-                    >
-                      삭제
-                    </button>
+                  <div className="admin-list__info">
+                    <span className="admin-list__title">{item.title}</span>
+                    <p className="admin-list__preview">{item.description || '설명이 없어요.'}</p>
                   </div>
-                )}
-              </li>
-            ))}
-          </ul>
+                  {pendingDeleteId === item.id ? (
+                    <div className="admin-list__confirm">
+                      <span>삭제할까요?</span>
+                      <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
+                        {deleting ? '삭제 중…' : '삭제'}
+                      </button>
+                      <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
+                        취소
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="admin-list__actions">
+                      <button type="button" onClick={() => setEditingItem(item)}>
+                        수정
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDeleteError('')
+                          setPendingDeleteId(item.id)
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            />
+          </>
         )}
       </section>
     </>
@@ -154,6 +176,18 @@ function AdminGameSection() {
   useEffect(() => {
     load()
   }, [])
+
+  async function reorder(next) {
+    const previous = games
+    setGames(next)
+    setDeleteError('')
+    try {
+      await saveOrder('games', next.map((game) => game.id))
+    } catch {
+      setGames(previous)
+      setDeleteError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+    }
+  }
 
   async function confirmDelete(game) {
     setDeleting(true)
@@ -195,42 +229,50 @@ function AdminGameSection() {
           <p className="status-message">등록된 게임이 없어요.</p>
         )}
         {listStatus === 'ready' && games.length > 0 && (
-          <ul className="admin-list">
-            {games.map((game) => (
-              <li key={game.id} className="admin-list__item">
-                <div className="admin-list__info">
-                  <span className="admin-list__title">{game.title}</span>
-                  <p className="admin-list__preview">{game.synopsis || '개요가 없어요.'}</p>
-                </div>
-                {pendingDeleteId === game.id ? (
-                  <div className="admin-list__confirm">
-                    <span>삭제할까요?</span>
-                    <button type="button" onClick={() => confirmDelete(game)} disabled={deleting}>
-                      {deleting ? '삭제 중…' : '삭제'}
-                    </button>
-                    <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                      취소
-                    </button>
+          <>
+            <p className="admin-hint">왼쪽 ⋮⋮ 를 끌어서 순서를 바꾸면 바로 저장돼요.</p>
+            <SortableList
+              items={games}
+              onReorder={reorder}
+              className="admin-list"
+              itemClassName="admin-list__item"
+              renderItem={(game, handle) => (
+                <>
+                  {handle}
+                  <div className="admin-list__info">
+                    <span className="admin-list__title">{game.title}</span>
+                    <p className="admin-list__preview">{game.synopsis || '개요가 없어요.'}</p>
                   </div>
-                ) : (
-                  <div className="admin-list__actions">
-                    <button type="button" onClick={() => setEditingGame(game)}>
-                      수정
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDeleteError('')
-                        setPendingDeleteId(game.id)
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
+                  {pendingDeleteId === game.id ? (
+                    <div className="admin-list__confirm">
+                      <span>삭제할까요?</span>
+                      <button type="button" onClick={() => confirmDelete(game)} disabled={deleting}>
+                        {deleting ? '삭제 중…' : '삭제'}
+                      </button>
+                      <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
+                        취소
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="admin-list__actions">
+                      <button type="button" onClick={() => setEditingGame(game)}>
+                        수정
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDeleteError('')
+                          setPendingDeleteId(game.id)
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            />
+          </>
         )}
       </section>
     </>
@@ -304,6 +346,7 @@ function Admin() {
       {activeTab === 'script' && <AdminCategorySection category="script" label="Script" />}
       {activeTab === 'game' && <AdminGameSection />}
       {activeTab === 'assignments' && <AdminAssignmentSection />}
+      {activeTab === 'menu' && <AdminMenuSection />}
     </div>
   )
 }

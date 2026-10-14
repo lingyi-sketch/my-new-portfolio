@@ -1,8 +1,9 @@
 ﻿import { supabase } from './supabaseClient'
 import { deleteMediaFile } from './storage'
+import { edgeSortOrder } from './ordering'
 
 const PROFILE_COLUMNS = 'id, name, subtitle, intro, bio, aphorism, contacts'
-const PHOTO_COLUMNS = 'id, image_url, created_at'
+const PHOTO_COLUMNS = 'id, image_url, created_at, sort_order'
 
 function requireClient() {
   if (!supabase) {
@@ -29,6 +30,7 @@ export async function fetchProfilePhotos() {
   const { data, error } = await supabase
     .from('site_profile_photos')
     .select(PHOTO_COLUMNS)
+    .order('sort_order', { ascending: true })
     .order('created_at', { ascending: true })
 
   if (error) throw error
@@ -60,9 +62,11 @@ export async function saveProfile({ name, subtitle, intro, bio, aphorism, contac
 export async function addProfilePhoto(imageUrl) {
   requireClient()
 
+  const sort_order = await edgeSortOrder('site_profile_photos', { lowest: false })
+
   const { data, error } = await supabase
     .from('site_profile_photos')
-    .insert({ image_url: imageUrl })
+    .insert({ image_url: imageUrl, sort_order })
     .select(PHOTO_COLUMNS)
     .single()
 

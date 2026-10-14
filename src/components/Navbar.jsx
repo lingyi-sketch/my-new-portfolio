@@ -1,8 +1,12 @@
 import { NavLink } from 'react-router-dom'
 import { categories } from '../data/works'
+import { useNavOrder } from '../hooks/useNavOrder'
+import { sortByOrder } from '../lib/navOrder'
 import './Navbar.css'
 
 function Navbar() {
+  const items = sortByOrder(categories, useNavOrder())
+
   return (
     <header className="navbar">
       <div className="container navbar__inner">
@@ -11,7 +15,7 @@ function Navbar() {
         </NavLink>
         <nav className="navbar__nav">
           <ul>
-            {categories.map((cat) => (
+            {items.map((cat) => (
               <li key={cat.key}>
                 <NavLink
                   to={cat.path}

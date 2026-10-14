@@ -1,7 +1,8 @@
 import { supabase } from './supabaseClient'
 import { deleteMediaFile } from './storage'
+import { edgeSortOrder } from './ordering'
 
-const COLUMNS = 'id, title, synopsis, video_url, video_description, link_url, created_at'
+const COLUMNS = 'id, title, synopsis, video_url, video_description, link_url, created_at, sort_order'
 
 export async function fetchGames() {
   if (!supabase) {
@@ -11,6 +12,7 @@ export async function fetchGames() {
   const { data, error } = await supabase
     .from('games')
     .select(COLUMNS)
+    .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -25,9 +27,11 @@ export async function createGame({ title, synopsis, video_url, video_description
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
   }
 
+  const sort_order = await edgeSortOrder('games', { lowest: true })
+
   const { data, error } = await supabase
     .from('games')
-    .insert({ title, synopsis, video_url, video_description, link_url })
+    .insert({ title, synopsis, video_url, video_description, link_url, sort_order })
     .select(COLUMNS)
     .single()
 

@@ -1,7 +1,9 @@
 ﻿import { supabase } from './supabaseClient'
 import { deleteMediaFile } from './storage'
+import { edgeSortOrder } from './ordering'
 
-const COLUMNS = 'id, week, kind, title, description, content, image_url, file_url, link_url, created_at'
+const COLUMNS =
+  'id, week, kind, title, description, content, image_url, file_url, link_url, created_at, sort_order'
 
 export const ASSIGNMENT_KINDS = [
   { key: 'prompt', label: '프롬프트', formLabel: '프롬프트 (md 파일)' },
@@ -24,6 +26,7 @@ export async function fetchAssignments() {
     .from('site_assignments')
     .select(COLUMNS)
     .order('week', { ascending: true })
+    .order('sort_order', { ascending: true })
     .order('created_at', { ascending: true })
 
   if (error) throw error
@@ -33,7 +36,13 @@ export async function fetchAssignments() {
 export async function createAssignment(values) {
   requireClient()
 
-  const { data, error } = await supabase.from('site_assignments').insert(values).select(COLUMNS).single()
+  const sort_order = await edgeSortOrder('site_assignments', { lowest: false })
+
+  const { data, error } = await supabase
+    .from('site_assignments')
+    .insert({ ...values, sort_order })
+    .select(COLUMNS)
+    .single()
 
   if (error) throw error
   return data

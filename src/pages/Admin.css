@@ -150,6 +150,30 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  background: var(--color-bg);
+}
+
+.admin-photo-grid__bar {
+  display: flex;
+  justify-content: center;
+  border: 1px dashed var(--color-line);
+}
+
+.admin-week-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.admin-week-group__title {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-key);
+}
+
+.admin-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
 }
 
 .admin-photo-grid__thumb {

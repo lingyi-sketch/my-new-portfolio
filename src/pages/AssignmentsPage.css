@@ -1,25 +1,47 @@
 .weeks {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(2.5rem, 6vw, 4rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(2rem, 5vw, 4rem);
+  row-gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: start;
 }
 
 .week-block {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   padding-top: 1.25rem;
   border-top: var(--border);
+  min-width: 0;
 }
 
 .week-block__title {
-  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-size: clamp(1.3rem, 2.6vw, 1.6rem);
   font-style: italic;
 }
 
 .week-block__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
-  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 22rem));
+  justify-content: start;
+  gap: 1.25rem;
   align-items: start;
+}
+
+.week-block .assignment-card__title {
+  font-size: 1rem;
+}
+
+.week-block .assignment-card__markdown {
+  max-height: 8rem;
+}
+
+.week-block .assignment-card__markdown--open {
+  max-height: none;
+}
+
+@media (max-width: 860px) {
+  .weeks {
+    grid-template-columns: 1fr;
+  }
 }

@@ -35,6 +35,37 @@
   outline: 1px solid var(--color-key);
 }
 
+.admin-form--wide {
+  max-width: 40rem;
+}
+
+.admin-form__field--week {
+  max-width: 8rem;
+}
+
+.admin-assignment-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+}
+
+.admin-assignment-row__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-assignment-row__title {
+  font-size: 0.85rem;
+  color: var(--color-key);
+}
+
 .admin-form__row {
   display: grid;
   grid-template-columns: 7rem 1fr;
@@ -84,11 +115,18 @@
   padding: 0.4rem 0.9rem;
 }
 
+.admin-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .admin-contact-row {
   display: grid;
-  grid-template-columns: 7rem 1fr auto;
+  grid-template-columns: auto 7rem 1fr auto;
   gap: 0.5rem;
   align-items: center;
+  background: var(--color-bg-soft);
 }
 
 .admin-contact-row .admin-form__cancel {
