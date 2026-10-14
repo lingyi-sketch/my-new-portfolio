@@ -64,7 +64,7 @@ function Profile() {
           <div className="profile-page__photos">
             {photos.map((photo) => (
               <div key={photo.id} className="profile-page__photo">
-                <SmartImage src={photo.image_url} alt={content.name} label="" />
+                <SmartImage src={photo.image_url} alt={content.name} label="" hoverEffect={false} color />
               </div>
             ))}
           </div>

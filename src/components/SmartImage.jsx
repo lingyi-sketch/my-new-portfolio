@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './SmartImage.css'
 
-function SmartImage({ src, alt, label, hoverEffect = true }) {
+function SmartImage({ src, alt, label, hoverEffect = true, color = false }) {
   const [broken, setBroken] = useState(false)
 
   if (!src || broken) {
@@ -14,7 +14,7 @@ function SmartImage({ src, alt, label, hoverEffect = true }) {
   }
 
   return (
-    <div className={`smart-image${hoverEffect ? ' smart-image--hover' : ''}`}>
+    <div className={`smart-image${hoverEffect ? ' smart-image--hover' : ''}${color ? ' smart-image--color' : ''}`}>
       <img src={src} alt={alt} onError={() => setBroken(true)} loading="lazy" />
     </div>
   )

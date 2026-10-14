@@ -17,6 +17,11 @@
     filter 0.7s ease;
 }
 
+.smart-image--color img {
+  filter: none;
+  transition: none;
+}
+
 .smart-image--hover:hover img {
   transform: scale(1.06);
   filter: grayscale(0%);
