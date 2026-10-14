@@ -1,4 +1,3 @@
-import SmartImage from './SmartImage'
 import './GameBlock.css'
 
 function GameBlock({ game }) {
@@ -20,7 +19,18 @@ function GameBlock({ game }) {
         <div className="game-panel">
           <span className="game-panel__label">게임 영상</span>
           <div className="game-panel__frame">
-            <SmartImage src={game.videoImage} alt={`${game.title} 영상`} label="영상 준비 중" />
+            {game.videoImage ? (
+              <video
+                className="game-panel__video"
+                src={game.videoImage}
+                controls
+                muted
+                playsInline
+                preload="metadata"
+              />
+            ) : (
+              <div className="game-panel__placeholder">영상 준비 중</div>
+            )}
           </div>
           <p className="game-panel__text">
             {game.videoDescription || '아직 영상 소개가 없어요.'}

@@ -2,17 +2,47 @@ import SmartImage from './SmartImage'
 import './SlotCard.css'
 
 const VIDEO_EXTENSIONS = new Set(['mp4', 'mov', 'webm', 'm4v'])
+const DOC_EXTENSIONS = new Set(['doc', 'docx'])
 
 function fileExtension(url) {
   return url?.split('.').pop()?.split(/[?#]/)[0]?.toLowerCase()
 }
 
-function fileTypeLabel(url) {
+function FilePreview({ url, title }) {
   const extension = fileExtension(url)
-  if (extension === 'pdf') return 'PDF'
-  if (extension === 'doc' || extension === 'docx') return 'DOC'
-  if (VIDEO_EXTENSIONS.has(extension)) return 'VIDEO'
-  return 'FILE'
+
+  if (VIDEO_EXTENSIONS.has(extension)) {
+    return (
+      <video
+        className="slot-card__preview"
+        src={url}
+        controls
+        muted
+        playsInline
+        preload="metadata"
+      />
+    )
+  }
+
+  if (extension === 'pdf') {
+    return <iframe className="slot-card__preview" src={url} title={title} />
+  }
+
+  if (DOC_EXTENSIONS.has(extension)) {
+    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`
+    return <iframe className="slot-card__preview" src={viewerUrl} title={title} />
+  }
+
+  return (
+    <a className="slot-card__file-icon" href={url} target="_blank" rel="noreferrer" aria-label="파일 보기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
+        <path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z" />
+        <path d="M14 2.5V7a1 1 0 0 0 1 1h4.5" />
+        <path d="M8 13h8M8 16.5h8M8 9.5h3" />
+      </svg>
+      <span className="slot-card__file-type">FILE</span>
+    </a>
+  )
 }
 
 function SlotCard({ slot }) {
@@ -23,27 +53,7 @@ function SlotCard({ slot }) {
     <div className="slot-card">
       <div className="slot-card__frame">
         {!hasImage && hasFile ? (
-          <a
-            className="slot-card__file-icon"
-            href={slot.fileUrl}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={slot.fileLabel || '파일 보기'}
-          >
-            {VIDEO_EXTENSIONS.has(fileExtension(slot.fileUrl)) ? (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
-                <rect x="2.5" y="4.5" width="19" height="15" rx="1.5" />
-                <path d="M10 9.2v5.6l5-2.8-5-2.8Z" fill="currentColor" stroke="none" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
-                <path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z" />
-                <path d="M14 2.5V7a1 1 0 0 0 1 1h4.5" />
-                <path d="M8 13h8M8 16.5h8M8 9.5h3" />
-              </svg>
-            )}
-            <span className="slot-card__file-type">{fileTypeLabel(slot.fileUrl)}</span>
-          </a>
+          <FilePreview url={slot.fileUrl} title={slot.title} />
         ) : (
           <SmartImage src={slot.image} alt={slot.title} label={slot.title} />
         )}

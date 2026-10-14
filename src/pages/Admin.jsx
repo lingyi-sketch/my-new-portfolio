@@ -19,6 +19,9 @@ function AdminCategorySection({ category, label }) {
   const [items, setItems] = useState([])
   const [listStatus, setListStatus] = useState('loading')
   const [editingItem, setEditingItem] = useState(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   async function load() {
     setListStatus('loading')
@@ -34,15 +37,20 @@ function AdminCategorySection({ category, label }) {
   useEffect(() => {
     load()
     setEditingItem(null)
+    setPendingDeleteId(null)
   }, [category])
 
-  async function handleDelete(item) {
-    if (!window.confirm(`"${item.title}"을(를) 삭제할까요? 업로드된 파일도 함께 삭제돼요.`)) return
+  async function confirmDelete(item) {
+    setDeleting(true)
+    setDeleteError('')
     try {
       await deleteProject(item)
+      setPendingDeleteId(null)
       load()
     } catch {
-      window.alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -64,6 +72,7 @@ function AdminCategorySection({ category, label }) {
 
       <section className="admin-page__section">
         <h2 className="admin-page__subtitle">등록된 {label}</h2>
+        {deleteError && <p className="status-message status-message--error">{deleteError}</p>}
         {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
         {listStatus === 'error' && (
           <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
@@ -84,14 +93,32 @@ function AdminCategorySection({ category, label }) {
                     {item.description || '설명이 없어요.'}
                   </p>
                 </div>
-                <div className="admin-list__actions">
-                  <button type="button" onClick={() => setEditingItem(item)}>
-                    수정
-                  </button>
-                  <button type="button" onClick={() => handleDelete(item)}>
-                    삭제
-                  </button>
-                </div>
+                {pendingDeleteId === item.id ? (
+                  <div className="admin-list__confirm">
+                    <span>삭제할까요?</span>
+                    <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
+                      {deleting ? '삭제 중…' : '삭제'}
+                    </button>
+                    <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  <div className="admin-list__actions">
+                    <button type="button" onClick={() => setEditingItem(item)}>
+                      수정
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDeleteError('')
+                        setPendingDeleteId(item.id)
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -105,6 +132,9 @@ function AdminGameSection() {
   const [games, setGames] = useState([])
   const [listStatus, setListStatus] = useState('loading')
   const [editingGame, setEditingGame] = useState(null)
+  const [pendingDeleteId, setPendingDeleteId] = useState(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   async function load() {
     setListStatus('loading')
@@ -121,13 +151,17 @@ function AdminGameSection() {
     load()
   }, [])
 
-  async function handleDelete(game) {
-    if (!window.confirm(`"${game.title}"을(를) 삭제할까요? 업로드된 영상도 함께 삭제돼요.`)) return
+  async function confirmDelete(game) {
+    setDeleting(true)
+    setDeleteError('')
     try {
       await deleteGame(game)
+      setPendingDeleteId(null)
       load()
     } catch {
-      window.alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -148,6 +182,7 @@ function AdminGameSection() {
 
       <section className="admin-page__section">
         <h2 className="admin-page__subtitle">등록된 게임</h2>
+        {deleteError && <p className="status-message status-message--error">{deleteError}</p>}
         {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
         {listStatus === 'error' && (
           <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
@@ -163,14 +198,32 @@ function AdminGameSection() {
                   <span className="admin-list__title">{game.title}</span>
                   <p className="admin-list__preview">{game.synopsis || '개요가 없어요.'}</p>
                 </div>
-                <div className="admin-list__actions">
-                  <button type="button" onClick={() => setEditingGame(game)}>
-                    수정
-                  </button>
-                  <button type="button" onClick={() => handleDelete(game)}>
-                    삭제
-                  </button>
-                </div>
+                {pendingDeleteId === game.id ? (
+                  <div className="admin-list__confirm">
+                    <span>삭제할까요?</span>
+                    <button type="button" onClick={() => confirmDelete(game)} disabled={deleting}>
+                      {deleting ? '삭제 중…' : '삭제'}
+                    </button>
+                    <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
+                      취소
+                    </button>
+                  </div>
+                ) : (
+                  <div className="admin-list__actions">
+                    <button type="button" onClick={() => setEditingGame(game)}>
+                      수정
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDeleteError('')
+                        setPendingDeleteId(game.id)
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
