@@ -31,6 +31,23 @@ function resolveContentType(file) {
   return 'application/octet-stream'
 }
 
+function describeUploadError(error, contentType, size) {
+  const raw = `${error.message ?? error} (${error.statusCode ?? error.status ?? '?'})`
+  const text = raw.toLowerCase()
+  const mb = (size / 1024 / 1024).toFixed(1)
+  let hint = ''
+  if (text.includes('mime') || text.includes('not supported') || text.includes('415')) {
+    hint = `存储桶不允许 ${contentType} 格式。请到 Supabase → Storage → portfolio-media → Edit bucket → Allowed MIME types 添加该类型(视频需要 video/mp4)。`
+  } else if (text.includes('maximum allowed size') || text.includes('too large') || text.includes('413')) {
+    hint = `文件 ${mb}MB 超过存储桶/全局大小限制。请检查 Storage → Settings 的 Global file size limit 以及该存储桶的 File size limit。`
+  } else if (text.includes('row-level security') || text.includes('unauthorized') || text.includes('403')) {
+    hint = '没有上传权限。请确认已用管理员账号登录,并且 Storage 的上传策略已执行。'
+  } else if (text.includes('failed to fetch') || text.includes('network')) {
+    hint = `网络中断,文件(${mb}MB)可能太大或网络不稳定,请重试。`
+  }
+  return `上传失败:${hint || '未知原因'} [原始信息: ${raw}]`
+}
+
 export async function uploadMediaFile(folder, file) {
   if (!supabase) {
     throw new Error('Supabase 연결 정보가 설정되지 않았습니다.')
@@ -68,8 +85,10 @@ export async function uploadMediaFile(folder, file) {
     })
 
   if (uploadError) {
+    setUploadStatus({ phase: 'error', message: describeUploadError(uploadError, contentType, file.size) })
     throw uploadError
   }
+  setUploadStatus({ phase: 'idle' })
 
   const { data } = supabase.storage.from(storageBucket).getPublicUrl(path)
   return data.publicUrl
