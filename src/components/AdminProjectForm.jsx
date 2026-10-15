@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createProject, updateProject } from '../lib/projects'
-import { uploadMediaFile } from '../lib/storage'
+import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
+import { UrlPreview, parseHttpUrl } from './FilePreview'
 import { useLanguage } from '../i18n/LanguageContext'
 import './AdminProjectForm.css'
 
@@ -30,6 +31,7 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
   )
   const [imageFile, setImageFile] = useState(null)
   const [videoFile, setVideoFile] = useState(null)
+  const [videoUrl, setVideoUrl] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -49,8 +51,17 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
       if (imageFile) {
         image_url = await uploadMediaFile('images', imageFile)
       }
+      const typedUrl = videoUrl.trim()
+      if (typedUrl && !parseHttpUrl(typedUrl)) {
+        setError(t('admin.project.badUrl'))
+        setSubmitting(false)
+        return
+      }
+      const previousVideo = project?.video_url ?? null
       if (videoFile) {
         video_url = await uploadMediaFile(secondFile.folder, videoFile)
+      } else if (typedUrl) {
+        video_url = typedUrl
       }
 
       const payload = {
@@ -67,11 +78,15 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
         await createProject(payload)
       }
 
+      // A replaced stored file would otherwise stay in the bucket and eat quota.
+      if (previousVideo && video_url !== previousVideo) await deleteMediaFile(previousVideo)
+
       if (!isEditing) {
         setForm(emptyForm)
         setImageFile(null)
         setVideoFile(null)
       }
+      setVideoUrl('')
       onSaved?.()
     } catch {
       // 입력값은 그대로 유지하고 에러만 안내합니다.
@@ -121,6 +136,21 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
           onChange={(e) => setVideoFile(e.target.files?.[0] ?? null)}
         />
       </label>
+
+      {effectiveCategory === 'video' && (
+        <>
+          <label className="admin-form__field">
+            <span>{t('admin.project.videoUrl')}</span>
+            <input
+              type="url"
+              placeholder="https://"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+            />
+          </label>
+          <UrlPreview url={videoUrl} title={form.title} mediaClassName="url-preview-box" previewClassName="" />
+        </>
+      )}
 
       {error && <p className="admin-form__error">{error}</p>}
 

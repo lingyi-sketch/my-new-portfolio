@@ -137,6 +137,12 @@ export const messages = {
   'admin.project.createFailed': m('作品登记失败。您输入的内容已保留，请重试。', '작품 등록에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.', 'Could not add the work. Your input is kept, please try again.'),
   'admin.project.imageFile': m('图片文件', '이미지 파일', 'Image file'),
   'admin.project.videoFile': m('视频文件', '영상 파일', 'Video file'),
+  'admin.project.videoUrl': m(
+    '或填写视频链接（YouTube · Vimeo 等，不占用存储空间；同时选了文件时以文件为准）',
+    '또는 영상 링크 입력 (YouTube · Vimeo 등, 저장 용량을 쓰지 않아요. 파일을 함께 고르면 파일이 우선)',
+    'Or paste a video link (YouTube, Vimeo… uses no storage; a chosen file takes priority)',
+  ),
+  'admin.project.badUrl': m('链接格式不正确，请以 http:// 或 https:// 开头。', '링크 형식이 올바르지 않아요. http:// 또는 https://로 시작해야 해요.', 'Invalid link. It must start with http:// or https://.'),
   'admin.project.scriptFile': m('剧本文件（PDF · Word）', '대본 파일 (PDF · Word)', 'Script file (PDF · Word)'),
   'admin.gameForm.title': m('游戏标题', '게임 제목', 'Game title'),
   'admin.gameForm.synopsis': m('游戏概要', '게임 개요', 'Synopsis'),
