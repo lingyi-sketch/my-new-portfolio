@@ -17,6 +17,11 @@ export const messages = {
   'common.deleting': m('删除中…', '삭제 중…', 'Deleting…'),
   'common.confirmDelete': m('确定删除吗？', '삭제할까요?', 'Delete this?'),
   'common.saving': m('保存中…', '저장 중…', 'Saving…'),
+  'admin.compress.running': m(
+    '视频超过上传上限，正在压缩（请勿关闭页面）…',
+    '영상이 업로드 한도를 넘어 압축 중입니다 (창을 닫지 마세요)…',
+    'Video exceeds the upload limit, compressing (keep this page open)…',
+  ),
   'common.close': m('关闭 ✕', '닫기 ✕', 'Close ✕'),
   'common.closeAria': m('关闭', '닫기', 'Close'),
   'common.deleteFailed': m('删除失败。请稍后再试。', '삭제에 실패했어요. 잠시 후 다시 시도해 주세요.', 'Delete failed. Please try again later.'),

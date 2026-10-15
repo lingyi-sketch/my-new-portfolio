@@ -9,6 +9,7 @@ import AdminGameForm from '../components/AdminGameForm'
 import AdminProfileSection from '../components/AdminProfileSection'
 import AdminAssignmentSection from '../components/AdminAssignmentSection'
 import AdminMenuSection from '../components/AdminMenuSection'
+import UploadStatusBanner from '../components/UploadStatusBanner'
 import SortableList from '../components/SortableList'
 import SmartImage from '../components/SmartImage'
 import { saveOrder } from '../lib/ordering'
@@ -344,6 +345,8 @@ function Admin() {
           </button>
         ))}
       </div>
+
+      <UploadStatusBanner />
 
       {activeTab === 'profile' && <AdminProfileSection />}
       {activeTab === 'video' && <AdminCategorySection category="video" label={t('nav.video')} />}

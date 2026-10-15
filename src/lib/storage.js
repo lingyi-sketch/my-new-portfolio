@@ -1,4 +1,6 @@
 import { supabase, storageBucket } from './supabaseClient'
+import { compressVideo, isVideo } from './videoCompress'
+import { setUploadStatus } from './uploadStatus'
 
 const EXTENSION_MIME_TYPES = {
   pdf: 'application/pdf',
@@ -35,6 +37,19 @@ export async function uploadMediaFile(folder, file) {
   }
   if (!storageBucket) {
     throw new Error('스토리지 버킷 정보가 설정되지 않았습니다.')
+  }
+
+  if (isVideo(file)) {
+    try {
+      setUploadStatus({ phase: 'compressing', progress: 0, message: '' })
+      file = await compressVideo(file, {
+        onProgress: (progress) => setUploadStatus({ progress }),
+      })
+      setUploadStatus({ phase: 'idle' })
+    } catch (error) {
+      setUploadStatus({ phase: 'error', message: error.message || String(error) })
+      throw error
+    }
   }
 
   const path = buildPath(folder, file)
