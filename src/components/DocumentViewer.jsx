@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useLanguage } from '../i18n/LanguageContext'
 import { fileExtension } from './FilePreview'
 import './DocumentViewer.css'
 
@@ -106,6 +107,7 @@ function DocxText({ url, onStatus }) {
 }
 
 function DocumentViewer({ url, title, onClose }) {
+  const { t } = useLanguage()
   const extension = fileExtension(url)
   const kind = extension === 'pdf' ? 'pdf' : extension === 'docx' ? 'docx' : 'viewer'
   const [status, setStatus] = useState(kind === 'viewer' ? 'ready' : 'loading')
@@ -131,15 +133,15 @@ function DocumentViewer({ url, title, onClose }) {
       <div className="doc-viewer__panel" onClick={(event) => event.stopPropagation()}>
         <header className="doc-viewer__header">
           <span className="doc-viewer__title">{title}</span>
-          <button type="button" className="doc-viewer__close" onClick={onClose} aria-label="닫기">
-            닫기 ✕
+          <button type="button" className="doc-viewer__close" onClick={onClose} aria-label={t('common.closeAria')}>
+            {t('common.close')}
           </button>
         </header>
 
         <div className="doc-viewer__body" onContextMenu={(event) => event.preventDefault()}>
-          {status === 'loading' && <p className="doc-viewer__message">대본을 불러오는 중이에요…</p>}
+          {status === 'loading' && <p className="doc-viewer__message">{t('docviewer.loading')}</p>}
           {status === 'error' && (
-            <p className="doc-viewer__message doc-viewer__message--error">대본을 불러오지 못했어요.</p>
+            <p className="doc-viewer__message doc-viewer__message--error">{t('docviewer.error')}</p>
           )}
           {kind === 'pdf' && <PdfPages url={url} onStatus={setStatus} />}
           {kind === 'docx' && <DocxText url={url} onStatus={setStatus} />}

@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { createGame, updateGame } from '../lib/games'
 import { uploadMediaFile } from '../lib/storage'
+import { useLanguage } from '../i18n/LanguageContext'
 import './AdminProjectForm.css'
 
 const emptyForm = { title: '', synopsis: '', video_description: '', link_url: '' }
 
 function AdminGameForm({ game, onSaved, onCancel }) {
+  const { t } = useLanguage()
   const isEditing = Boolean(game)
   const [form, setForm] = useState(
     isEditing
@@ -57,11 +59,7 @@ function AdminGameForm({ game, onSaved, onCancel }) {
       }
       onSaved?.()
     } catch {
-      setError(
-        isEditing
-          ? '게임 수정에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.'
-          : '게임 등록에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.',
-      )
+      setError(t(isEditing ? 'admin.gameForm.editFailed' : 'admin.gameForm.createFailed'))
     } finally {
       setSubmitting(false)
     }
@@ -70,7 +68,7 @@ function AdminGameForm({ game, onSaved, onCancel }) {
   return (
     <form className="admin-form" onSubmit={handleSubmit}>
       <label className="admin-form__field">
-        <span>게임 제목</span>
+        <span>{t('admin.gameForm.title')}</span>
         <input
           type="text"
           value={form.title}
@@ -80,7 +78,7 @@ function AdminGameForm({ game, onSaved, onCancel }) {
       </label>
 
       <label className="admin-form__field">
-        <span>게임 개요</span>
+        <span>{t('admin.gameForm.synopsis')}</span>
         <textarea
           rows={3}
           value={form.synopsis}
@@ -89,12 +87,15 @@ function AdminGameForm({ game, onSaved, onCancel }) {
       </label>
 
       <label className="admin-form__field">
-        <span>게임 영상 파일 {isEditing && '(바꿀 때만 선택)'}</span>
+        <span>
+          {t('admin.gameForm.videoFile')}
+          {isEditing && t('common.replaceHint')}
+        </span>
         <input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files?.[0] ?? null)} />
       </label>
 
       <label className="admin-form__field">
-        <span>게임 영상 소개</span>
+        <span>{t('admin.gameForm.videoDesc')}</span>
         <textarea
           rows={3}
           value={form.video_description}
@@ -103,7 +104,7 @@ function AdminGameForm({ game, onSaved, onCancel }) {
       </label>
 
       <label className="admin-form__field">
-        <span>게임 링크</span>
+        <span>{t('admin.gameForm.link')}</span>
         <input
           type="url"
           placeholder="https://"
@@ -116,11 +117,11 @@ function AdminGameForm({ game, onSaved, onCancel }) {
 
       <div className="admin-form__actions">
         <button type="submit" disabled={submitting}>
-          {submitting ? '저장 중…' : isEditing ? '수정 저장' : '게임 등록'}
+          {submitting ? t('common.saving') : isEditing ? t('admin.project.saveEdit') : t('admin.gameForm.submit')}
         </button>
         {isEditing && (
           <button type="button" className="admin-form__cancel" onClick={onCancel}>
-            취소
+            {t('common.cancel')}
           </button>
         )}
       </div>

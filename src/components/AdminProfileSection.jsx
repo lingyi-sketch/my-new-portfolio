@@ -8,27 +8,39 @@ import {
 } from '../lib/profile'
 import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
 import { saveOrder } from '../lib/ordering'
-import { profile as defaultProfile } from '../data/works'
+import { profile as defaultProfile, PROFILE_TEXT_FIELDS } from '../data/works'
 import SmartImage from './SmartImage'
 import SortableList from './SortableList'
+import { useLanguage } from '../i18n/LanguageContext'
+import { LANGUAGES } from '../i18n/messages'
 import './AdminProjectForm.css'
 
 const TEXT_FIELDS = [
-  { key: 'name', label: '이름', rows: 1 },
-  { key: 'subtitle', label: '이름 아래 문구', rows: 2 },
-  { key: 'intro', label: '소개 문구', rows: 2 },
-  { key: 'bio', label: '소개글', rows: 6 },
-  { key: 'aphorism', label: '우측 하단 문구', rows: 3 },
+  { key: 'name', rows: 1 },
+  { key: 'subtitle', rows: 2 },
+  { key: 'intro', rows: 2 },
+  { key: 'bio', rows: 6 },
+  { key: 'aphorism', rows: 3 },
 ]
 
+const TRANSLATED_LANGS = ['zh', 'en']
+
+function initialTexts(initial) {
+  const texts = { ko: {}, zh: {}, en: {} }
+  for (const field of PROFILE_TEXT_FIELDS) {
+    texts.ko[field] = initial[field] ?? ''
+    for (const lang of TRANSLATED_LANGS) {
+      texts[lang][field] = initial.translations?.[lang]?.[field] ?? ''
+    }
+  }
+  return texts
+}
+
 function ProfileTextForm({ initial, onSaved }) {
-  const [form, setForm] = useState({
-    name: initial.name ?? '',
-    subtitle: initial.subtitle ?? '',
-    intro: initial.intro ?? '',
-    bio: initial.bio ?? '',
-    aphorism: initial.aphorism ?? '',
-  })
+  const { lang, t } = useLanguage()
+  const [name, setName] = useState(initial.name ?? '')
+  const [texts, setTexts] = useState(() => initialTexts(initial))
+  const [editLang, setEditLang] = useState(lang)
   const [contacts, setContacts] = useState(() =>
     (initial.contacts ?? []).map((contact) => ({
       id: crypto.randomUUID(),
@@ -48,18 +60,27 @@ function ProfileTextForm({ initial, onSaved }) {
     setSaving(true)
     setMessage({ type: '', text: '' })
     try {
+      const translations = {}
+      for (const code of TRANSLATED_LANGS) {
+        translations[code] = {}
+        for (const field of PROFILE_TEXT_FIELDS) {
+          translations[code][field] = texts[code][field].trim()
+        }
+      }
       const saved = await saveProfile({
-        ...form,
+        name,
+        ...texts.ko,
+        translations,
         contacts: contacts
           .filter((contact) => contact.value.trim())
           .map(({ label, value }) => ({ label, value })),
       })
-      setMessage({ type: 'ok', text: '저장했어요. 프로필 페이지에 바로 반영돼요.' })
+      setMessage({ type: 'ok', text: t('admin.profile.saved') })
       onSaved?.(saved)
     } catch {
       setMessage({
         type: 'error',
-        text: '저장에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.',
+        text: t('admin.profile.saveFailed'),
       })
     } finally {
       setSaving(false)
@@ -68,19 +89,44 @@ function ProfileTextForm({ initial, onSaved }) {
 
   return (
     <form className="admin-form" onSubmit={handleSubmit}>
-      {TEXT_FIELDS.map((field) => (
-        <label key={field.key} className="admin-form__field">
-          <span>{field.label}</span>
+      <label className="admin-form__field">
+        <span>{t('admin.profile.field.name')}</span>
+        <textarea rows={1} value={name} onChange={(e) => setName(e.target.value)} />
+      </label>
+
+      <div className="admin-tabs" role="group" aria-label={t('lang.label')}>
+        {LANGUAGES.map((language) => (
+          <button
+            key={language.code}
+            type="button"
+            className={`admin-tabs__item${editLang === language.code ? ' admin-tabs__item--active' : ''}`}
+            aria-pressed={editLang === language.code}
+            onClick={() => setEditLang(language.code)}
+          >
+            {language.name}
+          </button>
+        ))}
+      </div>
+      <p className="admin-hint">{t('admin.profile.langHint')}</p>
+
+      {TEXT_FIELDS.filter((field) => field.key !== 'name').map((field) => (
+        <label key={`${editLang}-${field.key}`} className="admin-form__field">
+          <span>{t(`admin.profile.field.${field.key}`)}</span>
           <textarea
             rows={field.rows}
-            value={form[field.key]}
-            onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
+            value={texts[editLang][field.key]}
+            onChange={(e) =>
+              setTexts((prev) => ({
+                ...prev,
+                [editLang]: { ...prev[editLang], [field.key]: e.target.value },
+              }))
+            }
           />
         </label>
       ))}
 
       <div className="admin-form__field">
-        <span>연락처 (이메일 · 전화 · SNS 주소 등) — ⋮⋮ 를 끌어 순서를 바꾼 뒤 '프로필 저장'을 눌러요</span>
+        <span>{t('admin.profile.contacts')}</span>
         <SortableList
           items={contacts}
           onReorder={setContacts}
@@ -91,13 +137,13 @@ function ProfileTextForm({ initial, onSaved }) {
               {handle}
               <input
                 type="text"
-                placeholder="이름 (선택)"
+                placeholder={t('admin.profile.contactLabelPh')}
                 value={contact.label}
                 onChange={(e) => updateContact(contact.id, 'label', e.target.value)}
               />
               <input
                 type="text"
-                placeholder="내용 (이메일, 전화번호, 링크)"
+                placeholder={t('admin.profile.contactValuePh')}
                 value={contact.value}
                 onChange={(e) => updateContact(contact.id, 'value', e.target.value)}
               />
@@ -106,7 +152,7 @@ function ProfileTextForm({ initial, onSaved }) {
                 className="admin-form__cancel"
                 onClick={() => setContacts((prev) => prev.filter((item) => item.id !== contact.id))}
               >
-                삭제
+                {t('common.delete')}
               </button>
             </>
           )}
@@ -118,7 +164,7 @@ function ProfileTextForm({ initial, onSaved }) {
             setContacts((prev) => [...prev, { id: crypto.randomUUID(), label: '', value: '' }])
           }
         >
-          + 연락처 추가
+          {t('admin.profile.addContact')}
         </button>
       </div>
 
@@ -128,7 +174,7 @@ function ProfileTextForm({ initial, onSaved }) {
 
       <div className="admin-form__actions">
         <button type="submit" disabled={saving}>
-          {saving ? '저장 중…' : '프로필 저장'}
+          {saving ? t('common.saving') : t('admin.profile.save')}
         </button>
       </div>
     </form>
@@ -136,6 +182,7 @@ function ProfileTextForm({ initial, onSaved }) {
 }
 
 function ProfilePhotos() {
+  const { t } = useLanguage()
   const [photos, setPhotos] = useState([])
   const [status, setStatus] = useState('loading')
   const [files, setFiles] = useState([])
@@ -179,7 +226,7 @@ function ProfilePhotos() {
     if (failed.length === 0) {
       setInputKey((key) => key + 1)
     } else {
-      setError(`${failed.length}장을 올리지 못했어요. 선택한 파일은 그대로 남아있으니 다시 시도해 주세요.`)
+      setError(t('admin.profile.uploadFailed', { n: failed.length }))
     }
     setUploading(false)
   }
@@ -192,7 +239,7 @@ function ProfilePhotos() {
       await saveOrder('site_profile_photos', next.map((photo) => photo.id))
     } catch {
       setPhotos(previous)
-      setError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+      setError(t('common.orderFailed'))
     }
   }
 
@@ -204,7 +251,7 @@ function ProfilePhotos() {
       setPendingDeleteId(null)
       await load()
     } catch {
-      setError('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      setError(t('common.deleteFailed'))
     } finally {
       setDeleting(false)
     }
@@ -214,7 +261,7 @@ function ProfilePhotos() {
     <>
       <form className="admin-form" onSubmit={handleUpload}>
         <label className="admin-form__field">
-          <span>사진 추가 (여러 장 선택 가능)</span>
+          <span>{t('admin.profile.addPhotos')}</span>
           <input
             key={inputKey}
             type="file"
@@ -226,17 +273,21 @@ function ProfilePhotos() {
         {error && <p className="admin-form__error">{error}</p>}
         <div className="admin-form__actions">
           <button type="submit" disabled={uploading || files.length === 0}>
-            {uploading ? '올리는 중…' : `사진 올리기${files.length ? ` (${files.length}장)` : ''}`}
+            {uploading
+              ? t('admin.profile.uploading')
+              : files.length
+                ? t('admin.profile.uploadN', { n: files.length })
+                : t('admin.profile.upload')}
           </button>
         </div>
       </form>
 
-      {status === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
-      {status === 'error' && <p className="status-message status-message--error">사진 목록을 불러오지 못했어요.</p>}
-      {status === 'ready' && photos.length === 0 && <p className="status-message">등록된 사진이 없어요.</p>}
+      {status === 'loading' && <p className="status-message">{t('common.loading')}</p>}
+      {status === 'error' && <p className="status-message status-message--error">{t('admin.profile.photosLoadFailed')}</p>}
+      {status === 'ready' && photos.length === 0 && <p className="status-message">{t('admin.profile.noPhotos')}</p>}
       {status === 'ready' && photos.length > 0 && (
         <>
-          <p className="admin-hint">사진 위의 ⋮⋮ 를 끌어서 순서를 바꾸면 바로 저장돼요.</p>
+          <p className="admin-hint">{t('admin.profile.photoHint')}</p>
           <SortableList
             items={photos}
             onReorder={reorder}
@@ -247,16 +298,16 @@ function ProfilePhotos() {
               <>
                 <div className="admin-photo-grid__bar">{handle}</div>
                 <div className="admin-photo-grid__thumb">
-                  <SmartImage src={photo.image_url} alt="프로필 사진" label="" hoverEffect={false} color />
+                  <SmartImage src={photo.image_url} alt={t('admin.profile.photoAlt')} label="" hoverEffect={false} color />
                 </div>
                 {pendingDeleteId === photo.id ? (
                   <div className="admin-list__confirm">
-                    <span>삭제할까요?</span>
+                    <span>{t('common.confirmDelete')}</span>
                     <button type="button" onClick={() => confirmDelete(photo)} disabled={deleting}>
-                      {deleting ? '삭제 중…' : '삭제'}
+                      {deleting ? t('common.deleting') : t('common.delete')}
                     </button>
                     <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                      취소
+                      {t('common.cancel')}
                     </button>
                   </div>
                 ) : (
@@ -265,7 +316,7 @@ function ProfilePhotos() {
                     className="admin-photo-grid__delete"
                     onClick={() => setPendingDeleteId(photo.id)}
                   >
-                    삭제
+                    {t('common.delete')}
                   </button>
                 )}
               </>
@@ -278,13 +329,14 @@ function ProfilePhotos() {
 }
 
 function AdminProfileSection() {
+  const { t } = useLanguage()
   const [initial, setInitial] = useState(null)
   const [status, setStatus] = useState('loading')
 
   useEffect(() => {
     fetchProfile()
       .then((row) => {
-        setInitial({ ...defaultProfile, ...(row ?? {}) })
+        setInitial({ ...defaultProfile, ...(row ?? {}), translations: row?.translations ?? defaultProfile.translations })
         setStatus('ready')
       })
       .catch(() => setStatus('error'))
@@ -293,16 +345,16 @@ function AdminProfileSection() {
   return (
     <>
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">프로필 글 수정</h2>
-        {status === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
+        <h2 className="admin-page__subtitle">{t('admin.profile.editTitle')}</h2>
+        {status === 'loading' && <p className="status-message">{t('common.loading')}</p>}
         {status === 'error' && (
-          <p className="status-message status-message--error">프로필을 불러오지 못했어요.</p>
+          <p className="status-message status-message--error">{t('admin.profile.loadFailed')}</p>
         )}
         {status === 'ready' && <ProfileTextForm initial={initial} />}
       </section>
 
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">프로필 사진</h2>
+        <h2 className="admin-page__subtitle">{t('admin.profile.photos')}</h2>
         <ProfilePhotos />
       </section>
     </>

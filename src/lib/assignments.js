@@ -6,11 +6,11 @@ const COLUMNS =
   'id, week, kind, title, description, content, image_url, file_url, link_url, created_at, sort_order'
 
 export const ASSIGNMENT_KINDS = [
-  { key: 'prompt', label: '프롬프트', formLabel: '프롬프트 (md 파일)' },
-  { key: 'game', label: '게임', formLabel: '게임 (영상 URL)' },
-  { key: 'image', label: '이미지', formLabel: '이미지' },
-  { key: 'video', label: '영상', formLabel: '영상 (파일 또는 URL)' },
-  { key: 'document', label: '문서', formLabel: '문서 (PDF · Word)' },
+  { key: 'prompt' },
+  { key: 'game' },
+  { key: 'image' },
+  { key: 'video' },
+  { key: 'document' },
 ]
 
 function requireClient() {

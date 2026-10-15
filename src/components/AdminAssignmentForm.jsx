@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { createAssignment, updateAssignment, ASSIGNMENT_KINDS } from '../lib/assignments'
 import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
 import { UrlPreview } from './FilePreview'
+import { useLanguage } from '../i18n/LanguageContext'
 import './AdminProjectForm.css'
 
 function newRow(kind = 'prompt', assignment = null) {
@@ -81,7 +82,8 @@ async function saveRow(week, row, existing) {
 }
 
 function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
-  const replaceHint = isEditing ? ' (바꿀 때만 선택)' : ''
+  const { t } = useLanguage()
+  const replaceHint = isEditing ? t('common.replaceHint') : ''
 
   async function handleMarkdownFile(e) {
     const picked = e.target.files?.[0]
@@ -96,42 +98,42 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
   return (
     <fieldset className="admin-assignment-row">
       <div className="admin-assignment-row__head">
-        <span className="admin-assignment-row__title">{isEditing ? '과제 항목' : `항목 ${index + 1}`}</span>
+        <span className="admin-assignment-row__title">{isEditing ? t('admin.assignment.rowEdit') : t('admin.assignment.rowN', { n: index + 1 })}</span>
         {!isEditing && total > 1 && (
           <button type="button" className="admin-form__cancel" onClick={onRemove}>
-            이 항목 빼기
+            {t('admin.assignment.removeRow')}
           </button>
         )}
       </div>
 
       <label className="admin-form__field">
-        <span>종류 (항목마다 자유롭게 선택)</span>
+        <span>{t('admin.assignment.kind')}</span>
         <select
           value={row.kind}
           onChange={(e) => onChange({ kind: e.target.value, imageFile: null, file: null })}
         >
           {ASSIGNMENT_KINDS.map((kind) => (
             <option key={kind.key} value={kind.key}>
-              {kind.formLabel}
+              {t(`assignment.kindForm.${kind.key}`)}
             </option>
           ))}
         </select>
       </label>
 
       <label className="admin-form__field">
-        <span>제목</span>
+        <span>{t('common.title')}</span>
         <input type="text" value={row.title} onChange={(e) => onChange({ title: e.target.value })} required />
       </label>
 
       <label className="admin-form__field">
-        <span>설명</span>
+        <span>{t('common.description')}</span>
         <textarea rows={2} value={row.description} onChange={(e) => onChange({ description: e.target.value })} />
       </label>
 
       {row.kind === 'prompt' && (
         <>
           <label className="admin-form__field">
-            <span>md 파일 불러오기 (아래 내용 칸에 채워져요)</span>
+            <span>{t('admin.assignment.mdLoad')}</span>
             <input
               key={`${row.key}-md`}
               type="file"
@@ -140,7 +142,7 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
             />
           </label>
           <label className="admin-form__field">
-            <span>프롬프트 내용 (직접 수정 가능)</span>
+            <span>{t('admin.assignment.promptContent')}</span>
             <textarea rows={6} value={row.content} onChange={(e) => onChange({ content: e.target.value })} />
           </label>
         </>
@@ -149,7 +151,7 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
       {row.kind === 'game' && (
         <>
           <label className="admin-form__field">
-            <span>영상 URL (YouTube, Vimeo 등)</span>
+            <span>{t('admin.assignment.gameUrl')}</span>
             <input
               type="url"
               placeholder="https://"
@@ -157,13 +159,16 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
               onChange={(e) => onChange({ link_url: e.target.value })}
             />
           </label>
-          <UrlPreview url={row.link_url} title="URL 미리보기" mediaClassName="url-preview-box" previewClassName="" />
+          <UrlPreview url={row.link_url} title={t('admin.assignment.urlPreview')} mediaClassName="url-preview-box" previewClassName="" />
         </>
       )}
 
       {row.kind === 'image' && (
         <label className="admin-form__field">
-          <span>이미지 파일{replaceHint}</span>
+          <span>
+            {t('admin.assignment.imageFile')}
+            {replaceHint}
+          </span>
           <input
             key={`${row.key}-img-${row.kind}`}
             type="file"
@@ -176,7 +181,10 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
       {row.kind === 'video' && (
         <>
           <label className="admin-form__field">
-            <span>영상 파일{replaceHint}</span>
+            <span>
+              {t('admin.assignment.videoFile')}
+              {replaceHint}
+            </span>
             <input
               key={`${row.key}-vid`}
               type="file"
@@ -185,7 +193,7 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
             />
           </label>
           <label className="admin-form__field">
-            <span>또는 영상 URL (파일이 없을 때)</span>
+            <span>{t('admin.assignment.orVideoUrl')}</span>
             <input
               type="url"
               placeholder="https://"
@@ -193,13 +201,16 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
               onChange={(e) => onChange({ link_url: e.target.value })}
             />
           </label>
-          <UrlPreview url={row.link_url} title="URL 미리보기" mediaClassName="url-preview-box" previewClassName="" />
+          <UrlPreview url={row.link_url} title={t('admin.assignment.urlPreview')} mediaClassName="url-preview-box" previewClassName="" />
         </>
       )}
 
       {row.kind === 'document' && (
         <label className="admin-form__field">
-          <span>문서 파일 (PDF · Word){replaceHint}</span>
+          <span>
+            {t('admin.assignment.docFile')}
+            {replaceHint}
+          </span>
           <input
             key={`${row.key}-doc`}
             type="file"
@@ -213,6 +224,7 @@ function RowFields({ row, index, total, isEditing, onChange, onRemove }) {
 }
 
 function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
+  const { t } = useLanguage()
   const isEditing = Boolean(assignment)
   const [week, setWeek] = useState(String(assignment?.week ?? defaultWeek ?? 1))
   const [rows, setRows] = useState(() => [newRow('prompt', assignment)])
@@ -250,8 +262,8 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
       setRows(remaining)
       setError(
         savedCount > 0
-          ? `${savedCount}개는 저장했고, 나머지 ${remaining.length}개는 저장하지 못했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.`
-          : '저장에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.',
+          ? t('admin.assignment.partialFail', { saved: savedCount, remaining: remaining.length })
+          : t('admin.assignment.failed'),
       )
     } else if (!isEditing) {
       setRows([newRow(rows[rows.length - 1].kind)])
@@ -264,7 +276,7 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
   return (
     <form className="admin-form admin-form--wide" onSubmit={handleSubmit}>
       <label className="admin-form__field admin-form__field--week">
-        <span>주차</span>
+        <span>{t('admin.assignment.week')}</span>
         <input type="number" min="1" step="1" value={week} onChange={(e) => setWeek(e.target.value)} required />
       </label>
 
@@ -286,7 +298,7 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
           className="admin-form__cancel admin-form__add"
           onClick={() => setRows((prev) => [...prev, newRow(prev[prev.length - 1].kind)])}
         >
-          + 이 주차에 항목 더 추가
+          {t('admin.assignment.addRow')}
         </button>
       )}
 
@@ -295,16 +307,16 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
       <div className="admin-form__actions">
         <button type="submit" disabled={submitting}>
           {submitting
-            ? '저장 중…'
+            ? t('common.saving')
             : isEditing
-              ? '수정 저장'
+              ? t('admin.project.saveEdit')
               : rows.length > 1
-                ? `${rows.length}개 항목 한 번에 등록`
-                : '과제 등록'}
+                ? t('admin.assignment.submitMany', { n: rows.length })
+                : t('admin.assignment.submit')}
         </button>
         {isEditing && (
           <button type="button" className="admin-form__cancel" onClick={onCancel}>
-            취소
+            {t('common.cancel')}
           </button>
         )}
       </div>

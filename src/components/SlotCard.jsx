@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext'
 import SmartImage from './SmartImage'
 import { FilePreview, fileExtension } from './FilePreview'
 import './SlotCard.css'
@@ -5,8 +6,10 @@ import './SlotCard.css'
 const PREVIEWABLE_EXTENSIONS = new Set(['pdf', 'doc', 'docx', 'mp4', 'mov', 'webm', 'm4v'])
 
 function FileIconFallback({ url }) {
+  const { t } = useLanguage()
+
   return (
-    <a className="slot-card__file-icon" href={url} target="_blank" rel="noreferrer" aria-label="파일 보기">
+    <a className="slot-card__file-icon" href={url} target="_blank" rel="noreferrer" aria-label={t('common.viewFile')}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
         <path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z" />
         <path d="M14 2.5V7a1 1 0 0 0 1 1h4.5" />
@@ -18,6 +21,7 @@ function FileIconFallback({ url }) {
 }
 
 function SlotCard({ slot }) {
+  const { t } = useLanguage()
   const hasImage = Boolean(slot.image)
   const hasFile = Boolean(slot.fileUrl)
   const canPreview = hasFile && PREVIEWABLE_EXTENSIONS.has(fileExtension(slot.fileUrl))
@@ -38,12 +42,10 @@ function SlotCard({ slot }) {
       </div>
       <div className="slot-card__caption">
         <h3 className="slot-card__title">{slot.title}</h3>
-        <p className="slot-card__description">
-          {slot.description || '아직 소개 글이 없어요. 등록되면 이 자리에 표시돼요.'}
-        </p>
+        <p className="slot-card__description">{slot.description || t('common.noDescriptionYet')}</p>
         {hasFile && (
           <a className="slot-card__file" href={slot.fileUrl} target="_blank" rel="noreferrer">
-            {slot.fileLabel || '파일 보기'} →
+            {slot.fileLabel || t('common.viewFile')} →
           </a>
         )}
       </div>

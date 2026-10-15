@@ -1,4 +1,6 @@
 import { useProfile } from '../hooks/useProfile'
+import { useLanguage } from '../i18n/LanguageContext'
+import { pickProfileText } from '../data/works'
 import SmartImage from '../components/SmartImage'
 import './Profile.css'
 
@@ -26,12 +28,13 @@ function Contact({ contact }) {
 }
 
 function Profile() {
+  const { lang, t } = useLanguage()
   const { status, content, photos } = useProfile()
 
   if (status === 'loading') {
     return (
       <div className="page-enter profile-page container">
-        <p className="profile-page__status">프로필을 불러오는 중이에요…</p>
+        <p className="profile-page__status">{t('profile.loading')}</p>
       </div>
     )
   }
@@ -39,25 +42,24 @@ function Profile() {
   if (status === 'error') {
     return (
       <div className="page-enter profile-page container">
-        <p className="profile-page__status profile-page__status--error">
-          프로필을 불러오지 못했어요. 데이터베이스 연결을 확인한 뒤 다시 시도해 주세요.
-        </p>
+        <p className="profile-page__status profile-page__status--error">{t('profile.error')}</p>
       </div>
     )
   }
 
   const contacts = (content.contacts ?? []).filter((contact) => contact.value)
+  const text = (field) => pickProfileText(content, lang, field)
 
   return (
     <div className="page-enter profile-page container">
-      <span className="eyebrow">Profile</span>
+      <span className="eyebrow">{t('profile.eyebrow')}</span>
       <h1 className="profile-page__name">{content.name}</h1>
-      <p className="quote profile-page__quote">{content.subtitle}</p>
+      <p className="quote profile-page__quote">{text('subtitle')}</p>
 
       <div className="profile-page__grid">
         <div className="profile-page__text">
-          {content.intro && <p className="profile-page__intro">{content.intro}</p>}
-          {content.bio && <p className="profile-page__bio">{content.bio}</p>}
+          {text('intro') && <p className="profile-page__intro">{text('intro')}</p>}
+          {text('bio') && <p className="profile-page__bio">{text('bio')}</p>}
         </div>
 
         {photos.length > 0 && (
@@ -78,7 +80,7 @@ function Profile() {
           </div>
 
           <div className="profile-page__right">
-            {content.aphorism && <p className="profile-page__aphorism">{content.aphorism}</p>}
+            {text('aphorism') && <p className="profile-page__aphorism">{text('aphorism')}</p>}
           </div>
         </div>
       </div>

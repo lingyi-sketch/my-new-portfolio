@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { useLanguage } from '../i18n/LanguageContext'
 import SmartImage from './SmartImage'
 import { FilePreview, UrlPreview, canEmbed, canPreviewFile } from './FilePreview'
 import { ASSIGNMENT_KINDS } from '../lib/assignments'
 import './AssignmentCard.css'
 
 function PromptBlock({ content }) {
+  const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const isLong = content.length > 320
 
@@ -16,7 +18,7 @@ function PromptBlock({ content }) {
       </div>
       {isLong && (
         <button type="button" className="assignment-card__toggle" onClick={() => setOpen((value) => !value)}>
-          {open ? '접기' : '전체 보기'}
+          {open ? t('assignment.collapse') : t('assignment.expand')}
         </button>
       )}
     </div>
@@ -69,7 +71,10 @@ function Media({ assignment }) {
 }
 
 function AssignmentCard({ assignment }) {
-  const kindLabel = ASSIGNMENT_KINDS.find((kind) => kind.key === assignment.kind)?.label ?? assignment.kind
+  const { t } = useLanguage()
+  const kindLabel = ASSIGNMENT_KINDS.some((kind) => kind.key === assignment.kind)
+    ? t(`assignment.kind.${assignment.kind}`)
+    : assignment.kind
   const isLinkKind = assignment.kind === 'game' || assignment.kind === 'video'
   const linkShownAsCard =
     isLinkKind &&
@@ -86,7 +91,7 @@ function AssignmentCard({ assignment }) {
       <Media assignment={assignment} />
       {openUrl && (
         <a className="assignment-card__link" href={openUrl} target="_blank" rel="noreferrer">
-          원본 열기 →
+          {t('common.openOriginal')}
         </a>
       )}
     </article>

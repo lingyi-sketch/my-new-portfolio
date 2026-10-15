@@ -1,23 +1,24 @@
+import { useLanguage } from '../i18n/LanguageContext'
 import './GameBlock.css'
 
 function GameBlock({ game }) {
+  const { t } = useLanguage()
+
   return (
     <section className="game-block">
       <div className="game-block__heading">
-        <span className="eyebrow">Game · {game.index}</span>
+        <span className="eyebrow">{t('game.title')} · {game.index}</span>
         <h3 className="game-block__title">{game.title}</h3>
       </div>
 
       <div className="game-block__grid">
         <div className="game-panel">
-          <span className="game-panel__label">게임 개요</span>
-          <p className="game-panel__text">
-            {game.synopsis || '아직 개요가 없어요. 등록되면 이 자리에 표시돼요.'}
-          </p>
+          <span className="game-panel__label">{t('game.synopsis')}</span>
+          <p className="game-panel__text">{game.synopsis || t('game.noSynopsis')}</p>
         </div>
 
         <div className="game-panel">
-          <span className="game-panel__label">게임 영상</span>
+          <span className="game-panel__label">{t('game.video')}</span>
           <div className="game-panel__frame">
             {game.videoImage ? (
               <video
@@ -29,22 +30,20 @@ function GameBlock({ game }) {
                 preload="metadata"
               />
             ) : (
-              <div className="game-panel__placeholder">영상 준비 중</div>
+              <div className="game-panel__placeholder">{t('game.videoPending')}</div>
             )}
           </div>
-          <p className="game-panel__text">
-            {game.videoDescription || '아직 영상 소개가 없어요.'}
-          </p>
+          <p className="game-panel__text">{game.videoDescription || t('game.noVideoDesc')}</p>
         </div>
 
         <div className="game-panel">
-          <span className="game-panel__label">게임 링크</span>
+          <span className="game-panel__label">{t('game.link')}</span>
           {game.link ? (
             <a className="game-panel__link" href={game.link} target="_blank" rel="noreferrer">
-              바로가기 →
+              {t('game.go')}
             </a>
           ) : (
-            <p className="game-panel__text">아직 링크가 없어요.</p>
+            <p className="game-panel__text">{t('game.noLink')}</p>
           )}
         </div>
       </div>

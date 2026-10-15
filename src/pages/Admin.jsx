@@ -12,18 +12,20 @@ import AdminMenuSection from '../components/AdminMenuSection'
 import SortableList from '../components/SortableList'
 import SmartImage from '../components/SmartImage'
 import { saveOrder } from '../lib/ordering'
+import { useLanguage } from '../i18n/LanguageContext'
 import './Admin.css'
 
 const TABS = [
-  { key: 'profile', label: 'Profile' },
-  { key: 'video', label: 'Video' },
-  { key: 'script', label: 'Script' },
-  { key: 'game', label: 'Game' },
-  { key: 'assignments', label: '과제' },
-  { key: 'menu', label: '메뉴 순서' },
+  { key: 'profile', labelKey: 'nav.profile' },
+  { key: 'video', labelKey: 'nav.video' },
+  { key: 'script', labelKey: 'nav.script' },
+  { key: 'game', labelKey: 'nav.game' },
+  { key: 'assignments', labelKey: 'nav.assignments' },
+  { key: 'menu', labelKey: 'admin.tab.menu' },
 ]
 
 function AdminCategorySection({ category, label }) {
+  const { t } = useLanguage()
   const [items, setItems] = useState([])
   const [listStatus, setListStatus] = useState('loading')
   const [editingItem, setEditingItem] = useState(null)
@@ -56,7 +58,7 @@ function AdminCategorySection({ category, label }) {
       await saveOrder('projects', next.map((item) => item.id))
     } catch {
       setItems(previous)
-      setDeleteError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('common.orderFailed'))
     }
   }
 
@@ -68,7 +70,7 @@ function AdminCategorySection({ category, label }) {
       setPendingDeleteId(null)
       load()
     } catch {
-      setDeleteError('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('common.deleteFailed'))
     } finally {
       setDeleting(false)
     }
@@ -77,7 +79,7 @@ function AdminCategorySection({ category, label }) {
   return (
     <>
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">{editingItem ? `${label} 수정` : `새 ${label} 등록`}</h2>
+        <h2 className="admin-page__subtitle">{editingItem ? t('admin.category.edit', { label }) : t('admin.category.new', { label })}</h2>
         <AdminProjectForm
           key={editingItem?.id ?? 'new'}
           category={category}
@@ -91,18 +93,18 @@ function AdminCategorySection({ category, label }) {
       </section>
 
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">등록된 {label}</h2>
+        <h2 className="admin-page__subtitle">{t('admin.category.registered', { label })}</h2>
         {deleteError && <p className="status-message status-message--error">{deleteError}</p>}
-        {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
+        {listStatus === 'loading' && <p className="status-message">{t('common.loading')}</p>}
         {listStatus === 'error' && (
-          <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
+          <p className="status-message status-message--error">{t('common.listLoadFailed')}</p>
         )}
         {listStatus === 'ready' && items.length === 0 && (
-          <p className="status-message">등록된 {label}이 없어요.</p>
+          <p className="status-message">{t('admin.category.none', { label })}</p>
         )}
         {listStatus === 'ready' && items.length > 0 && (
           <>
-            <p className="admin-hint">왼쪽 ⋮⋮ 를 끌어서 순서를 바꾸면 바로 저장돼요.</p>
+            <p className="admin-hint">{t('admin.hintDrag')}</p>
             <SortableList
               items={items}
               onReorder={reorder}
@@ -116,22 +118,22 @@ function AdminCategorySection({ category, label }) {
                   </div>
                   <div className="admin-list__info">
                     <span className="admin-list__title">{item.title}</span>
-                    <p className="admin-list__preview">{item.description || '설명이 없어요.'}</p>
+                    <p className="admin-list__preview">{item.description || t('common.noDescription')}</p>
                   </div>
                   {pendingDeleteId === item.id ? (
                     <div className="admin-list__confirm">
-                      <span>삭제할까요?</span>
+                      <span>{t('common.confirmDelete')}</span>
                       <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
-                        {deleting ? '삭제 중…' : '삭제'}
+                        {deleting ? t('common.deleting') : t('common.delete')}
                       </button>
                       <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                        취소
+                        {t('common.cancel')}
                       </button>
                     </div>
                   ) : (
                     <div className="admin-list__actions">
                       <button type="button" onClick={() => setEditingItem(item)}>
-                        수정
+                        {t('common.edit')}
                       </button>
                       <button
                         type="button"
@@ -140,7 +142,7 @@ function AdminCategorySection({ category, label }) {
                           setPendingDeleteId(item.id)
                         }}
                       >
-                        삭제
+                        {t('common.delete')}
                       </button>
                     </div>
                   )}
@@ -155,6 +157,7 @@ function AdminCategorySection({ category, label }) {
 }
 
 function AdminGameSection() {
+  const { t } = useLanguage()
   const [games, setGames] = useState([])
   const [listStatus, setListStatus] = useState('loading')
   const [editingGame, setEditingGame] = useState(null)
@@ -185,7 +188,7 @@ function AdminGameSection() {
       await saveOrder('games', next.map((game) => game.id))
     } catch {
       setGames(previous)
-      setDeleteError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('common.orderFailed'))
     }
   }
 
@@ -197,7 +200,7 @@ function AdminGameSection() {
       setPendingDeleteId(null)
       load()
     } catch {
-      setDeleteError('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('common.deleteFailed'))
     } finally {
       setDeleting(false)
     }
@@ -206,7 +209,7 @@ function AdminGameSection() {
   return (
     <>
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">{editingGame ? '게임 수정' : '새 게임 등록'}</h2>
+        <h2 className="admin-page__subtitle">{editingGame ? t('admin.game.edit') : t('admin.game.new')}</h2>
         <AdminGameForm
           key={editingGame?.id ?? 'new'}
           game={editingGame}
@@ -219,18 +222,18 @@ function AdminGameSection() {
       </section>
 
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">등록된 게임</h2>
+        <h2 className="admin-page__subtitle">{t('admin.game.registered')}</h2>
         {deleteError && <p className="status-message status-message--error">{deleteError}</p>}
-        {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
+        {listStatus === 'loading' && <p className="status-message">{t('common.loading')}</p>}
         {listStatus === 'error' && (
-          <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
+          <p className="status-message status-message--error">{t('common.listLoadFailed')}</p>
         )}
         {listStatus === 'ready' && games.length === 0 && (
-          <p className="status-message">등록된 게임이 없어요.</p>
+          <p className="status-message">{t('admin.game.none')}</p>
         )}
         {listStatus === 'ready' && games.length > 0 && (
           <>
-            <p className="admin-hint">왼쪽 ⋮⋮ 를 끌어서 순서를 바꾸면 바로 저장돼요.</p>
+            <p className="admin-hint">{t('admin.hintDrag')}</p>
             <SortableList
               items={games}
               onReorder={reorder}
@@ -241,22 +244,22 @@ function AdminGameSection() {
                   {handle}
                   <div className="admin-list__info">
                     <span className="admin-list__title">{game.title}</span>
-                    <p className="admin-list__preview">{game.synopsis || '개요가 없어요.'}</p>
+                    <p className="admin-list__preview">{game.synopsis || t('admin.game.noSynopsis')}</p>
                   </div>
                   {pendingDeleteId === game.id ? (
                     <div className="admin-list__confirm">
-                      <span>삭제할까요?</span>
+                      <span>{t('common.confirmDelete')}</span>
                       <button type="button" onClick={() => confirmDelete(game)} disabled={deleting}>
-                        {deleting ? '삭제 중…' : '삭제'}
+                        {deleting ? t('common.deleting') : t('common.delete')}
                       </button>
                       <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                        취소
+                        {t('common.cancel')}
                       </button>
                     </div>
                   ) : (
                     <div className="admin-list__actions">
                       <button type="button" onClick={() => setEditingGame(game)}>
-                        수정
+                        {t('common.edit')}
                       </button>
                       <button
                         type="button"
@@ -265,7 +268,7 @@ function AdminGameSection() {
                           setPendingDeleteId(game.id)
                         }}
                       >
-                        삭제
+                        {t('common.delete')}
                       </button>
                     </div>
                   )}
@@ -280,6 +283,7 @@ function AdminGameSection() {
 }
 
 function Admin() {
+  const { t } = useLanguage()
   const { session, loading } = useSession()
   const [activeTab, setActiveTab] = useState('profile')
 
@@ -288,7 +292,7 @@ function Admin() {
   if (loading) {
     return (
       <div className="page-enter container admin-page">
-        <p className="status-message">확인하는 중이에요…</p>
+        <p className="status-message">{t('admin.checking')}</p>
       </div>
     )
   }
@@ -296,8 +300,8 @@ function Admin() {
   if (!session) {
     return (
       <div className="page-enter container admin-page">
-        <span className="eyebrow">Admin</span>
-        <h1 className="admin-page__title">관리자 로그인</h1>
+        <span className="eyebrow">{t('admin.eyebrow')}</span>
+        <h1 className="admin-page__title">{t('admin.loginTitle')}</h1>
         <LoginForm />
       </div>
     )
@@ -306,11 +310,11 @@ function Admin() {
   if (!isAdmin) {
     return (
       <div className="page-enter container admin-page">
-        <span className="eyebrow">Admin</span>
-        <h1 className="admin-page__title">권한이 없습니다</h1>
-        <p className="admin-page__description">이 계정은 작품을 관리할 수 있는 관리자 계정이 아니에요.</p>
+        <span className="eyebrow">{t('admin.eyebrow')}</span>
+        <h1 className="admin-page__title">{t('admin.noAccessTitle')}</h1>
+        <p className="admin-page__description">{t('admin.noAccessText')}</p>
         <button type="button" className="admin-page__signout" onClick={signOutAdmin}>
-          로그아웃
+          {t('admin.logout')}
         </button>
       </div>
     )
@@ -320,11 +324,11 @@ function Admin() {
     <div className="page-enter container admin-page">
       <div className="admin-page__header">
         <div>
-          <span className="eyebrow">Admin</span>
-          <h1 className="admin-page__title">작품 관리</h1>
+          <span className="eyebrow">{t('admin.eyebrow')}</span>
+          <h1 className="admin-page__title">{t('admin.title')}</h1>
         </div>
         <button type="button" className="admin-page__signout" onClick={signOutAdmin}>
-          로그아웃
+          {t('admin.logout')}
         </button>
       </div>
 
@@ -336,14 +340,14 @@ function Admin() {
             className={`admin-tabs__item${activeTab === tab.key ? ' admin-tabs__item--active' : ''}`}
             onClick={() => setActiveTab(tab.key)}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>
 
       {activeTab === 'profile' && <AdminProfileSection />}
-      {activeTab === 'video' && <AdminCategorySection category="video" label="Video" />}
-      {activeTab === 'script' && <AdminCategorySection category="script" label="Script" />}
+      {activeTab === 'video' && <AdminCategorySection category="video" label={t('nav.video')} />}
+      {activeTab === 'script' && <AdminCategorySection category="script" label={t('nav.script')} />}
       {activeTab === 'game' && <AdminGameSection />}
       {activeTab === 'assignments' && <AdminAssignmentSection />}
       {activeTab === 'menu' && <AdminMenuSection />}

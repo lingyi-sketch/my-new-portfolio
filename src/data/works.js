@@ -7,12 +7,35 @@ export const profile = {
   aphorism:
     'Dare and the world always yields. If it beats you sometimes, dare it again and again and it will succumb.',
   contacts: [{ label: '', value: 'xianglingyi528@gmail.com' }],
+  translations: {
+    zh: {
+      subtitle: '想要记录的瞬间，以及想要讲述的故事',
+      intro: '用生成式 AI 创作电影感内容，探索它的可能与局限。',
+      bio: '我在图像、影像、版面（页面）三种媒介之间往返，记录生成式 AI 创造出的场景与叙事。不完美的画面、错位的连续性、无法预料的细节，是我寻找新的电影语言的出发点。',
+      aphorism: '敢于挑战，世界终会让步。即使偶尔被它击败，也要一次又一次地向它挑战，它终将屈服。',
+    },
+    en: {
+      subtitle: 'The moments I want to record, and the stories I want to tell',
+      intro: 'Making cinematic content with generative AI, and exploring its possibilities and limits.',
+      bio: 'Moving between images, video, and printed pages, I document the scenes and stories that generative AI produces. Imperfect frames, broken continuity, and unpredictable details are where my search for a new cinematic language begins.',
+    },
+  },
+}
+
+export const PROFILE_TEXT_FIELDS = ['subtitle', 'intro', 'bio', 'aphorism']
+
+export function pickProfileText(content, lang, field) {
+  if (lang !== 'ko') {
+    const translated = content.translations?.[lang]?.[field]
+    if (translated) return translated
+  }
+  return content[field]
 }
 
 export const categories = [
-  { key: 'profile', label: 'Profile', path: '/' },
-  { key: 'video', label: 'Video', path: '/video' },
-  { key: 'script', label: 'Script', path: '/script' },
-  { key: 'game', label: 'Game', path: '/game' },
-  { key: 'assignments', label: '과제', path: '/assignments' },
+  { key: 'profile', path: '/' },
+  { key: 'video', path: '/video' },
+  { key: 'script', path: '/script' },
+  { key: 'game', path: '/game' },
+  { key: 'assignments', path: '/assignments' },
 ]

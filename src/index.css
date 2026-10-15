@@ -8,8 +8,8 @@
   --color-key-2: #8ba3ac;
   --color-key-3: #aca497;
 
-  --font-display: 'Nanum Myeongjo', 'Noto Serif KR', serif;
-  --font-body: 'Inter', 'Noto Sans KR', sans-serif;
+  --font-display: 'Nanum Myeongjo', 'Noto Serif KR', 'Noto Serif SC', serif;
+  --font-body: 'Inter', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
 
   --container-width: 1280px;
   --gap: clamp(1.25rem, 3vw, 2.5rem);

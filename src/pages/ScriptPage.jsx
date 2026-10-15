@@ -1,27 +1,23 @@
 import { useProjects } from '../hooks/useProjects'
+import { useLanguage } from '../i18n/LanguageContext'
 import ScriptCard from '../components/ScriptCard'
 import '../components/SlotGrid.css'
 import './Section.css'
 
 function ScriptPage() {
+  const { t } = useLanguage()
   const { status, projects } = useProjects('script')
 
   return (
     <div className="page-enter container section-page">
       <header className="section-page__header">
-        <span className="eyebrow">Works · Script</span>
-        <h2 className="section-page__title">Script</h2>
+        <span className="eyebrow">{t('script.eyebrow')}</span>
+        <h2 className="section-page__title">{t('script.title')}</h2>
       </header>
 
-      {status === 'loading' && <p className="status-message">대본을 불러오는 중이에요…</p>}
-      {status === 'empty' && (
-        <p className="status-message">아직 등록된 대본이 없어요. 곧 새로운 작업을 올릴게요.</p>
-      )}
-      {status === 'error' && (
-        <p className="status-message status-message--error">
-          대본을 불러오지 못했어요. 데이터베이스 연결을 확인한 뒤 다시 시도해 주세요.
-        </p>
-      )}
+      {status === 'loading' && <p className="status-message">{t('script.loading')}</p>}
+      {status === 'empty' && <p className="status-message">{t('script.empty')}</p>}
+      {status === 'error' && <p className="status-message status-message--error">{t('script.error')}</p>}
       {status === 'success' && (
         <div className="slot-grid">
           {projects.map((project, i) => (

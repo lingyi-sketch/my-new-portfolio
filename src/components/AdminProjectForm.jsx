@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createProject, updateProject } from '../lib/projects'
 import { uploadMediaFile } from '../lib/storage'
+import { useLanguage } from '../i18n/LanguageContext'
 import './AdminProjectForm.css'
 
 const emptyForm = { title: '', description: '' }
@@ -8,18 +9,19 @@ const emptyForm = { title: '', description: '' }
 const SECOND_FILE_CONFIG = {
   script: {
     folder: 'documents',
-    label: '대본 파일 (PDF · Word)',
+    labelKey: 'admin.project.scriptFile',
     accept:
       '.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   },
   video: {
     folder: 'videos',
-    label: '영상 파일',
+    labelKey: 'admin.project.videoFile',
     accept: 'video/*',
   },
 }
 
 function AdminProjectForm({ category, project, onSaved, onCancel }) {
+  const { t } = useLanguage()
   const isEditing = Boolean(project)
   const effectiveCategory = project?.category ?? category
   const secondFile = SECOND_FILE_CONFIG[effectiveCategory] ?? SECOND_FILE_CONFIG.video
@@ -73,11 +75,7 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
       onSaved?.()
     } catch {
       // 입력값은 그대로 유지하고 에러만 안내합니다.
-      setError(
-        isEditing
-          ? '작품 수정에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.'
-          : '작품 등록에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.',
-      )
+      setError(t(isEditing ? 'admin.project.editFailed' : 'admin.project.createFailed'))
     } finally {
       setSubmitting(false)
     }
@@ -86,7 +84,7 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
   return (
     <form className="admin-form" onSubmit={handleSubmit}>
       <label className="admin-form__field">
-        <span>제목</span>
+        <span>{t('common.title')}</span>
         <input
           type="text"
           value={form.title}
@@ -96,7 +94,7 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
       </label>
 
       <label className="admin-form__field">
-        <span>설명</span>
+        <span>{t('common.description')}</span>
         <textarea
           rows={4}
           value={form.description}
@@ -105,13 +103,17 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
       </label>
 
       <label className="admin-form__field">
-        <span>이미지 파일 {isEditing && '(바꿀 때만 선택)'}</span>
+        <span>
+          {t('admin.project.imageFile')}
+          {isEditing && t('common.replaceHint')}
+        </span>
         <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
       </label>
 
       <label className="admin-form__field">
         <span>
-          {secondFile.label} {isEditing && '(바꿀 때만 선택)'}
+          {t(secondFile.labelKey)}
+          {isEditing && t('common.replaceHint')}
         </span>
         <input
           type="file"
@@ -124,11 +126,11 @@ function AdminProjectForm({ category, project, onSaved, onCancel }) {
 
       <div className="admin-form__actions">
         <button type="submit" disabled={submitting}>
-          {submitting ? '저장 중…' : isEditing ? '수정 저장' : '작품 등록'}
+          {submitting ? t('common.saving') : isEditing ? t('admin.project.saveEdit') : t('admin.project.submit')}
         </button>
         {isEditing && (
           <button type="button" className="admin-form__cancel" onClick={onCancel}>
-            취소
+            {t('common.cancel')}
           </button>
         )}
       </div>

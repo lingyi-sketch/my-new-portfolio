@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext'
 import './LinkCard.css'
 
 const VIDEO_EXTENSIONS = new Set(['mp4', 'mov', 'webm', 'm4v'])
@@ -76,6 +77,7 @@ export function parseHttpUrl(value) {
 }
 
 export function LinkCard({ url }) {
+  const { t } = useLanguage()
   const parsed = parseHttpUrl(url)
   if (!parsed) return null
 
@@ -85,7 +87,7 @@ export function LinkCard({ url }) {
     <a className="link-card" href={url} target="_blank" rel="noreferrer">
       <span className="link-card__host">{parsed.hostname.replace(/^www\./, '')}</span>
       {path && <span className="link-card__path">{path}</span>}
-      <span className="link-card__open">새 탭에서 열기 ↗</span>
+      <span className="link-card__open">{t('common.openNewTab')}</span>
     </a>
   )
 }

@@ -1,14 +1,16 @@
 import { useState } from 'react'
+import { useLanguage } from '../i18n/LanguageContext'
 import './SmartImage.css'
 
 function SmartImage({ src, alt, label, hoverEffect = true, color = false }) {
+  const { t } = useLanguage()
   const [broken, setBroken] = useState(false)
 
   if (!src || broken) {
     return (
       <div className="smart-image smart-image--placeholder">
         <span className="smart-image__mark">＋</span>
-        <span className="smart-image__label">{label || '이미지 준비 중'}</span>
+        <span className="smart-image__label">{label || t('common.imagePending')}</span>
       </div>
     )
   }

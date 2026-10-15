@@ -15,9 +15,11 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { useLanguage } from '../i18n/LanguageContext'
 import './SortableList.css'
 
 function SortableItem({ item, itemClassName, renderItem }) {
+  const { t } = useLanguage()
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: item.id,
   })
@@ -26,8 +28,8 @@ function SortableItem({ item, itemClassName, renderItem }) {
     <button
       type="button"
       className="drag-handle"
-      aria-label="끌어서 순서 바꾸기"
-      title="끌어서 순서 바꾸기"
+      aria-label={t('common.dragHandle')}
+      title={t('common.dragHandle')}
       {...attributes}
       {...listeners}
     >

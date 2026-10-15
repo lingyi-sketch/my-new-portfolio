@@ -2,7 +2,7 @@
 import { deleteMediaFile } from './storage'
 import { edgeSortOrder } from './ordering'
 
-const PROFILE_COLUMNS = 'id, name, subtitle, intro, bio, aphorism, contacts'
+const PROFILE_COLUMNS = 'id, name, subtitle, intro, bio, aphorism, contacts, translations'
 const PHOTO_COLUMNS = 'id, image_url, created_at, sort_order'
 
 function requireClient() {
@@ -37,7 +37,7 @@ export async function fetchProfilePhotos() {
   return data ?? []
 }
 
-export async function saveProfile({ name, subtitle, intro, bio, aphorism, contacts }) {
+export async function saveProfile({ name, subtitle, intro, bio, aphorism, contacts, translations }) {
   requireClient()
 
   const { data, error } = await supabase
@@ -50,6 +50,7 @@ export async function saveProfile({ name, subtitle, intro, bio, aphorism, contac
       bio,
       aphorism,
       contacts,
+      translations,
       updated_at: new Date().toISOString(),
     })
     .select(PROFILE_COLUMNS)

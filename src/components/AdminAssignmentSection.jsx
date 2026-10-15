@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { fetchAssignments, deleteAssignment, ASSIGNMENT_KINDS } from '../lib/assignments'
+import { fetchAssignments, deleteAssignment } from '../lib/assignments'
 import { saveOrder } from '../lib/ordering'
 import { fetchSetting, saveSetting } from '../lib/settings'
 import { WEEK_ORDER_KEY, orderWeeks } from '../lib/weekOrder'
 import AdminAssignmentForm from './AdminAssignmentForm'
 import SortableList from './SortableList'
+import { useLanguage } from '../i18n/LanguageContext'
 
 function groupByWeek(items) {
   const weeks = new Map()
@@ -30,6 +31,7 @@ function applyGroupOrder(items, week, nextGroup) {
 }
 
 function AdminAssignmentSection() {
+  const { t } = useLanguage()
   const [items, setItems] = useState([])
   const [weekOrder, setWeekOrder] = useState(null)
   const [listStatus, setListStatus] = useState('loading')
@@ -64,7 +66,7 @@ function AdminAssignmentSection() {
       await saveOrder('site_assignments', nextGroup.map((item) => item.id))
     } catch {
       setItems(previous)
-      setDeleteError('순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('common.orderFailed'))
     }
   }
 
@@ -77,7 +79,7 @@ function AdminAssignmentSection() {
       await saveSetting(WEEK_ORDER_KEY, nextOrder)
     } catch {
       setWeekOrder(previous)
-      setDeleteError('주차 순서를 저장하지 못했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('admin.assignment.weekOrderFailed'))
     }
   }
 
@@ -89,7 +91,7 @@ function AdminAssignmentSection() {
       setPendingDeleteId(null)
       load()
     } catch {
-      setDeleteError('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.')
+      setDeleteError(t('common.deleteFailed'))
     } finally {
       setDeleting(false)
     }
@@ -106,9 +108,9 @@ function AdminAssignmentSection() {
   return (
     <>
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">{editingItem ? '과제 수정' : '새 과제 등록'}</h2>
+        <h2 className="admin-page__subtitle">{editingItem ? t('admin.assignment.editTitle') : t('admin.assignment.newTitle')}</h2>
         {listStatus === 'loading' ? (
-          <p className="status-message">불러오는 중이에요…</p>
+          <p className="status-message">{t('common.loading')}</p>
         ) : (
           <AdminAssignmentForm
             key={editingItem?.id ?? 'new'}
@@ -124,18 +126,16 @@ function AdminAssignmentSection() {
       </section>
 
       <section className="admin-page__section">
-        <h2 className="admin-page__subtitle">등록된 과제</h2>
+        <h2 className="admin-page__subtitle">{t('admin.assignment.registered')}</h2>
         {deleteError && <p className="status-message status-message--error">{deleteError}</p>}
-        {listStatus === 'loading' && <p className="status-message">불러오는 중이에요…</p>}
+        {listStatus === 'loading' && <p className="status-message">{t('common.loading')}</p>}
         {listStatus === 'error' && (
-          <p className="status-message status-message--error">목록을 불러오지 못했어요.</p>
+          <p className="status-message status-message--error">{t('common.listLoadFailed')}</p>
         )}
-        {listStatus === 'ready' && items.length === 0 && <p className="status-message">등록된 과제가 없어요.</p>}
+        {listStatus === 'ready' && items.length === 0 && <p className="status-message">{t('admin.assignment.none')}</p>}
         {listStatus === 'ready' && items.length > 0 && (
           <>
-            <p className="admin-hint">
-              항목 왼쪽의 ⋮⋮ 를 끌면 같은 주차 안에서, "N주차" 옆의 ⋮⋮ 를 끌면 주차끼리 순서가 바뀌고 바로 저장돼요.
-            </p>
+            <p className="admin-hint">{t('admin.assignment.hint')}</p>
             <SortableList
               items={weekGroups}
               onReorder={reorderWeeks}
@@ -145,7 +145,7 @@ function AdminAssignmentSection() {
                 <>
                   <div className="admin-week-group__head">
                     {weekHandle}
-                    <h3 className="admin-week-group__title">{group.week}주차</h3>
+                    <h3 className="admin-week-group__title">{t('assignments.week', { n: group.week })}</h3>
                   </div>
                   <SortableList
                     items={group.items}
@@ -158,24 +158,24 @@ function AdminAssignmentSection() {
                         <div className="admin-list__info">
                           <span className="admin-list__title">{item.title}</span>
                           <p className="admin-list__preview">
-                            {ASSIGNMENT_KINDS.find((kind) => kind.key === item.kind)?.label ?? item.kind}
+                            {t(`assignment.kind.${item.kind}`)}
                             {item.description ? ` · ${item.description}` : ''}
                           </p>
                         </div>
                         {pendingDeleteId === item.id ? (
                           <div className="admin-list__confirm">
-                            <span>삭제할까요?</span>
+                            <span>{t('common.confirmDelete')}</span>
                             <button type="button" onClick={() => confirmDelete(item)} disabled={deleting}>
-                              {deleting ? '삭제 중…' : '삭제'}
+                              {deleting ? t('common.deleting') : t('common.delete')}
                             </button>
                             <button type="button" onClick={() => setPendingDeleteId(null)} disabled={deleting}>
-                              취소
+                              {t('common.cancel')}
                             </button>
                           </div>
                         ) : (
                           <div className="admin-list__actions">
                             <button type="button" onClick={() => setEditingItem(item)}>
-                              수정
+                              {t('common.edit')}
                             </button>
                             <button
                               type="button"
@@ -184,7 +184,7 @@ function AdminAssignmentSection() {
                                 setPendingDeleteId(item.id)
                               }}
                             >
-                              삭제
+                              {t('common.delete')}
                             </button>
                           </div>
                         )}

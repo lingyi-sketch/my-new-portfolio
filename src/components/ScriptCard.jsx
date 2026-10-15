@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react'
+import { useLanguage } from '../i18n/LanguageContext'
 import SmartImage from './SmartImage'
 import DocumentViewer from './DocumentViewer'
 import './SlotCard.css'
 
 function ScriptCard({ slot }) {
+  const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const close = useCallback(() => setOpen(false), [])
 
@@ -14,15 +16,13 @@ function ScriptCard({ slot }) {
         <span className="slot-card__index">{slot.index}</span>
         {slot.fileUrl && (
           <button type="button" className="slot-card__open" onClick={() => setOpen(true)}>
-            대본 보기
+            {t('script.view')}
           </button>
         )}
       </div>
       <div className="slot-card__caption">
         <h3 className="slot-card__title">{slot.title}</h3>
-        <p className="slot-card__description">
-          {slot.description || '아직 소개 글이 없어요. 등록되면 이 자리에 표시돼요.'}
-        </p>
+        <p className="slot-card__description">{slot.description || t('common.noDescriptionYet')}</p>
       </div>
       {open && <DocumentViewer url={slot.fileUrl} title={slot.title} onClose={close} />}
     </div>

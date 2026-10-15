@@ -9,21 +9,24 @@ import GamePage from './pages/GamePage.jsx'
 import AssignmentsPage from './pages/AssignmentsPage.jsx'
 import Profile from './pages/Profile.jsx'
 import Admin from './pages/Admin.jsx'
+import { LanguageProvider } from './i18n/LanguageContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Profile />} />
-          <Route path="video" element={<VideoPage />} />
-          <Route path="script" element={<ScriptPage />} />
-          <Route path="game" element={<GamePage />} />
-          <Route path="assignments" element={<AssignmentsPage />} />
-          <Route path="admin" element={<Admin />} />
-          <Route path="*" element={<Profile />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Profile />} />
+            <Route path="video" element={<VideoPage />} />
+            <Route path="script" element={<ScriptPage />} />
+            <Route path="game" element={<GamePage />} />
+            <Route path="assignments" element={<AssignmentsPage />} />
+            <Route path="admin" element={<Admin />} />
+            <Route path="*" element={<Profile />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </LanguageProvider>
   </StrictMode>,
 )

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { signInAdmin } from '../lib/auth'
+import { useLanguage } from '../i18n/LanguageContext'
 import './LoginForm.css'
 
 function LoginForm() {
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -15,7 +17,7 @@ function LoginForm() {
     try {
       await signInAdmin(email, password)
     } catch {
-      setError('로그인에 실패했어요. 이메일과 비밀번호를 확인해 주세요.')
+      setError(t('login.error'))
     } finally {
       setSubmitting(false)
     }
@@ -24,7 +26,7 @@ function LoginForm() {
   return (
     <form className="login-form" onSubmit={handleSubmit}>
       <label className="login-form__field">
-        <span>이메일</span>
+        <span>{t('login.email')}</span>
         <input
           type="email"
           value={email}
@@ -34,7 +36,7 @@ function LoginForm() {
         />
       </label>
       <label className="login-form__field">
-        <span>비밀번호</span>
+        <span>{t('login.password')}</span>
         <input
           type="password"
           value={password}
@@ -45,7 +47,7 @@ function LoginForm() {
       </label>
       {error && <p className="login-form__error">{error}</p>}
       <button type="submit" disabled={submitting}>
-        {submitting ? '로그인 중…' : '로그인'}
+        {submitting ? t('login.submitting') : t('login.submit')}
       </button>
     </form>
   )
