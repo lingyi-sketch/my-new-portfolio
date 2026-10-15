@@ -1,0 +1,144 @@
+.doc-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 3vw, 2rem);
+  background: rgba(46, 40, 36, 0.6);
+}
+
+.doc-viewer__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(56rem, 100%);
+  height: min(92vh, 100%);
+  background: var(--color-bg);
+  border: var(--border);
+  box-shadow: 0 12px 40px rgba(46, 40, 36, 0.3);
+}
+
+.doc-viewer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: var(--border);
+}
+
+.doc-viewer__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-viewer__close {
+  flex-shrink: 0;
+  padding: 0.35rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--color-line);
+  color: var(--color-text-soft);
+  font-size: 0.78rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.doc-viewer__close:hover {
+  color: var(--color-key);
+  border-color: var(--color-key);
+}
+
+.doc-viewer__body {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background: var(--color-bg-soft);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.doc-viewer__message {
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--color-text-soft);
+}
+
+.doc-viewer__message--error {
+  color: var(--color-key);
+}
+
+.doc-viewer__pages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.doc-viewer__page {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(46, 40, 36, 0.15);
+  pointer-events: none;
+}
+
+.doc-viewer__text {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 4vw, 2.5rem);
+  background: #fff;
+  color: #2b2623;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.doc-viewer__text p {
+  margin: 0 0 0.9rem;
+}
+
+.doc-viewer__text h1,
+.doc-viewer__text h2,
+.doc-viewer__text h3 {
+  margin: 1.4rem 0 0.7rem;
+  font-size: 1.15rem;
+}
+
+.doc-viewer__text table {
+  width: 100%;
+  margin: 0.8rem 0;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.doc-viewer__text td,
+.doc-viewer__text th {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-line);
+  vertical-align: top;
+}
+
+.doc-viewer__text img {
+  max-width: 100%;
+  height: auto;
+}
+
+.doc-viewer__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 70vh;
+  border: 0;
+  background: #fff;
+}
+
+@media print {
+  .doc-viewer {
+    display: none;
+  }
+}

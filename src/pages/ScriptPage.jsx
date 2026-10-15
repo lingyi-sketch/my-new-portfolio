@@ -1,5 +1,5 @@
 import { useProjects } from '../hooks/useProjects'
-import SlotCard from '../components/SlotCard'
+import ScriptCard from '../components/ScriptCard'
 import '../components/SlotGrid.css'
 import './Section.css'
 
@@ -23,9 +23,9 @@ function ScriptPage() {
         </p>
       )}
       {status === 'success' && (
-        <div className="slot-grid slot-grid--dense">
+        <div className="slot-grid">
           {projects.map((project, i) => (
-            <SlotCard
+            <ScriptCard
               key={project.id}
               slot={{
                 index: String(i + 1).padStart(2, '0'),
@@ -33,7 +33,6 @@ function ScriptPage() {
                 description: project.description,
                 image: project.image_url,
                 fileUrl: project.video_url,
-                fileLabel: '대본 파일 보기',
               }}
             />
           ))}

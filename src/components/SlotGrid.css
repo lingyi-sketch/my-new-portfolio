@@ -4,20 +4,14 @@
   gap: var(--gap);
 }
 
-.slot-grid--dense {
-  grid-template-columns: repeat(4, 1fr);
-}
-
 @media (max-width: 900px) {
-  .slot-grid,
-  .slot-grid--dense {
+  .slot-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 560px) {
-  .slot-grid,
-  .slot-grid--dense {
+  .slot-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }

@@ -20,6 +20,32 @@
   object-fit: cover;
 }
 
+.slot-card__frame--landscape {
+  aspect-ratio: 16 / 10;
+}
+
+.slot-card__open {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  padding: 0.3rem 0.75rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.slot-card__open:hover {
+  color: var(--color-key);
+  border-color: var(--color-key);
+}
+
 .slot-card__file-icon {
   display: flex;
   flex-direction: column;
