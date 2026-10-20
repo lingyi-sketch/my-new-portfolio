@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 import SmartImage from './SmartImage'
-import { formatEntryDate } from '../lib/assignments'
 import './AssignmentCard.css'
 
 function AssignmentCard({ assignment }) {
   const { t } = useLanguage()
-  const meta = [assignment.course, formatEntryDate(assignment)].filter(Boolean).join(' · ')
+  const meta = assignment.course
 
   return (
     <article className="assignment-card">

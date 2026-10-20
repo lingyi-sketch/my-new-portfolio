@@ -175,7 +175,6 @@ export const messages = {
   'admin.assignment.urlPreview': m('URL 预览', 'URL 미리보기', 'URL preview'),
   'admin.assignment.week': m('周数', '주차', 'Week'),
   'admin.assignment.course': m('课程名', '수업 이름', 'Course name'),
-  'admin.assignment.date': m('日期', '날짜', 'Date'),
   'admin.assignment.summary': m('简介（列表卡片上显示的几句话）', '요약 (목록 카드에 보이는 짧은 글)', 'Summary (shown on the list card)'),
   'admin.assignment.cover': m('封面图（可选，显示在卡片和详情页上方）', '대표 이미지 (선택, 카드와 상세 상단에 표시)', 'Cover image (optional, shown on the card and detail page)'),
   'admin.assignment.removeCover': m('删除现有封面图', '현재 대표 이미지 삭제', 'Remove the current cover image'),

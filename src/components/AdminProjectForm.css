@@ -68,7 +68,7 @@
 
 .admin-assignment-row__pair {
   display: grid;
-  grid-template-columns: 7rem 1fr 11rem;
+  grid-template-columns: 7rem 1fr;
   gap: 1rem;
   align-items: end;
 }

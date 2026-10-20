@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchAssignments, deleteAssignment, formatEntryDate } from '../lib/assignments'
+import { fetchAssignments, deleteAssignment } from '../lib/assignments'
 import { saveOrder } from '../lib/ordering'
 import { fetchSetting, saveSetting } from '../lib/settings'
 import { WEEK_ORDER_KEY, orderWeeks } from '../lib/weekOrder'
@@ -158,7 +158,7 @@ function AdminAssignmentSection() {
                         <div className="admin-list__info">
                           <span className="admin-list__title">{item.title}</span>
                           <p className="admin-list__preview">
-                            {[item.course, formatEntryDate(item)].filter(Boolean).join(' · ')}
+                            {item.course}
                             {item.description ? ` — ${item.description}` : ''}
                           </p>
                         </div>

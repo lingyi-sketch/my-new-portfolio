@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { useAssignments } from '../hooks/useAssignments'
 import { useLanguage } from '../i18n/LanguageContext'
-import { inDisplayOrder, formatEntryDate } from '../lib/assignments'
+import { inDisplayOrder } from '../lib/assignments'
 import SmartImage from '../components/SmartImage'
 import { UrlPreview, canEmbed } from '../components/FilePreview'
 import './Section.css'
@@ -90,7 +90,7 @@ function AssignmentDetail() {
     )
   }
 
-  const meta = [t('assignments.week', { n: assignment.week }), assignment.course, formatEntryDate(assignment)]
+  const meta = [t('assignments.week', { n: assignment.week }), assignment.course]
     .filter(Boolean)
     .join(' · ')
 

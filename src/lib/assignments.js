@@ -4,7 +4,7 @@ import { edgeSortOrder } from './ordering'
 import { orderWeeks } from './weekOrder'
 
 const COLUMNS =
-  'id, week, title, description, course, entry_date, body, prompts, files, result_url, cover_url, created_at, sort_order'
+  'id, week, title, description, course, body, prompts, files, result_url, cover_url, created_at, sort_order'
 
 // Rows created before the "entry" format keep their old kind/content columns untouched;
 // the migration copies them into the new columns, and `kind` only has to satisfy NOT NULL.
@@ -93,11 +93,4 @@ export function groupByWeek(assignments) {
 export function inDisplayOrder(assignments, weekOrder) {
   const groups = groupByWeek(assignments)
   return orderWeeks([...groups.keys()], weekOrder).flatMap((week) => groups.get(week))
-}
-
-export function formatEntryDate(assignment) {
-  const raw = assignment.entry_date ?? assignment.created_at
-  if (!raw) return ''
-  const [year, month, day] = String(raw).slice(0, 10).split('-')
-  return year && month && day ? `${year}. ${month}. ${day}.` : ''
 }

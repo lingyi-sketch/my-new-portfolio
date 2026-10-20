@@ -23,7 +23,6 @@ function initialState(assignment, defaultWeek) {
   return {
     week: String(assignment?.week ?? defaultWeek ?? 1),
     course: assignment?.course ?? '',
-    entry_date: assignment?.entry_date ?? '',
     title: assignment?.title ?? '',
     description: assignment?.description ?? '',
     body: assignment?.body ?? '',
@@ -92,7 +91,6 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
       const values = {
         week: Number(form.week),
         course: form.course.trim() || null,
-        entry_date: form.entry_date || null,
         title: form.title,
         description: form.description,
         body: form.body.trim() ? form.body : null,
@@ -157,10 +155,6 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
         <label className="admin-form__field">
           <span>{t('admin.assignment.course')}</span>
           <input type="text" value={form.course} onChange={(e) => patch({ course: e.target.value })} />
-        </label>
-        <label className="admin-form__field">
-          <span>{t('admin.assignment.date')}</span>
-          <input type="date" value={form.entry_date} onChange={(e) => patch({ entry_date: e.target.value })} />
         </label>
       </div>
 
