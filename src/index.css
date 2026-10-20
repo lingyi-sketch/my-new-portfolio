@@ -1,11 +1,63 @@
+/* Each page has its own very light tint (set via <html data-page>, see App.jsx).
+   Text colours are derived from the same hue and keep a contrast of at least 4.8:1. */
+:root,
+:root[data-page='profile'] {
+  --color-bg: #fdf6f8;
+  --color-bg-soft: #faeaee;
+  --color-line: #f0dbdf;
+  --color-accent: #e89cab;
+  --color-key: #a8243e;
+  --color-head: #8c2136;
+  --color-text: #4a1c25;
+  --color-text-soft: #834955;
+}
+
+:root[data-page='script'] {
+  --color-bg: #fdf8f6;
+  --color-bg-soft: #faeeea;
+  --color-line: #f0dfdb;
+  --color-accent: #e8ab9c;
+  --color-key: #a83e24;
+  --color-head: #8c3621;
+  --color-text: #4a251c;
+  --color-text-soft: #835549;
+}
+
+:root[data-page='video'] {
+  --color-bg: #fdfaf6;
+  --color-bg-soft: #faf2ea;
+  --color-line: #f0e5db;
+  --color-accent: #e8bf9c;
+  --color-key: #9c5a21;
+  --color-head: #844e1f;
+  --color-text: #4a311c;
+  --color-text-soft: #7f6248;
+}
+
+:root[data-page='game'] {
+  --color-bg: #fdfbf6;
+  --color-bg-soft: #faf5ea;
+  --color-line: #f0e9db;
+  --color-accent: #e8ce9c;
+  --color-key: #87631d;
+  --color-head: #74561b;
+  --color-text: #4a3b1c;
+  --color-text-soft: #796744;
+}
+
+:root[data-page='assignments'] {
+  --color-bg: #fdfdf6;
+  --color-bg-soft: #faf8ea;
+  --color-line: #f0eddb;
+  --color-accent: #e8de9c;
+  --color-key: #7a6d1a;
+  --color-head: #675d18;
+  --color-text: #433d19;
+  --color-text-soft: #726c40;
+}
+
 :root {
-  --color-bg: #ede4de;
-  --color-bg-soft: #ddceca;
-  --color-text: #4a413c;
-  --color-text-soft: #998d85;
-  --color-line: #c9bcb3;
-  --color-key: #b98a91;
-  --color-key-2: #8ba3ac;
+  --color-key-2: #5f8a78;
   --color-key-3: #aca497;
 
   --font-display: 'Nanum Myeongjo', 'Noto Serif KR', 'Noto Serif SC', serif;
@@ -35,12 +87,14 @@ body {
   font-weight: 400;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 h1,
 h2,
 h3,
 h4 {
+  color: var(--color-head);
   font-family: var(--font-display);
   font-weight: 400;
   line-height: 1.25;

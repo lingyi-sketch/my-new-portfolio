@@ -10,21 +10,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%);
   transform: scale(1);
-  transition:
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    filter 0.7s ease;
-}
-
-.smart-image--color img {
-  filter: none;
-  transition: none;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 .smart-image--hover:hover img {
-  transform: scale(1.06);
-  filter: grayscale(0%);
+  transform: scale(1.04);
 }
 
 .smart-image--placeholder {
