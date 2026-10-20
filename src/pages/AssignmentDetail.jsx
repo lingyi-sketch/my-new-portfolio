@@ -14,12 +14,29 @@ function PromptBlock({ prompt }) {
   const [copied, setCopied] = useState(false)
 
   async function copy() {
+    const text = prompt.content ?? ''
+    let done = false
     try {
-      await navigator.clipboard.writeText(prompt.content ?? '')
+      await navigator.clipboard.writeText(text)
+      done = true
+    } catch {
+      // Clipboard API can be blocked (permissions, insecure context): fall back to a hidden textarea.
+      const area = document.createElement('textarea')
+      area.value = text
+      area.style.position = 'fixed'
+      area.style.opacity = '0'
+      document.body.appendChild(area)
+      area.select()
+      try {
+        done = document.execCommand('copy')
+      } catch {
+        done = false
+      }
+      area.remove()
+    }
+    if (done) {
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1800)
-    } catch {
-      // clipboard can be blocked (insecure context); the text stays selectable
     }
   }
 
