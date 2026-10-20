@@ -15,9 +15,7 @@ const GROUPS = [
 ]
 
 const keysFor = (group) =>
-  Object.keys(messages).filter(
-    (key) => group.prefixes.some((prefix) => key.startsWith(prefix)) && !key.startsWith('assignment.kindForm.'),
-  )
+  Object.keys(messages).filter((key) => group.prefixes.some((prefix) => key.startsWith(prefix)))
 
 function AdminTextSection() {
   const { t, overrides, setOverrides } = useLanguage()

@@ -31,18 +31,6 @@
   align-items: start;
 }
 
-.week-block .assignment-card__title {
-  font-size: 1rem;
-}
-
-.week-block .assignment-card__markdown {
-  max-height: 8rem;
-}
-
-.week-block .assignment-card__markdown--open {
-  max-height: none;
-}
-
 @media (max-width: 860px) {
   .weeks {
     grid-template-columns: 1fr;

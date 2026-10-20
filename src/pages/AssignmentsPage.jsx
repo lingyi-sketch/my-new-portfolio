@@ -2,18 +2,10 @@ import { useAssignments } from '../hooks/useAssignments'
 import { useMasonry } from '../hooks/useMasonry'
 import { useLanguage } from '../i18n/LanguageContext'
 import { orderWeeks } from '../lib/weekOrder'
+import { groupByWeek } from '../lib/assignments'
 import AssignmentCard from '../components/AssignmentCard'
 import './Section.css'
 import './AssignmentsPage.css'
-
-function groupByWeek(assignments) {
-  const weeks = new Map()
-  for (const assignment of assignments) {
-    if (!weeks.has(assignment.week)) weeks.set(assignment.week, [])
-    weeks.get(assignment.week).push(assignment)
-  }
-  return weeks
-}
 
 function AssignmentsPage() {
   const { t } = useLanguage()

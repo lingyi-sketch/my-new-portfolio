@@ -1,147 +1,51 @@
 .assignment-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
   min-width: 0;
 }
 
+.assignment-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.assignment-card__cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-bg-soft);
+}
+
+.assignment-card__cover > .smart-image {
+  position: absolute;
+  inset: 0;
+}
+
 .assignment-card__title {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.assignment-card__body:hover .assignment-card__title {
+  color: var(--color-key);
 }
 
 .assignment-card__description {
   font-size: 0.85rem;
   color: var(--color-text-soft);
   line-height: 1.7;
-  white-space: pre-line;
-}
-
-.assignment-card__media {
-  position: relative;
-  width: 100%;
-  background: var(--color-bg-soft);
-}
-
-.assignment-card__media--wide {
-  aspect-ratio: 16 / 9;
-}
-
-.assignment-card__media--photo {
-  aspect-ratio: 4 / 3;
-}
-
-.assignment-card__media--doc {
-  aspect-ratio: 3 / 4;
-}
-
-.assignment-card__preview {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: var(--color-bg-soft);
-  object-fit: cover;
-}
-
-.assignment-card__prompt {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 1.1rem;
-  border: var(--border);
-  background: var(--color-bg-soft);
-}
-
-.assignment-card__markdown {
-  max-height: 11rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--color-text);
-  overflow-wrap: anywhere;
 }
 
-.assignment-card__markdown--open {
-  max-height: none;
-}
-
-.assignment-card__markdown > :first-child {
-  margin-top: 0;
-}
-
-.assignment-card__markdown > :last-child {
-  margin-bottom: 0;
-}
-
-.assignment-card__markdown h1,
-.assignment-card__markdown h2,
-.assignment-card__markdown h3,
-.assignment-card__markdown h4 {
-  font-size: 1rem;
-  margin: 1rem 0 0.4rem;
-}
-
-.assignment-card__markdown p,
-.assignment-card__markdown ul,
-.assignment-card__markdown ol {
-  margin: 0.5rem 0;
-}
-
-.assignment-card__markdown ul,
-.assignment-card__markdown ol {
-  padding-left: 1.2rem;
-}
-
-.assignment-card__markdown li {
-  list-style: inherit;
-}
-
-.assignment-card__markdown ul {
-  list-style: disc;
-}
-
-.assignment-card__markdown ol {
-  list-style: decimal;
-}
-
-.assignment-card__markdown code {
-  font-size: 0.8rem;
-  background: rgba(74, 65, 60, 0.08);
-  padding: 0.05rem 0.3rem;
-}
-
-.assignment-card__markdown pre {
-  margin: 0.6rem 0;
-  padding: 0.7rem 0.8rem;
-  overflow-x: auto;
-  background: rgba(74, 65, 60, 0.08);
-}
-
-.assignment-card__markdown pre code {
-  padding: 0;
-  background: none;
-}
-
-.assignment-card__markdown blockquote {
-  margin: 0.6rem 0;
-  padding-left: 0.8rem;
-  border-left: 2px solid var(--color-line);
-  color: var(--color-text-soft);
-}
-
-.assignment-card__toggle {
-  align-self: flex-start;
-  padding: 0;
-  background: none;
-  border: 0;
-  font-size: 0.78rem;
-  color: var(--color-key);
-  cursor: pointer;
-}
-
-.assignment-card__link {
+.assignment-card__more {
   width: fit-content;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
   color: var(--color-key);
 }

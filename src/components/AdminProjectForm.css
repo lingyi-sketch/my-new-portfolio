@@ -66,6 +66,43 @@
   color: var(--color-key);
 }
 
+.admin-assignment-row__pair {
+  display: grid;
+  grid-template-columns: 7rem 1fr 11rem;
+  gap: 1rem;
+  align-items: end;
+}
+
+.admin-assignment-row__pair .admin-form__field--week {
+  max-width: none;
+}
+
+.admin-assignment-row__sub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--color-line);
+}
+
+.admin-assignment-row__inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.admin-assignment-row__inline input {
+  width: auto;
+}
+
+@media (max-width: 640px) {
+  .admin-assignment-row__pair {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-form__row {
   display: grid;
   grid-template-columns: 7rem 1fr;
