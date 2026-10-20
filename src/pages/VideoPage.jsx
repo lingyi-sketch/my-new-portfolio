@@ -30,6 +30,7 @@ function VideoPage() {
                 image: project.image_url,
                 fileUrl: project.video_url,
                 fileLabel: t('video.fileLabel'),
+                landscape: true,
               }}
             />
           ))}

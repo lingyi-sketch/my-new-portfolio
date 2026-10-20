@@ -28,7 +28,7 @@ function SlotCard({ slot }) {
 
   return (
     <div className="slot-card">
-      <div className="slot-card__frame">
+      <div className={`slot-card__frame${slot.landscape ? ' slot-card__frame--landscape' : ''}`}>
         {!hasImage && hasFile ? (
           canPreview ? (
             <FilePreview url={slot.fileUrl} title={slot.title} />

@@ -1,0 +1,40 @@
+.admin-text-group {
+  border-top: 1px solid var(--color-line);
+  padding: 0.9rem 0;
+}
+
+.admin-text-group > summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.admin-text-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 0;
+  border-bottom: 1px dashed var(--color-line);
+}
+
+.admin-text-item__key {
+  font-size: 0.72rem;
+  color: var(--color-text-soft);
+}
+
+.admin-text-item__fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.admin-text-item__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .admin-text-item__fields {
+    grid-template-columns: 1fr;
+  }
+}

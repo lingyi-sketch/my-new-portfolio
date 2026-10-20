@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { DEFAULT_LANGUAGE, LANGUAGES, messages } from './messages'
+import { fetchTextOverrides } from '../lib/textOverrides'
 
 const STORAGE_KEY = 'lang'
 const LanguageContext = createContext(null)
@@ -29,17 +30,35 @@ export function LanguageProvider({ children }) {
     }
   }, [])
 
+  // Texts the admin edited from the dashboard; they win over the built-in messages.
+  const [overrides, setOverrides] = useState({})
+
+  useEffect(() => {
+    let cancelled = false
+    fetchTextOverrides()
+      .then((loaded) => {
+        if (!cancelled) setOverrides(loaded)
+      })
+      .catch(() => {
+        // without the database the built-in texts are used as they are
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   const t = useCallback(
     (key, vars) => {
       const entry = messages[key]
-      const template = entry?.[lang] ?? entry?.ko ?? key
+      const edited = overrides[key]?.[lang]
+      const template = (typeof edited === 'string' && edited.trim() ? edited : null) ?? entry?.[lang] ?? entry?.ko ?? key
       if (!vars) return template
       return template.replace(/\{(\w+)\}/g, (match, name) => (name in vars ? String(vars[name]) : match))
     },
-    [lang],
+    [lang, overrides],
   )
 
-  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t])
+  const value = useMemo(() => ({ lang, setLang, t, overrides, setOverrides }), [lang, setLang, t, overrides])
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }

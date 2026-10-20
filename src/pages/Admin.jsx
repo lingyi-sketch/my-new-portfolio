@@ -9,6 +9,7 @@ import AdminGameForm from '../components/AdminGameForm'
 import AdminProfileSection from '../components/AdminProfileSection'
 import AdminAssignmentSection from '../components/AdminAssignmentSection'
 import AdminMenuSection from '../components/AdminMenuSection'
+import AdminTextSection from '../components/AdminTextSection'
 import UploadStatusBanner from '../components/UploadStatusBanner'
 import SortableList from '../components/SortableList'
 import SmartImage from '../components/SmartImage'
@@ -23,6 +24,7 @@ const TABS = [
   { key: 'game', labelKey: 'nav.game' },
   { key: 'assignments', labelKey: 'nav.assignments' },
   { key: 'menu', labelKey: 'admin.tab.menu' },
+  { key: 'text', labelKey: 'admin.tab.text' },
 ]
 
 function AdminCategorySection({ category, label }) {
@@ -354,6 +356,7 @@ function Admin() {
       {activeTab === 'game' && <AdminGameSection />}
       {activeTab === 'assignments' && <AdminAssignmentSection />}
       {activeTab === 'menu' && <AdminMenuSection />}
+      {activeTab === 'text' && <AdminTextSection />}
     </div>
   )
 }
