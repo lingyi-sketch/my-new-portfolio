@@ -9,6 +9,18 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+/* The frame size comes from aspect-ratio only: media is taken out of flow so an
+   image with a different natural ratio can never stretch its card. */
+.slot-card__frame > .smart-image,
+.slot-card__frame > .slot-card__preview,
+.slot-card__frame > .slot-card__file-icon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .slot-card__preview {
