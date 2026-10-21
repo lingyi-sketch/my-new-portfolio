@@ -1,6 +1,7 @@
 import { useProjects } from '../hooks/useProjects'
 import { useLanguage } from '../i18n/LanguageContext'
 import SlotCard from '../components/SlotCard'
+import PageBar from '../components/PageBar'
 import '../components/SlotGrid.css'
 import './Section.css'
 
@@ -13,6 +14,7 @@ function VideoPage() {
       <header className="section-page__header">
         <span className="eyebrow">{t('video.eyebrow')}</span>
         <h2 className="section-page__title">{t('video.title')}</h2>
+        <PageBar />
       </header>
 
       {status === 'loading' && <p className="status-message">{t('video.loading')}</p>}

@@ -4,6 +4,7 @@ import { useLanguage } from '../i18n/LanguageContext'
 import { orderWeeks } from '../lib/weekOrder'
 import { groupByWeek } from '../lib/assignments'
 import AssignmentCard from '../components/AssignmentCard'
+import PageBar from '../components/PageBar'
 import './Section.css'
 import './AssignmentsPage.css'
 
@@ -20,6 +21,7 @@ function AssignmentsPage() {
       <header className="section-page__header">
         <span className="eyebrow">{t('assignments.eyebrow')}</span>
         <h2 className="section-page__title">{t('assignments.title')}</h2>
+        <PageBar />
       </header>
 
       {status === 'loading' && <p className="status-message">{t('assignments.loading')}</p>}

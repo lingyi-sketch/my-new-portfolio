@@ -1,6 +1,7 @@
 import { useGames } from '../hooks/useGames'
 import { useLanguage } from '../i18n/LanguageContext'
 import GameBlock from '../components/GameBlock'
+import PageBar from '../components/PageBar'
 import './Section.css'
 
 function GamePage() {
@@ -13,6 +14,7 @@ function GamePage() {
         <span className="eyebrow">{t('game.eyebrow')}</span>
         <h2 className="section-page__title">{t('game.title')}</h2>
         <p className="section-page__description">{t('game.description')}</p>
+        <PageBar />
       </header>
 
       {status === 'loading' && <p className="status-message">{t('game.loading')}</p>}

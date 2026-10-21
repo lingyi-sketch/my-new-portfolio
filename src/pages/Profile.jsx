@@ -2,6 +2,7 @@ import { useProfile } from '../hooks/useProfile'
 import { useLanguage } from '../i18n/LanguageContext'
 import { pickProfileText } from '../data/works'
 import SmartImage from '../components/SmartImage'
+import PageBar from '../components/PageBar'
 import './Profile.css'
 
 function contactHref(value) {
@@ -55,6 +56,7 @@ function Profile() {
       <span className="eyebrow">{t('profile.eyebrow')}</span>
       <h1 className="profile-page__name">{content.name}</h1>
       <p className="quote profile-page__quote">{text('subtitle')}</p>
+      <PageBar />
 
       <div className="profile-page__grid">
         {(text('intro') || text('bio')) && (

@@ -17,6 +17,9 @@
   --color-text-soft: #6c5348;
   --color-menu-on: #5f443b;
   --color-deep: #7a5446;
+  --bar-1: #d6ebe4;
+  --bar-2: #ffd3d4;
+  --bar-3: #ecdfd6;
 }
 
 :root[data-page='script'] {
@@ -32,6 +35,9 @@
   --color-text-soft: #6a4a4b;
   --color-menu-on: #7f2433;
   --color-deep: #8a2a3a;
+  --bar-1: #d3e0ea;
+  --bar-2: #fffaf3;
+  --bar-3: #d6e4d1;
 }
 
 :root[data-page='video'] {
@@ -47,6 +53,9 @@
   --color-text-soft: #2d5078;
   --color-menu-on: #9a3b2a;
   --color-deep: #9a3b2a;
+  --bar-1: #e1e6c6;
+  --bar-2: #f2f4e5;
+  --bar-3: #fadfc0;
 }
 
 :root[data-page='game'] {
@@ -62,6 +71,9 @@
   --color-text-soft: #5a3a2a;
   --color-menu-on: #54408a;
   --color-deep: #5a3a2a;
+  --bar-1: #e4dcf3;
+  --bar-2: #d4e0e9;
+  --bar-3: #f8ecb9;
 }
 
 :root[data-page='assignments'] {
@@ -77,6 +89,9 @@
   --color-text-soft: #1f3358;
   --color-menu-on: #8f3913;
   --color-deep: #1f3358;
+  --bar-1: #e6efb9;
+  --bar-2: #f4f8e0;
+  --bar-3: #ddd3e4;
 }
 :root {
   --color-key-2: #5f8a78;
@@ -204,4 +219,5 @@ ul {
     transform: translateY(0);
   }
 }
+
 

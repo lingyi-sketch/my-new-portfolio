@@ -1,6 +1,7 @@
 import { useProjects } from '../hooks/useProjects'
 import { useLanguage } from '../i18n/LanguageContext'
 import ScriptCard from '../components/ScriptCard'
+import PageBar from '../components/PageBar'
 import '../components/SlotGrid.css'
 import './Section.css'
 
@@ -13,6 +14,7 @@ function ScriptPage() {
       <header className="section-page__header">
         <span className="eyebrow">{t('script.eyebrow')}</span>
         <h2 className="section-page__title">{t('script.title')}</h2>
+        <PageBar />
       </header>
 
       {status === 'loading' && <p className="status-message">{t('script.loading')}</p>}
