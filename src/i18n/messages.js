@@ -4,7 +4,7 @@
   { code: 'en', short: 'EN', name: 'English', htmlLang: 'en' },
 ]
 
-export const DEFAULT_LANGUAGE = 'zh'
+export const DEFAULT_LANGUAGE = 'ko'
 
 const m = (zh, ko, en) => ({ zh, ko, en })
 
