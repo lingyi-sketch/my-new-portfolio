@@ -19,19 +19,21 @@ function ScriptPage() {
       {status === 'empty' && <p className="status-message">{t('script.empty')}</p>}
       {status === 'error' && <p className="status-message status-message--error">{t('script.error')}</p>}
       {status === 'success' && (
-        <div className="slot-grid">
-          {projects.map((project, i) => (
-            <ScriptCard
-              key={project.id}
-              slot={{
-                index: String(i + 1).padStart(2, '0'),
-                title: project.title,
-                description: project.description,
-                image: project.image_url,
-                fileUrl: project.video_url,
-              }}
-            />
-          ))}
+        <div className="color-panel">
+          <div className="slot-grid">
+            {projects.map((project, i) => (
+              <ScriptCard
+                key={project.id}
+                slot={{
+                  index: String(i + 1).padStart(2, '0'),
+                  title: project.title,
+                  description: project.description,
+                  image: project.image_url,
+                  fileUrl: project.video_url,
+                }}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

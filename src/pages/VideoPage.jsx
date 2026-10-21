@@ -19,21 +19,23 @@ function VideoPage() {
       {status === 'empty' && <p className="status-message">{t('video.empty')}</p>}
       {status === 'error' && <p className="status-message status-message--error">{t('video.error')}</p>}
       {status === 'success' && (
-        <div className="slot-grid">
-          {projects.map((project, i) => (
-            <SlotCard
-              key={project.id}
-              slot={{
-                index: String(i + 1).padStart(2, '0'),
-                title: project.title,
-                description: project.description,
-                image: project.image_url,
-                fileUrl: project.video_url,
-                fileLabel: t('video.fileLabel'),
-                landscape: true,
-              }}
-            />
-          ))}
+        <div className="color-panel">
+          <div className="slot-grid">
+            {projects.map((project, i) => (
+              <SlotCard
+                key={project.id}
+                slot={{
+                  index: String(i + 1).padStart(2, '0'),
+                  title: project.title,
+                  description: project.description,
+                  image: project.image_url,
+                  fileUrl: project.video_url,
+                  fileLabel: t('video.fileLabel'),
+                  landscape: true,
+                }}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

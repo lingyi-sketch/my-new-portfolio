@@ -1,61 +1,83 @@
-/* Each page has its own very light tint (set via <html data-page>, see App.jsx).
-   Text colours are derived from the same hue and keep a contrast of at least 4.8:1. */
+﻿/* Each page has its own palette (set via <html data-page>, see App.jsx):
+   light fills (page background, big panel, small block) and deep text colours.
+   --color-head: page title / logo      --color-title: card titles
+   --color-text: body text              --color-key: small labels and links
+   --color-text-soft: menu / secondary  --color-menu-on: current menu item */
 :root,
 :root[data-page='profile'] {
-  --color-bg: #fdf6f8;
-  --color-bg-soft: #faeaee;
-  --color-line: #f0dbdf;
-  --color-accent: #e89cab;
-  --color-key: #a8243e;
-  --color-head: #8c2136;
-  --color-text: #4a1c25;
-  --color-text-soft: #834955;
+  --color-bg: #fffaf5;
+  --color-bg-soft: #ecdfd6;
+  --color-panel: #d6ebe4;
+  --color-block: #ecdfd6;
+  --color-line: #f1e9e2;
+  --color-head: #5f443b;
+  --color-title: #5f443b;
+  --color-key: #7a5446;
+  --color-text: #4a3a35;
+  --color-text-soft: #6c5348;
+  --color-menu-on: #5f443b;
+  --color-deep: #7a5446;
 }
 
 :root[data-page='script'] {
-  --color-bg: #fdf8f6;
-  --color-bg-soft: #faeeea;
-  --color-line: #f0dfdb;
-  --color-accent: #e8ab9c;
-  --color-key: #a83e24;
-  --color-head: #8c3621;
-  --color-text: #4a251c;
-  --color-text-soft: #835549;
+  --color-bg: #fffaf6;
+  --color-bg-soft: #fffaf3;
+  --color-panel: #d3e0ea;
+  --color-block: #fffaf3;
+  --color-line: #efdfd8;
+  --color-head: #7f2433;
+  --color-title: #46623f;
+  --color-key: #46623f;
+  --color-text: #7f2433;
+  --color-text-soft: #6a4a4b;
+  --color-menu-on: #7f2433;
+  --color-deep: #8a2a3a;
 }
 
 :root[data-page='video'] {
-  --color-bg: #fdfaf6;
-  --color-bg-soft: #faf2ea;
-  --color-line: #f0e5db;
-  --color-accent: #e8bf9c;
-  --color-key: #9c5a21;
-  --color-head: #844e1f;
-  --color-text: #4a311c;
-  --color-text-soft: #7f6248;
+  --color-bg: #fffbf2;
+  --color-bg-soft: #fadfc0;
+  --color-panel: #e1e6c6;
+  --color-block: #fadfc0;
+  --color-line: #efe3d3;
+  --color-head: #2d5078;
+  --color-title: #2d5078;
+  --color-key: #9a3b2a;
+  --color-text: #9a3b2a;
+  --color-text-soft: #2d5078;
+  --color-menu-on: #9a3b2a;
+  --color-deep: #9a3b2a;
 }
 
 :root[data-page='game'] {
-  --color-bg: #fdfbf6;
-  --color-bg-soft: #faf5ea;
-  --color-line: #f0e9db;
-  --color-accent: #e8ce9c;
-  --color-key: #87631d;
-  --color-head: #74561b;
-  --color-text: #4a3b1c;
-  --color-text-soft: #796744;
+  --color-bg: #fffdf5;
+  --color-bg-soft: #d4e0e9;
+  --color-panel: #e4dcf3;
+  --color-block: #d4e0e9;
+  --color-line: #efe8d3;
+  --color-head: #54408a;
+  --color-title: #54408a;
+  --color-key: #5a3a2a;
+  --color-text: #5a3a2a;
+  --color-text-soft: #5a3a2a;
+  --color-menu-on: #54408a;
+  --color-deep: #5a3a2a;
 }
 
 :root[data-page='assignments'] {
-  --color-bg: #fdfdf6;
-  --color-bg-soft: #faf8ea;
-  --color-line: #f0eddb;
-  --color-accent: #e8de9c;
-  --color-key: #7a6d1a;
-  --color-head: #675d18;
-  --color-text: #433d19;
-  --color-text-soft: #726c40;
+  --color-bg: #fffdf7;
+  --color-bg-soft: #f4f8e0;
+  --color-panel: #e6efb9;
+  --color-block: #f4f8e0;
+  --color-line: #ebe8d5;
+  --color-head: #1f3358;
+  --color-title: #1f3358;
+  --color-key: #8f3913;
+  --color-text: #8f3913;
+  --color-text-soft: #1f3358;
+  --color-menu-on: #8f3913;
+  --color-deep: #1f3358;
 }
-
 :root {
   --color-key-2: #5f8a78;
   --color-key-3: #aca497;
@@ -102,8 +124,20 @@ h4 {
   margin: 0;
 }
 
+h3,
+h4 {
+  color: var(--color-title);
+}
+
 p {
   margin: 0;
+}
+
+/* the big colour panel that holds a page's content */
+.color-panel {
+  background: var(--color-panel);
+  border-radius: 22px;
+  padding: clamp(1.1rem, 3vw, 1.75rem);
 }
 
 a {
@@ -170,3 +204,4 @@ ul {
     transform: translateY(0);
   }
 }
+

@@ -21,11 +21,21 @@
 .profile-page__grid {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(2rem, 5vw, 3rem);
-  padding-top: 2rem;
-  border-top: var(--border);
-  min-height: clamp(14rem, 30vw, 20rem);
+  gap: clamp(1.1rem, 3vw, 1.6rem);
+  padding-top: 1.25rem;
+}
+
+/* the profile page uses three panels: mint (intro), pink (photos), light coffee (contact) */
+.profile-page__panel--mint {
+  background: #d6ebe4;
+}
+
+.profile-page__panel--pink {
+  background: #ffd3d4;
+}
+
+.profile-page__panel--coffee {
+  background: #ecdfd6;
 }
 
 .profile-page__bottom {
@@ -39,6 +49,10 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 44rem;
+  padding: clamp(1.1rem, 3vw, 1.6rem) clamp(1.2rem, 3.5vw, 1.8rem);
+  background: var(--color-bg);
+  border-radius: 14px;
 }
 
 .profile-page__intro {
@@ -114,6 +128,8 @@
 
 .profile-page__photo {
   aspect-ratio: 4 / 5;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .profile-page__right {
@@ -134,10 +150,6 @@
 }
 
 @media (max-width: 640px) {
-  .profile-page__grid {
-    min-height: 0;
-  }
-
   .profile-page__bottom {
     grid-template-columns: 1fr;
   }

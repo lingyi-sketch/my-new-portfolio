@@ -94,8 +94,9 @@
   font-family: var(--font-display);
   font-style: italic;
   font-size: 0.85rem;
-  color: var(--color-bg);
-  background: rgba(74, 65, 60, 0.6);
+  color: #fff;
+  background: var(--color-deep);
+  border-radius: 3px;
   padding: 0.1rem 0.5rem;
   pointer-events: none;
 }
@@ -111,9 +112,20 @@
   font-weight: 400;
 }
 
+/* inside the big panel every card sits on its own small block */
+.color-panel .slot-card {
+  background: var(--color-block);
+  padding: 10px 10px 16px;
+  border-radius: 14px;
+}
+
+.color-panel .slot-card__caption {
+  padding: 0 6px;
+}
+
 .slot-card__description {
   font-size: 0.82rem;
-  color: var(--color-text-soft);
+  color: var(--color-text);
   line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 8;

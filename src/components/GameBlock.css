@@ -31,6 +31,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  padding: 14px;
+  background: var(--color-block);
+  border-radius: 14px;
 }
 
 .game-panel__label {
@@ -39,7 +42,7 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-key-2);
+  color: var(--color-key);
 }
 
 .game-panel__frame {
@@ -69,7 +72,7 @@
 
 .game-panel__text {
   font-size: 0.9rem;
-  color: var(--color-text-soft);
+  color: var(--color-text);
   line-height: 1.6;
 }
 

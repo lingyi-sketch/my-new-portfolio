@@ -35,7 +35,7 @@
 
 .assignment-card__description {
   font-size: 0.85rem;
-  color: var(--color-text-soft);
+  color: var(--color-text);
   line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 4;

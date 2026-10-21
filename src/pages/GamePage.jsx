@@ -19,7 +19,7 @@ function GamePage() {
       {status === 'empty' && <p className="status-message">{t('game.empty')}</p>}
       {status === 'error' && <p className="status-message status-message--error">{t('game.error')}</p>}
       {status === 'success' && (
-        <div className="section-page__games">
+        <div className="color-panel section-page__games">
           {games.map((game, i) => (
             <GameBlock
               key={game.id}

@@ -26,17 +26,19 @@ function AssignmentsPage() {
       {status === 'empty' && <p className="status-message">{t('assignments.empty')}</p>}
       {status === 'error' && <p className="status-message status-message--error">{t('assignments.error')}</p>}
       {status === 'success' && (
-        <div className="weeks" ref={weeksRef}>
-          {orderedWeeks.map((week) => (
-            <section key={week} className="week-block">
-              <h3 className="week-block__title">{t('assignments.week', { n: week })}</h3>
-              <div className="week-block__grid">
-                {groups.get(week).map((assignment) => (
-                  <AssignmentCard key={assignment.id} assignment={assignment} />
-                ))}
-              </div>
-            </section>
-          ))}
+        <div className="color-panel">
+          <div className="weeks" ref={weeksRef}>
+            {orderedWeeks.map((week) => (
+              <section key={week} className="week-block">
+                <h3 className="week-block__title">{t('assignments.week', { n: week })}</h3>
+                <div className="week-block__grid">
+                  {groups.get(week).map((assignment) => (
+                    <AssignmentCard key={assignment.id} assignment={assignment} />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
         </div>
       )}
     </div>
