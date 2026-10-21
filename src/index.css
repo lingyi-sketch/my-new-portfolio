@@ -36,9 +36,9 @@
 
 :root[data-page='video'] {
   --color-bg: #fffbf2;
-  --color-bg-soft: #fadfc0;
+  --color-bg-soft: #f2f4e5;
   --color-panel: #e1e6c6;
-  --color-block: #fadfc0;
+  --color-block: #f2f4e5;
   --color-line: #efe3d3;
   --color-head: #2d5078;
   --color-title: #2d5078;
