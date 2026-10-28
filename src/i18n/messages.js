@@ -103,6 +103,8 @@ export const messages = {
   'assignments.file': m('文件', 'FILE', 'FILE'),
   'assignments.open': m('打开 →', '열기 →', 'Open →'),
   'assignments.result': m('查看成果 →', '결과물 보기 →', 'View the result →'),
+  'assignments.gameHint': m('先点一下「시작」，用方向键移动，E 键或空格键接收/递送咖啡。', '먼저 「시작」을 누르고, 방향키로 이동하며 E 또는 스페이스바로 커피를 받고 전하세요.', 'Press 「시작」 first, move with the arrow keys, and use E or Space to pick up and deliver coffee.'),
+  'assignments.gameFull': m('在新窗口全屏玩 ↗', '새 창에서 크게 하기 ↗', 'Open in a new window ↗'),
 
   // login / admin shell
   'login.email': m('邮箱', '이메일', 'Email'),
@@ -190,7 +192,7 @@ export const messages = {
   'admin.assignment.fileUrl': m('链接', '링크', 'Link'),
   'admin.assignment.fileUpload': m('或上传文件（选了文件就以文件为准）', '또는 파일 올리기 (파일을 고르면 파일이 우선)', 'Or upload a file (a chosen file takes priority)'),
   'admin.assignment.addFile': m('+ 添加文件', '+ 파일 추가', '+ Add a file'),
-  'admin.assignment.resultUrl': m('成果链接（可选，如作品网址、YouTube 视频）', '결과물 링크 (선택, 작품 주소·YouTube 영상 등)', 'Result link (optional, e.g. a live page or YouTube video)'),
+  'admin.assignment.resultUrl': m('成果链接（可选；填 /games/文件名.html 可以直接在网页里玩游戏）', '결과물 링크 (선택, 작품 주소·YouTube 영상 등. /games/파일명.html 로 쓰면 페이지 안에서 바로 게임을 할 수 있어요)', 'Result link (optional; /games/file.html lets visitors play the game right on the page)'),
   'admin.assignment.submit': m('登记作业', '과제 등록', 'Add assignment'),
   'admin.assignment.failed': m('保存失败。您输入的内容已保留，请重试。', '저장에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.', 'Could not save. Your input is kept, please try again.'),
 

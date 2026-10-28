@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { createAssignment, updateAssignment, storedUrls } from '../lib/assignments'
 import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
 import { UrlPreview, parseHttpUrl } from './FilePreview'
+import { isLocalGame } from './GameFrame'
 import { useLanguage } from '../i18n/LanguageContext'
 import './AdminProjectForm.css'
 
@@ -123,7 +124,7 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
     setError('')
 
     for (const url of [form.result_url.trim(), ...form.files.map((row) => row.url.trim())]) {
-      if (url && !parseHttpUrl(url)) {
+      if (url && !parseHttpUrl(url) && !isLocalGame(url)) {
         setError(t('admin.project.badUrl'))
         return
       }
@@ -266,7 +267,7 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
 
       <label className="admin-form__field">
         <span>{t('admin.assignment.resultUrl')}</span>
-        <input type="url" placeholder="https://" value={form.result_url} onChange={(e) => patch({ result_url: e.target.value })} />
+        <input type="text" placeholder="https:// 또는 /games/xxx.html" value={form.result_url} onChange={(e) => patch({ result_url: e.target.value })} />
       </label>
       <UrlPreview url={form.result_url} title={t('admin.assignment.urlPreview')} mediaClassName="url-preview-box" previewClassName="" />
 

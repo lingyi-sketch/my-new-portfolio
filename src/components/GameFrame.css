@@ -1,0 +1,30 @@
+.game-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.game-frame__screen {
+  display: block;
+  width: 100%;
+  height: clamp(22rem, 70vh, 40rem);
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-bg-soft);
+}
+
+.game-frame__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: var(--color-text);
+}
+
+.game-frame__bar a {
+  color: var(--color-key);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

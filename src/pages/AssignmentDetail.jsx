@@ -6,6 +6,7 @@ import { useLanguage } from '../i18n/LanguageContext'
 import { inDisplayOrder } from '../lib/assignments'
 import SmartImage from '../components/SmartImage'
 import { UrlPreview, canEmbed } from '../components/FilePreview'
+import GameFrame, { isLocalGame } from '../components/GameFrame'
 import './Section.css'
 import './AssignmentDetail.css'
 
@@ -133,7 +134,11 @@ function AssignmentDetail() {
           </ul>
         )}
 
-        {assignment.result_url && (
+        {isLocalGame(assignment.result_url) && (
+          <GameFrame src={assignment.result_url} title={assignment.title} />
+        )}
+
+        {assignment.result_url && !isLocalGame(assignment.result_url) && (
           <div className="assignment-detail__result">
             {canEmbed(assignment.result_url) && (
               <UrlPreview url={assignment.result_url} title={assignment.title} mediaClassName="assignment-detail__embed" previewClassName="" />
