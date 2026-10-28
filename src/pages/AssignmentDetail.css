@@ -17,11 +17,11 @@
 }
 
 /* text stays at a comfortable reading width; the A/B comparison uses the full page width */
-.assignment-detail__article > :not(.compare):not(.game-frame) {
+.assignment-detail__article > :not(.compare):not(.game-frame):not(.prompt-block):not(.file-list):not(.assignment-detail__result) {
   max-width: 46rem;
 }
 
-/* a playable game fills the page width like the A/B comparison; height follows the game's 3:2 screen plus its buttons */
+/* prompt panels, attached files and result embeds also use the full width; a playable game fills the page width like the A/B comparison; height follows the game's 3:2 screen plus its buttons */
 @media (min-width: 900px) {
   .assignment-detail__article > .game-frame .game-frame__screen {
     height: auto;
