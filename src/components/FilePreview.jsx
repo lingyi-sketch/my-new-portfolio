@@ -3,6 +3,7 @@ import './LinkCard.css'
 
 const VIDEO_EXTENSIONS = new Set(['mp4', 'mov', 'webm', 'm4v'])
 const DOC_EXTENSIONS = new Set(['doc', 'docx'])
+const IMAGE_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp'])
 
 export function fileExtension(url) {
   return url?.split('.').pop()?.split(/[?#]/)[0]?.toLowerCase()
@@ -10,6 +11,14 @@ export function fileExtension(url) {
 
 export function isVideoFile(url) {
   return VIDEO_EXTENSIONS.has(fileExtension(url))
+}
+
+export function isImageFile(url) {
+  return IMAGE_EXTENSIONS.has(fileExtension(url))
+}
+
+export function isPdfFile(url) {
+  return fileExtension(url) === 'pdf'
 }
 
 export function canPreviewFile(url) {
@@ -37,6 +46,9 @@ export function embedUrl(url) {
       }
       const match = parsed.pathname.match(/^\/(?:embed|shorts)\/([\w-]+)/)
       return match ? `https://www.youtube-nocookie.com/embed/${match[1]}` : null
+    }
+    if (host === 'figma.com' && /^\/(design|file|proto|board)\//.test(parsed.pathname)) {
+      return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
     }
     if (host === 'vimeo.com') {
       const match = parsed.pathname.match(/^\/(\d+)/)

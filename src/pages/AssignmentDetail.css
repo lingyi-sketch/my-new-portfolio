@@ -187,6 +187,7 @@
 
 .file-list__item {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: 1rem;
   padding: 0.8rem 0;
@@ -201,6 +202,25 @@
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.file-list__media,
+.file-list__pdf {
+  flex: 0 0 100%;
+  width: 100%;
+  margin-top: 0.4rem;
+  border: 0;
+  background: var(--color-bg-soft);
+}
+
+.file-list__media {
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.file-list__pdf {
+  height: min(80vh, 46rem);
 }
 
 .file-list__item a {

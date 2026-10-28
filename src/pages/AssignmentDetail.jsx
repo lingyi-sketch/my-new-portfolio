@@ -6,7 +6,7 @@ import { useAssignments } from '../hooks/useAssignments'
 import { useLanguage } from '../i18n/LanguageContext'
 import { inDisplayOrder } from '../lib/assignments'
 import SmartImage from '../components/SmartImage'
-import { UrlPreview, canEmbed } from '../components/FilePreview'
+import { UrlPreview, canEmbed, isImageFile, isPdfFile, isVideoFile } from '../components/FilePreview'
 import GameFrame, { isLocalGame } from '../components/GameFrame'
 import CompareView from '../components/CompareView'
 import './Section.css'
@@ -133,6 +133,13 @@ function AssignmentDetail() {
                 <a href={file.url} target="_blank" rel="noreferrer">
                   {t('assignments.open')}
                 </a>
+                {isImageFile(file.url) && (
+                  <img className="file-list__media" src={file.url} alt={file.label} />
+                )}
+                {isVideoFile(file.url) && (
+                  <video className="file-list__media" src={file.url} controls playsInline preload="metadata" />
+                )}
+                {isPdfFile(file.url) && <iframe className="file-list__pdf" src={file.url} title={file.label} loading="lazy" />}
               </li>
             ))}
           </ul>
