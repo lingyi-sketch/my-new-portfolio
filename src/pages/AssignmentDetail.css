@@ -17,8 +17,17 @@
 }
 
 /* text stays at a comfortable reading width; the A/B comparison uses the full page width */
-.assignment-detail__article > :not(.compare) {
+.assignment-detail__article > :not(.compare):not(.game-frame) {
   max-width: 46rem;
+}
+
+/* a playable game fills the page width like the A/B comparison; height follows the game's 3:2 screen plus its buttons */
+@media (min-width: 900px) {
+  .assignment-detail__article > .game-frame .game-frame__screen {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    max-height: 88vh;
+  }
 }
 
 .assignment-detail__title {
