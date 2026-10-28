@@ -3,6 +3,7 @@ import { createAssignment, updateAssignment, storedUrls } from '../lib/assignmen
 import { uploadMediaFile, deleteMediaFile } from '../lib/storage'
 import { UrlPreview, parseHttpUrl } from './FilePreview'
 import { isLocalGame } from './GameFrame'
+import AdminCompareEditor, { initialCompare, buildCompare, hasBadCompareUrl } from './AdminCompareEditor'
 import { useLanguage } from '../i18n/LanguageContext'
 import './AdminProjectForm.css'
 
@@ -30,6 +31,7 @@ function initialState(assignment, defaultWeek) {
     result_url: assignment?.result_url ?? '',
     prompts: (assignment?.prompts ?? []).map(newPrompt),
     files: (assignment?.files ?? []).map(newFile),
+    compare: initialCompare(assignment?.compare),
   }
 }
 
@@ -101,12 +103,17 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
         files,
         result_url: form.result_url.trim() || null,
         cover_url,
+        compare: await buildCompare(
+          form.compare,
+          (file) => uploadMediaFile('images', file),
+          (url) => uploaded.push(url),
+        ),
       }
 
       if (isEditing) {
         await updateAssignment(assignment.id, values)
         // Files dropped or replaced by this edit would otherwise stay in the bucket.
-        const keep = new Set([values.cover_url, ...files.map((file) => file.url)])
+        const keep = new Set(storedUrls(values))
         for (const url of storedUrls(assignment)) {
           if (!keep.has(url)) await deleteMediaFile(url)
         }
@@ -128,6 +135,11 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
         setError(t('admin.project.badUrl'))
         return
       }
+    }
+
+    if (hasBadCompareUrl(form.compare)) {
+      setError(t('admin.project.badUrl'))
+      return
     }
 
     setSubmitting(true)
@@ -264,6 +276,8 @@ function AdminAssignmentForm({ assignment, defaultWeek, onSaved, onCancel }) {
           {t('admin.assignment.addFile')}
         </button>
       </fieldset>
+
+      <AdminCompareEditor value={form.compare} onChange={(compare) => patch({ compare })} />
 
       <label className="admin-form__field">
         <span>{t('admin.assignment.resultUrl')}</span>

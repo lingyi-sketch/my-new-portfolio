@@ -7,6 +7,7 @@ import { inDisplayOrder } from '../lib/assignments'
 import SmartImage from '../components/SmartImage'
 import { UrlPreview, canEmbed } from '../components/FilePreview'
 import GameFrame, { isLocalGame } from '../components/GameFrame'
+import CompareView from '../components/CompareView'
 import './Section.css'
 import './AssignmentDetail.css'
 
@@ -115,6 +116,8 @@ function AssignmentDetail() {
             <ReactMarkdown>{assignment.body}</ReactMarkdown>
           </div>
         )}
+
+        {assignment.compare && <CompareView compare={assignment.compare} title={assignment.title} />}
 
         {assignment.prompts.map((prompt, i) => (
           <PromptBlock key={i} prompt={prompt} />

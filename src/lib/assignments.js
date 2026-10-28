@@ -4,7 +4,7 @@ import { edgeSortOrder } from './ordering'
 import { orderWeeks } from './weekOrder'
 
 const COLUMNS =
-  'id, week, title, description, course, body, prompts, files, result_url, cover_url, created_at, sort_order'
+  'id, week, title, description, course, body, prompts, files, result_url, cover_url, compare, created_at, sort_order'
 
 // Rows created before the "entry" format keep their old kind/content columns untouched;
 // the migration copies them into the new columns, and `kind` only has to satisfy NOT NULL.
@@ -16,11 +16,34 @@ function requireClient() {
   }
 }
 
+// A/B comparison: { left: Side, right: Side } where
+// Side = { label, body (markdown), game_url ("/games/x.html"), images: [url], files: [{ label, url }] }
+export function emptySide() {
+  return { label: '', body: '', game_url: '', images: [], files: [] }
+}
+
+function normalizeSide(side) {
+  const source = side && typeof side === 'object' ? side : {}
+  return {
+    label: typeof source.label === 'string' ? source.label : '',
+    body: typeof source.body === 'string' ? source.body : '',
+    game_url: typeof source.game_url === 'string' ? source.game_url : '',
+    images: Array.isArray(source.images) ? source.images.filter((url) => typeof url === 'string' && url) : [],
+    files: Array.isArray(source.files) ? source.files.filter((file) => file && file.url) : [],
+  }
+}
+
+function normalizeCompare(compare) {
+  if (!compare || typeof compare !== 'object' || Array.isArray(compare)) return null
+  return { left: normalizeSide(compare.left), right: normalizeSide(compare.right) }
+}
+
 function normalize(row) {
   return {
     ...row,
     prompts: Array.isArray(row.prompts) ? row.prompts : [],
     files: Array.isArray(row.files) ? row.files : [],
+    compare: normalizeCompare(row.compare),
   }
 }
 
@@ -68,7 +91,12 @@ export async function updateAssignment(id, values) {
 }
 
 export function storedUrls(assignment) {
-  return [assignment.cover_url, ...(assignment.files ?? []).map((file) => file.url)].filter(Boolean)
+  const sides = assignment.compare ? [assignment.compare.left, assignment.compare.right] : []
+  return [
+    assignment.cover_url,
+    ...(assignment.files ?? []).map((file) => file.url),
+    ...sides.flatMap((side) => [...side.images, ...side.files.map((file) => file.url)]),
+  ].filter(Boolean)
 }
 
 export async function deleteAssignment(assignment) {

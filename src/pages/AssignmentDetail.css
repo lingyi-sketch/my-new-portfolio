@@ -14,6 +14,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* text stays at a comfortable reading width; the A/B comparison uses the full page width */
+.assignment-detail__article > :not(.compare) {
   max-width: 46rem;
 }
 
