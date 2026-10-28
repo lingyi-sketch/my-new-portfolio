@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import GameFrame, { isLocalGame } from './GameFrame'
 import { useLanguage } from '../i18n/LanguageContext'
 import './CompareView.css'
@@ -12,7 +13,7 @@ function Side({ side, fallbackLabel, title }) {
 
       {side.body && (
         <div className="markdown-body compare__body">
-          <ReactMarkdown>{side.body}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{side.body}</ReactMarkdown>
         </div>
       )}
 

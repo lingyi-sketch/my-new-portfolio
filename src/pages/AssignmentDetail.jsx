@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { useAssignments } from '../hooks/useAssignments'
 import { useLanguage } from '../i18n/LanguageContext'
 import { inDisplayOrder } from '../lib/assignments'
@@ -113,7 +114,7 @@ function AssignmentDetail() {
 
         {assignment.body && (
           <div className="markdown-body">
-            <ReactMarkdown>{assignment.body}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{assignment.body}</ReactMarkdown>
           </div>
         )}
 
