@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>Instagram 评论自动化 Pipeline 报告</title>
+<style>
+  body { font-family: -apple-system, "Microsoft YaHei", sans-serif; background: #f0f2f5; margin: 0; padding: 32px; color: #1a1a1a; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .subtitle { color: #666; margin-bottom: 24px; font-size: 14px; }
+  .pipeline-overview { display: flex; align-items: center; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+  .agent-chip { background: #fff; border-radius: 10px; padding: 10px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 13px; font-weight: 600; }
+  .chip-arrow { color: #999; }
+  .card { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-icon { width: 26px; height: 26px; border-radius: 50%; background: #1976d2; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .step.skipped .step-icon { background: #9e9e9e; }
+  .step-title { font-weight: 600; font-size: 13px; color: #333; margin-bottom: 4px; }
+  .step-content { font-size: 14px; color: #444; }
+  .arrow { text-align: center; color: #bbb; margin: 2px 0 2px 12px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-right: 6px; }
+  .badge.lang { background: #eceff1; color: #455a64; }
+  .badge.success { background: #e8f5e9; color: #2e7d32; }
+  .badge.fail { background: #ffebee; color: #c62828; }
+  .badge.manual { background: #fff3e0; color: #e65100; }
+  .review-attempt { font-size: 13px; margin-bottom: 6px; padding: 8px 10px; border-radius: 8px; background: #fafafa; }
+  .review-attempt.fail { background: #fff8f7; }
+  .reason { font-size: 12px; color: #888; margin-top: 4px; }
+  .reply-text { background: #fff8e1; padding: 8px 12px; border-radius: 8px; display: inline-block; }
+  .empty { color: #999; }
+  .generated-at { color: #aaa; font-size: 12px; margin-top: 32px; }
+</style>
+</head>
+<body>
+  <h1>Instagram 评论自动化 Pipeline 报告</h1>
+  <div class="subtitle">多智能体协作流程可视化</div>
+
+  <div class="pipeline-overview">
+    <div class="agent-chip">Agent1 Fetcher<br/><span style="font-weight:400;color:#888">拉取评论</span></div>
+    <div class="chip-arrow">→</div>
+    <div class="agent-chip">Agent2 Analyzer<br/><span style="font-weight:400;color:#888">语言/情感分析</span></div>
+    <div class="chip-arrow">→</div>
+    <div class="agent-chip">Agent3 Replier<br/><span style="font-weight:400;color:#888">生成回复</span></div>
+    <div class="chip-arrow">→</div>
+    <div class="agent-chip">Agent5 Reviewer<br/><span style="font-weight:400;color:#888">自我审核(反思循环)</span></div>
+    <div class="chip-arrow">→</div>
+    <div class="agent-chip">Agent4 Publisher<br/><span style="font-weight:400;color:#888">真实发布</span></div>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <div class="step-icon">1</div>
+      <div class="step-body">
+        <div class="step-title">Fetcher · 拉取评论</div>
+        <div class="step-content">@l***: "今天很冷吧😢"</div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">2</div>
+      <div class="step-body">
+        <div class="step-title">Analyzer · 分析</div>
+        <div class="step-content">
+          <span class="badge" style="color:#616161;background:#f5f5f5">中性</span>
+          <span class="badge lang">语言: zh</span>
+          <div class="reason">用户只是闲聊式地表达天气寒冷并希望获得共鸣，不是抱怨也不是真正提问，但带有互动意图，适合友好回复。</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">3</div>
+      <div class="step-body">
+        <div class="step-title">Replier · 生成回复</div>
+        <div class="step-content reply-text">超冷的🥶 我今天出门手都快冻僵了，你那边冷不冷呀？</div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">5</div>
+      <div class="step-body">
+        <div class="step-title">Reviewer · 自我审核 (反思循环，共 1 次)</div>
+        <div class="step-content"><div class="review-attempt pass">
+        <span class="badge success">✓ 通过</span>
+        第1次: "超冷的🥶 我今天出门手都快冻僵了，你那边冷不冷呀？"
+        
+      </div></div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">4</div>
+      <div class="step-body">
+        <div class="step-title">Publisher · 发布</div>
+        <div class="step-content">
+          <span class="badge success">✓ 发布成功</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="card">
+    <div class="step">
+      <div class="step-icon">1</div>
+      <div class="step-body">
+        <div class="step-title">Fetcher · 拉取评论</div>
+        <div class="step-content">@x***: "뭐야 뭐지 왜켓예뽀?"</div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">2</div>
+      <div class="step-body">
+        <div class="step-title">Analyzer · 分析</div>
+        <div class="step-content">
+          <span class="badge" style="color:#2e7d32;background:#e8f5e9">正面</span>
+          <span class="badge lang">语言: ko</span>
+          <div class="reason">韩语意为“什么啊，怎么这么好看？”，虽然带疑问语气，但实际是惊叹和夸奖，属于正面评价，适合回复互动。</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">3</div>
+      <div class="step-body">
+        <div class="step-title">Replier · 生成回复</div>
+        <div class="step-content reply-text">뭐야 고마워ㅋㅋㅋ 너가 더 예뻐 😆💕</div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">5</div>
+      <div class="step-body">
+        <div class="step-title">Reviewer · 自我审核 (反思循环，共 1 次)</div>
+        <div class="step-content"><div class="review-attempt pass">
+        <span class="badge success">✓ 通过</span>
+        第1次: "뭐야 고마워ㅋㅋㅋ 너가 더 예뻐 😆💕"
+        
+      </div></div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">4</div>
+      <div class="step-body">
+        <div class="step-title">Publisher · 发布</div>
+        <div class="step-content">
+          <span class="badge success">✓ 发布成功</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="card">
+    <div class="step">
+      <div class="step-icon">1</div>
+      <div class="step-body">
+        <div class="step-title">Fetcher · 拉取评论</div>
+        <div class="step-content">@l***: "明天下课一起吃饭!"</div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">2</div>
+      <div class="step-body">
+        <div class="step-title">Analyzer · 分析</div>
+        <div class="step-content">
+          <span class="badge" style="color:#616161;background:#f5f5f5">中性</span>
+          <span class="badge lang">语言: zh</span>
+          <div class="reason">这是一条邀约性质的评论，不属于夸奖、抱怨、提问或垃圾信息，但带有互动意图，适合简单回复确认。</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">3</div>
+      <div class="step-body">
+        <div class="step-title">Replier · 生成回复</div>
+        <div class="step-content reply-text">好呀好呀，明天下课直接约！去哪吃你定吧😋</div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">5</div>
+      <div class="step-body">
+        <div class="step-title">Reviewer · 自我审核 (反思循环，共 1 次)</div>
+        <div class="step-content"><div class="review-attempt pass">
+        <span class="badge success">✓ 通过</span>
+        第1次: "好呀好呀，明天下课直接约！去哪吃你定吧😋"
+        
+      </div></div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">4</div>
+      <div class="step-body">
+        <div class="step-title">Publisher · 发布</div>
+        <div class="step-content">
+          <span class="badge success">✓ 发布成功</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="card">
+    <div class="step">
+      <div class="step-icon">1</div>
+      <div class="step-body">
+        <div class="step-title">Fetcher · 拉取评论</div>
+        <div class="step-content">@q***: "추운 날씨에 미모는 따뜻하네😍"</div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">2</div>
+      <div class="step-body">
+        <div class="step-title">Analyzer · 分析</div>
+        <div class="step-content">
+          <span class="badge" style="color:#2e7d32;background:#e8f5e9">正面</span>
+          <span class="badge lang">语言: ko</span>
+          <div class="reason">评论用韩语夸赞博主在寒冷天气中依然美貌温暖，并带有爱心眼表情，属于正面夸奖，适合回复致谢。</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">3</div>
+      <div class="step-body">
+        <div class="step-title">Replier · 生成回复</div>
+        <div class="step-content reply-text">ㅋㅋㅋ 말도 예쁘게 한다~ 덕분에 추위가 싹 녹았어😍</div>
+      </div>
+    </div>
+    
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">5</div>
+      <div class="step-body">
+        <div class="step-title">Reviewer · 自我审核 (反思循环，共 1 次)</div>
+        <div class="step-content"><div class="review-attempt pass">
+        <span class="badge success">✓ 通过</span>
+        第1次: "ㅋㅋㅋ 말도 예쁘게 한다~ 덕분에 추위가 싹 녹았어😍"
+        
+      </div></div>
+      </div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="step">
+      <div class="step-icon">4</div>
+      <div class="step-body">
+        <div class="step-title">Publisher · 发布</div>
+        <div class="step-content">
+          <span class="badge success">✓ 发布成功</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="generated-at">报告生成时间: 2026/11/25 00:18:54</div>
+</body>
+</html>

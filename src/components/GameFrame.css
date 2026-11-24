@@ -13,6 +13,12 @@
   background: var(--color-bg-soft);
 }
 
+/* a generated report is a tall document, not a game screen */
+.game-frame__screen--page {
+  height: clamp(26rem, 75vh, 44rem);
+  background: #f0f2f5;
+}
+
 .game-frame__bar {
   display: flex;
   align-items: center;

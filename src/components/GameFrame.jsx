@@ -1,28 +1,31 @@
 import { useLanguage } from '../i18n/LanguageContext'
 import './GameFrame.css'
 
-// Games that ship with the site live in /public/games and are used as a result link ("/games/xxx.html").
+// Pages that ship with the site and can be shown inside an assignment as a result link:
+//   /games/xxx.html   playable games (scripts allowed)
+//   /embeds/xxx.html  static pages such as a generated report (scripts turned off)
 export function isLocalGame(url) {
-  return typeof url === 'string' && /^\/games\/[\w.\-]+\.html$/i.test(url)
+  return typeof url === 'string' && /^\/(games|embeds)\/[\w.\-]+\.html$/i.test(url)
 }
 
 function GameFrame({ src, title }) {
   const { t } = useLanguage()
+  const isStaticPage = src.startsWith('/embeds/')
 
   return (
     <div className="game-frame">
       <iframe
-        className="game-frame__screen"
+        className={`game-frame__screen${isStaticPage ? ' game-frame__screen--page' : ''}`}
         src={src}
         title={title}
-        // the games are single self-contained HTML files; scripts must run, nothing else is needed
-        sandbox="allow-scripts allow-same-origin"
+        // games are single self-contained HTML files and need scripts; static pages need nothing
+        sandbox={isStaticPage ? 'allow-same-origin' : 'allow-scripts allow-same-origin'}
         loading="lazy"
       />
       <div className="game-frame__bar">
-        <span>{t('assignments.gameHint')}</span>
+        <span>{t(isStaticPage ? 'assignments.embedHint' : 'assignments.gameHint')}</span>
         <a href={src} target="_blank" rel="noreferrer">
-          {t('assignments.gameFull')}
+          {t(isStaticPage ? 'assignments.embedFull' : 'assignments.gameFull')}
         </a>
       </div>
     </div>

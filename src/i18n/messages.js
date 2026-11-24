@@ -104,6 +104,8 @@ export const messages = {
   'assignments.open': m('打开 →', '열기 →', 'Open →'),
   'assignments.result': m('查看成果 →', '결과물 보기 →', 'View the result →'),
   'assignments.gameHint': m('先点一下「시작」，用方向键移动，E 键或空格键接收/递送咖啡。', '먼저 「시작」을 누르고, 방향키로 이동하며 E 또는 스페이스바로 커피를 받고 전하세요.', 'Press 「시작」 first, move with the arrow keys, and use E or Space to pick up and deliver coffee.'),
+  'assignments.embedHint': m('这是程序运行后自动生成的报告，可以在框内上下滚动查看。', '프로그램을 실행한 뒤 자동으로 만들어진 보고서예요. 틀 안에서 위아래로 스크롤해 보세요.', 'A report generated automatically after the program ran. Scroll inside the frame to read it.'),
+  'assignments.embedFull': m('在新窗口打开 ↗', '새 창에서 열기 ↗', 'Open in a new window ↗'),
   'assignments.gameFull': m('在新窗口全屏玩 ↗', '새 창에서 크게 하기 ↗', 'Open in a new window ↗'),
 
   // login / admin shell
@@ -202,7 +204,7 @@ export const messages = {
   'admin.compare.upload': m('或上传图片(可多选,保存时一起上传)', '또는 이미지 올리기 (여러 장 선택 가능, 저장할 때 함께 올라가요)', 'Or upload images (several allowed, uploaded when you save)'),
   'admin.compare.files': m('文件(名称 + 链接)', '파일 (이름 + 링크)', 'Files (name + link)'),
   'admin.assignment.addFile': m('+ 添加文件', '+ 파일 추가', '+ Add a file'),
-  'admin.assignment.resultUrl': m('成果链接（可选；填 /games/文件名.html 可以直接在网页里玩游戏）', '결과물 링크 (선택, 작품 주소·YouTube 영상 등. /games/파일명.html 로 쓰면 페이지 안에서 바로 게임을 할 수 있어요)', 'Result link (optional; /games/file.html lets visitors play the game right on the page)'),
+  'admin.assignment.resultUrl': m('成果链接（可选；填 /games/文件名.html 可直接玩游戏，填 /embeds/文件名.html 可直接显示报告页）', '결과물 링크 (선택, 작품 주소·YouTube 영상 등. /games/파일명.html 은 바로 플레이, /embeds/파일명.html 은 보고서 페이지를 바로 보여줘요)', 'Result link (optional; /games/file.html plays a game, /embeds/file.html shows a report page right on the page)'),
   'admin.assignment.submit': m('登记作业', '과제 등록', 'Add assignment'),
   'admin.assignment.failed': m('保存失败。您输入的内容已保留，请重试。', '저장에 실패했어요. 입력하신 내용은 그대로 남아있으니 다시 시도해 주세요.', 'Could not save. Your input is kept, please try again.'),
 
